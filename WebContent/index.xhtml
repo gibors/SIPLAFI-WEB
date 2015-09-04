@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"> 
+
+<h:head>
+<title>hello</title>
+</h:head> 
+<body>
+<h2>JSF 2.2 PRIMEFACES 5.0 AND EJBS</h2>
+<h:form>
+	<h:inputText value="#{name}" a:placeholder="what is your name ?" />
+	<h:inputText value="#{age}" a:placeholder="age ? " />
+	<h:inputText value="#{date}" a:placeholder="date of birth ?" />
+	
+	<h:commandButton value="SUBMIT" /><br/><br/>
+	<h:outputText value="hello #{name} your age is #{age} and your date of birth is #{date}" rendered="#{not empty name and not empty age and not empty date}" />
+	
+</h:form>
+</body> 
+</html>
