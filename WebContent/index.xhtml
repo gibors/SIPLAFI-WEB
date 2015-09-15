@@ -1,24 +1,48 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"> 
-
-<h:head>
-<title>hello</title>
-</h:head> 
-<body>
-<h2>JSF 2.2 PRIMEFACES 5.0 AND EJBS</h2>
-<h:form>
-	<h:inputText value="#{name}" a:placeholder="what is your name ?" />
-	<h:inputText value="#{age}" a:placeholder="age ? " />
-	<h:inputText value="#{date}" a:placeholder="date of birth ?" />
-	
-	<h:commandButton value="SUBMIT" /><br/><br/>
-	<h:outputText value="hello #{name} your age is #{age} and your date of birth is #{date}" rendered="#{not empty name and not empty age and not empty date}" />
-	
-</h:form>
-</body> 
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:co="http://java.sun.com/jsf/composite/ezcomp">
+    <h:head>
+        <title>Login</title>
+	<link rel="stylesheet" href="css/login.css" />        
+    </h:head>
+    <h:body>
+   	<div id="container">   
+		<ui:include  src="layouts/headerLog.xhtml" ></ui:include>
+		<section>
+			<h:panelGroup layout="block" styleClass="datos">
+				<h2>Bienvenido al sistema de plantillas de la division de Computación</h2>
+				<br/>
+				<br/>
+				<h:form id="forma">
+					<h:panelGroup layout="block" styleClass="forma">
+						<h:panelGrid columns="2">			
+							<h:outputLabel value="TIPO DE USUARIO" />
+	                   		<p:selectOneMenu value="#{login.tipo}" required="true" requiredMessage="selecciona tipo">
+								<f:selectItem itemLabel="[selecciona]"/>
+								<f:selectItem itemLabel="profesor" itemValue="0"/>
+								<f:selectItem itemLabel="coordinador" itemValue="1"/>
+							</p:selectOneMenu>
+							<h:outputLabel value="USUARIO" />
+	                       	<p:inputText  value="#{login.user}" required="true" requiredMessage="ingresa usuario" />	
+							<h:outputLabel  value=" CONTRASEÑA" />
+	               	        <p:password value="#{login.password}" required="true" requiredMessage="ingresa password"/>														
+						</h:panelGrid>
+						<h:panelGroup layout="block" styleClass="boton-valida">
+	                      	<p:commandButton value="validar" id="button" action="#{login.login()}" update="forma" >
+	                  		</p:commandButton>								
+						</h:panelGroup>			
+					</h:panelGroup>
+	              	<p:messages id="msgs" />
+				</h:form>
+			</h:panelGroup>
+		</section>
+		<ui:include src="layouts/footer.xhtml" />
+	</div>
+    </h:body>
 </html>
+
