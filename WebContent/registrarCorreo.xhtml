@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/layouts/mainTemplate.xhtml">	
+        <ui:define name="title">Registro de correo</ui:define>
+	<ui:define name="content">
+	<h2>Registrar correo</h2>		
+		<h:form id="forma">
+			<h:panelGroup layout="block" styleClass="forma" >
+				<h:panelGrid columns="2">				
+					<h:outputLabel value="Ingresa correo electr&oacute;nico: " />
+                 	<p:inputText id="email" value="#{registrarCorreo.correo}" required="true"
+                  		requiredMessage="ingrese correo" />
+             		<h:outputLabel value="Confirmar correo" />
+                	<p:inputText id="email2" value="#{registrarCorreo.correoConfirma}" required="true"
+                  		requiredMessage="Confirme su correo" />
+				</h:panelGrid>
+				<h:panelGroup layout="block" styleClass="boton-valida">
+              		<p:commandButton id="button"  value="Registrar" action="#{registrarCorreo.ingresarMail()}"
+					update="forma" />
+				</h:panelGroup>	
+			</h:panelGroup>
+			<p:messages id="msgs" />
+		</h:form>
+	</ui:define>	
+	</ui:composition>
+</h:body>
+</html>

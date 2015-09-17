@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+<ui:composition template="/layouts/mainTemplate.xhtml">
+	<ui:define name="title"></ui:define>
+  	<ui:define name="content">
+  		<h:form id="f1">  	
+	    	<p:menubar>
+	        	<p:menuitem id="backProfesor" value="Regresar" action="profesor?faces-redirect=true" icon="ui-icon-mail-closed" />    	
+	      		<f:facet name="options">
+	            	<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink" action="#{profesorBean.cerrarSession()}"/>
+	           	</f:facet>                    
+	     	</p:menubar>  	
+		  	<p:tabView id="tabV" orientation="left" style="text-align:center">
+		  		<p:tab id="t1" title="Cambiar datos de contacto" >
+			  			<p:panelGrid columns="2" style="tex-align: center;">
+			  				<p:outputLabel value="Correo electr&oacute;nico: " />
+			  				<p:inputText id="mail" value="#{modDat.profesor.emailProfe}"  maxlength="20" validatorMessage="Formato de correo invalido" >
+			  					<f:validateRegex pattern="[A-Z0-9a-z._%-]+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4}" for="mail"/>
+			  				</p:inputText>
+			  				<p:outputLabel value="Tel&eacute;fono: " />
+			  				<p:inputText value="#{modDat.profesor.telefono}" maxlength="12" />
+			  			</p:panelGrid>
+			  			<br/>
+			  			<p:commandButton value="Actualizar" action="#{modDat.actualizarDatos}" process=":f1:tabV:t1" update="msgs" />
+			  			<br/>		  						  			
+			  			<p:messages id="msgs" />
+		  		</p:tab>
+		  		<p:tab id="t2" title="Cambiar contraseña">
+		  			<p:panelGrid columns="2">
+			  			<p:outputLabel value="Ingrese nueva contrase&ntilde;a" />
+			  			<p:password value="#{modDat.passwd}"  maxlength="15" required="true" requiredMessage="Ingrese la nueva contraseña "/>
+			  			<p:outputLabel value="Confirme la nueva contrase&ntilde;a" />
+			  			<p:password value="#{modDat.passwdConfirm}"  maxlength="15" required="true" requiredMessage="Ingrese contraseña de confimacion "/>
+		  			</p:panelGrid>
+			  		<br/>		  			
+					<p:commandButton value="Actualizar" action="#{modDat.cambiarPassword()}" process=":f1:tabV:t2" update="msgss" />
+			  		<br/>		  								
+					<p:messages id="msgss" />							  			  	
+		  		</p:tab>
+		  	</p:tabView>
+	  	</h:form>
+  	</ui:define>
+</ui:composition>
+</html>

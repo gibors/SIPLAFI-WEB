@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+	<ui:composition template="/layouts/mainTemplate.xhtml">
+            <ui:define name="title">valida grupo profesor</ui:define>
+            <ui:define name="content">
+           		<h:form >
+                    <h:panelGroup layout="block" style="text-align: center">
+                        <p:menubar>
+                            <p:menuitem id="modCorreo" value="Datos de contacto" icon="ui-icon-mail-closed" />
+                            <p:menuitem id="modPass" value="Modificar informaci&oacute;n personal" icon="ui-icon-pencil" action="modificaDatosProfesor?faces-redirect=true"/>
+                            <f:facet name="options">
+                                <p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink" action="#{profesorBean.cerrarSession()}"/>
+                            </f:facet>                    
+                        </p:menubar>
+						<p:overlayPanel id="overPanel" for="modCorreo" hideEffect="fade" dynamic="true" style="width:400px">
+							<p:panelGrid columns="2" rendered="#{profesorBean.profe.emailProfe != null or profesorBean.profe.telefono != null}">
+								<p:outputLabel value="Correo &nbsp; :" />
+								<p:outputLabel value="#{profesorBean.profe.emailProfe}" />
+								<p:outputLabel value="Telefono &nbsp; :" />
+								<p:outputLabel value="#{profesorBean.profe.telefono}" />																									
+							</p:panelGrid>
+							<p:outputLabel value="NO HAY DATOS PARA MOSTRAR" rendered="#{profesorBean.profe.emailProfe == null and profesorBean.profe.telefono == null}" />
+						</p:overlayPanel>
+                        <br/>
+                        <br/>
+                        <b><h:outputText style="text-align: center" value="BIENVENIDO AL SISTEMA PROFESOR(A) #{profesorBean.nombreProfe}" /></b>
+                        <br/>
+                        <br/>
+                        <h:panelGroup layout="block" style="text-align: left;background-color: darkolivegreen">
+                            &nbsp;<h:outputText value=" ACCION " style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value=" N - Ninguna acción realizada" style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value=" C - Horario Confirmado" style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value=" M - Horario modificado para validación" style="text-align: left" /><br/>
+                        </h:panelGroup>                                      
+                    </h:panelGroup>
+                </h:form>
+                <br/>
+				<h:form id="formu" >  
+                    <p:messages id="growl" />
+                    <h:panelGroup layout="block" > 
+						<p:dataTable id="gposProfe" var="gpo" value="#{profesorBean.gposProfe}" styleClass="tablaProfe"
+	                                 rowKey="#{gpo.idGrupo}" disabledSelection="#{gpo.validado == 0 || gpo.validado == 1 || gpo.validado == 3}" rendered="#{gpo.validado != 0}">
+	                    	<p:columnGroup type="header">
+		                        <p:row>
+		                            <p:column rowspan="2" headerText="" style="text-align: center"/>
+		                            <p:column rowspan="2" headerText="SEM"  />
+		                            <p:column rowspan="2" headerText="MATERIA " width="150" />
+		                            <p:column rowspan="2" headerText="HRS" />
+		                            <p:column colspan="2" headerText="LUNES" />
+		                            <p:column colspan="2" headerText="MARTES" />
+		                            <p:column colspan="2" headerText="MIERCOLES" />
+		                            <p:column colspan="2" headerText="JUEVES" />
+		                            <p:column colspan="2" headerText="VIERNES" />
+		                            <p:column colspan="2" headerText="SABADO" />
+		                            <p:column rowspan="2" headerText="ACCION" style="text-align: center; width: 50px;font-size: 10pt"/>
+		                            <p:column rowspan="2" headerText="ESTADO" style="text-align: center; width: 100px;font-size: 10pt"/>
+		                        </p:row>
+		                        <p:row>
+		                            <p:column headerText="INI" />
+		                            <p:column headerText="FIN" />
+		                            <p:column headerText="INI" />
+		                            <p:column headerText="FIN" />
+		                            <p:column headerText="INI" />
+		                            <p:column headerText="FIN" />
+		                            <p:column headerText="INI" />
+		                            <p:column headerText="FIN" />
+		                            <p:column headerText="INI" />
+		                            <p:column headerText="FIN" />
+		                            <p:column headerText="INI" />
+		                            <p:column headerText="FIN" />
+		                        </p:row>
+		                    </p:columnGroup>
+		                    <p:column  selectionMode="single" style="width:16px;text-align:center">
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.claveMateria.semestre}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.claveMateria.nombreMateria}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.claveMateria.horas}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.lunHoraIni != null ? profesorBean.format.format(gpo.horario.lunHoraIni) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.lunHoraFin != null ? profesorBean.format.format(gpo.horario.lunHoraFin): '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.marHoraIni != null ? profesorBean.format.format(gpo.horario.marHoraIni): '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.marHoraFin != null ? profesorBean.format.format(gpo.horario.marHoraFin): '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.mieHoraIni != null ? profesorBean.format.format(gpo.horario.mieHoraIni) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.mieHoraFin != null ? profesorBean.format.format(gpo.horario.mieHoraFin) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.jueHoraIni != null ? profesorBean.format.format(gpo.horario.jueHoraIni) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.jueHoraFin != null ? profesorBean.format.format(gpo.horario.jueHoraFin) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.vieHoraIni != null ? profesorBean.format.format(gpo.horario.vieHoraIni) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.vieHoraFin != null ? profesorBean.format.format(gpo.horario.vieHoraFin) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.sabHoraIni != null ? profesorBean.format.format(gpo.horario.sabHoraIni) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.horario.sabHoraFin != null ? profesorBean.format.format(gpo.horario.sabHoraFin) : '-'}" >
+		                        </h:outputText>
+		                    </p:column>
+		                    <p:column >
+		                        <h:outputText value="#{gpo.estado == 1 ? 'C' : (gpo.estado == 2 ? 'M' : 'N')}" />
+		                    </p:column>
+		                    <p:column style="font-size:8pt;text-align: center">
+		                        <h:outputText  value="#{gpo.validado == 0 ? 'Para validación' : (gpo.validado == 1 ? 'Aceptado' : (gpo.validado == 2 ? 'No Aceptado' : (gpo.validado == 3 ? 'Confimado' : ''))) }" />
+		                    </p:column>
+		                    <f:facet name="footer">
+		                        <p:commandButton  icon="ui-icon-pencil" value="Modificar" action="profesor" update="@form"  /> 
+		                        <p:commandButton  icon="ui-icon-check" value="Confirmar" actionListener="profesor" update="@form" />                                                    
+		                    </f:facet>
+						</p:dataTable>
+					</h:panelGroup>
+              		<br/>
+				</h:form>
+            </ui:define>    
+        </ui:composition>
+</html>

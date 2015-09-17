@@ -1,0 +1,27 @@
+.tablaProfe
+{
+	font-size: 10pt;
+	text-align: center
+}
+.onemenu .ui-selectonemenu-label
+{
+    background: rgb(0, 148, 120);;    
+}
+
+  /* .ui-selectonemenu-label{
+                    width:100% !important;
+                }*/
+/*   .ui-selectonemenu
+   {
+       width:100% !important;
+    }*/
+   /* 
+ui-selectonemenu-label ui-inputfield ui-corner-all
+{
+    width: 60px;
+}*/
+   
+   .fondo-blanco{
+       background: #ffffff;
+   }
+   

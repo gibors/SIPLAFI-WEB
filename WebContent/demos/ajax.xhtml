@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <div>Listener</div>
+        <h:form id="forma1">
+            <p:dialog visible="true" showEffect="explode">
+                <h:outputText value="Procure evitar traslapes" />
+            </p:dialog>
+        <p:panelGrid columns="3">
+            <p:outputLabel value="ingresa texto " />
+            <p:inputText value="#{ajaxBean.text1}" >
+                <p:ajax event="keyup" update="out" listener="#{ajaxBean.metodoListener()}" />
+            </p:inputText>
+            <h:outputText id="out" value="#{ajaxBean.text1}" />
+        </p:panelGrid>
+        </h:form>
+        <p:separator  />
+        <h:form id="forma2">            
+            <h:panelGrid id="grid" columns="2" cellpadding="5" style="margin-bottom: 10px">
+                <f:facet name="header">
+                    <p:messages id="msgs" />
+                </f:facet>
+                <p:outputLabel for="firstname" value="Firstname:" />
+                <p:inputText id="firstname" value="#{ajaxBean.name}" />
+                <p:outputLabel for="surname" value="Surname:" />
+                <p:inputText id="surname" value="#{ajaxBean.lastname}" required="true" requiredMessage="Surname is required." />
+            </h:panelGrid>
+            <h:panelGrid columns="6" cellpadding="5">
+                <p:commandButton value="All" id="btnAll" process="@all" update="grid" actionListener="#{ajaxBean.save}" />
+                <p:commandButton value="Form" id="btnForm" process="@form" update="grid" actionListener="#{ajaxBean.save}" />
+                <p:commandButton value="This" id="btnThis" process="@this" update="grid" actionListener="#{ajaxBean.save}" />
+                <p:commandButton value="None" id="btnNone" process="@none" update="grid" actionListener="#{ajaxBean.save}" />
+                <p:commandButton value="Parent" id="btnParent" process="@parent" update="grid" actionListener="#{ajaxBean.save}" />
+                <p:commandButton value="This Surname" id="btnSurname" process="@this,surname" update="grid" actionListener="#{ajaxBean.save}" />
+            </h:panelGrid>            
+        </h:form>        
+        <p:separator/> 
+    </h:body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<h:head>
+    <title><ui:insert name="title">Login</ui:insert></title>
+    <link rel="stylesheet" href="css/login.css"/>
+    <link rel="stylesheet" href="css/menu.css"/>    
+    <link rel="stylesheet" href="css/table-style.css"/>
+    
+</h:head> 
+<h:body> 
+<div id="container">
+        <SCRIPT language="javascript" type="text/javascript">
+          //history.go(-1) = function(){};
+                PrimeFaces.locales['es'] = {
+                        closeText: 'Cerrar',
+                        prevText: 'Anterior',
+                        nextText: 'Siguiente',
+                        monthNames: ['Enero','Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+                        dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+                        dayNamesShort: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                        dayNamesMin: ['D','L','M','X','J','V','S'],
+                        weekHeader: 'Semana',
+                        firstDay: 1,
+                        isRTL: false,
+                        showMonthAfterYear: false,
+                        yearSuffix: '',
+                        timeOnlyTitle: 'Ingresa la hora',
+                        timeText: 'Tiempo',
+                        hourText: 'Hora',
+                        minuteText: 'Minutos',
+                        secondText: 'Segundos',
+                        currentText: 'Fecha actual',
+                        ampm: false,
+                        month: 'Mes',
+                        week: 'Semana',
+                        day: 'Día',
+                        allDayText : 'Todo el día'
+                };
+                </SCRIPT> 
+<div>
+    <ui:insert name="header">
+		<ui:include src="header.xhtml" />
+    </ui:insert>
+</div>
+<div>
+    <ui:insert name="content">contenido..</ui:insert>
+</div>
+<div id="pie">
+    <ui:insert name="footer">
+	<ui:include src="footer.xhtml" />
+    </ui:insert>
+</div>
+</div>
+</h:body> 
+</html>

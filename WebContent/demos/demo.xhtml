@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style type="text/css">
+
+.ui-grid .ui-grid-row 
+{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    clear: both;
+    width: 100%
+}
+.ui-grid {
+    margin-bottom: 10px;
+}
+.ui-grid {
+    clear: both;
+    padding: 0px;
+    margin: 0px;
+}
+.ui-grid .ui-grid-row div {
+    background-color: #cccccc;
+    text-align: center;
+    border: 1px solid #dddddd;
+    padding: 10px 0px;
+}
+.ui-grid-col-1 
+{
+    width: 8.33333%;
+}
+.ui-grid-col-4 {
+    width: 33.33333%;
+}
+user agent stylesheetdiv 
+{
+    display: block;
+}
+
+Pseudo ::before element
+.ui-grid:before, .ui-grid:after 
+{
+    content: "";
+    display: table;
+}
+Pseudo ::after element
+.ui-grid:after {
+    clear: both;
+}
+.ui-grid:before, .ui-grid:after 
+{
+    content: "";
+    display: table;
+}
+Inherited from body
+body 
+{
+    margin: 0px;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #20272a;
+    font-family: 'exoregular', "Trebuchet MS", Arial, Helvetica, sans-serif;
+    margin: 0 auto;
+    text-align: center
+}
+.ui-grid-col-6 
+{
+    width: 50%;
+    margin: 0 auto;
+}
+.ui-grid-col-2 {
+width: 16.66666%;
+}
+.ui-grid-col-3 {
+width: 25%;
+}
+</style>          
+    </h:head>
+    <body align="center">
+        <div >EJEMPLO GRID </div>
+    
+    <div class="ui-grid ui-grid-responsive">
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-1"><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+    </div>
+</div>
+<div class="ui-grid ui-grid-responsive">
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-2">2</div>
+        <div class="ui-grid-col-2">2</div>
+        <div class="ui-grid-col-2">2</div>
+        <div class="ui-grid-col-2">2</div>
+        <div class="ui-grid-col-2">2</div>
+        <div class="ui-grid-col-2">2</div>
+    </div>
+</div> 
+<div class="ui-grid ui-grid-responsive">
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-3">3</div>
+        <div class="ui-grid-col-3">3</div>
+        <div class="ui-grid-col-3">3</div>
+        <div class="ui-grid-col-3">3</div>
+    </div>
+</div>
+ 
+<div class="ui-grid ui-grid-responsive">
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-4">4</div>
+        <div class="ui-grid-col-4">4</div>
+        <div class="ui-grid-col-4">4</div>
+    </div>
+</div>
+<h:form>
+<div class="ui-grid ui-grid-responsive">
+    <div class="ui-grid-row">
+        <div class="ui-grid-col-6" ><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+        <div class="ui-grid-col-6" ><p:calendar  pattern="HH:mm" timeOnly="true"/></div>
+    </div>
+</div>
+</h:form>
+<!--                    <h:panelGroup layout="block">
+                    <h:panelGrid columns="9" style="width: 100%" styleClass="tablaProfe">
+                        <h:column >SEM </h:column>
+                        <h:column >MATERIA</h:column>
+                        <h:column >HRS</h:column>
+                        <h:column >LUNES</h:column>
+                        <h:column >MARTES</h:column>
+                        <h:column >MIERCOLES</h:column>
+                        <h:column >JUEVES</h:column>
+                        <h:column >VIERNES</h:column>
+                        <h:column >SABADO</h:column>
+                        <h:column></h:column>
+                        <h:column ></h:column>
+                        <h:column ></h:column>
+                        <h:panelGrid columns="2">
+                            <h:column>INI</h:column>
+                            <h:column>FIN</h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column>INI</h:column>
+                            <h:column>FIN</h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column>INI</h:column>
+                            <h:column>FIN</h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column>INI</h:column>
+                            <h:column>FIN</h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column>INI</h:column>
+                            <h:column>FIN</h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column>INI</h:column>
+                            <h:column>FIN</h:column>
+                        </h:panelGrid> 
+                        <h:column>8</h:column>
+                        <h:column>ANALISIS</h:column>
+                        <h:column>3</h:column>
+                        <h:panelGrid columns="2">
+                            <h:column ><p:calendar timeOnly="true" pattern="HH:mm" /> </h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column ><p:calendar timeOnly="true" pattern="HH:mm" /> </h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column ><p:calendar timeOnly="true" pattern="HH:mm" /> </h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column ><p:calendar timeOnly="true" pattern="HH:mm" /> </h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column ><p:calendar timeOnly="true" pattern="HH:mm" /> </h:column>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:column ><p:calendar timeOnly="true" pattern="HH:mm" /> </h:column>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </h:panelGroup>-->
+
+
+
+<!--   USANDO DATA TABLE 
+
+   <p:dataTable var="gpo" value="#{modificaGpoBean.listGpoSel}" styleClass="tablaProfe" editMode="true" >
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2"  headerText="SEM"  />
+                            <p:column rowspan="2" headerText="MATERIA " width="150" />
+                            <p:column rowspan="2" headerText="HRS" />
+                            <p:column colspan="2" headerText="LUNES" />
+                            <p:column colspan="2" headerText="MARTES" />
+                            <p:column colspan="2" headerText="MIERCOLES" />
+                            <p:column colspan="2" headerText="JUEVES" />
+                            <p:column colspan="2" headerText="VIERNES" />
+                            <p:column colspan="2" headerText="SABADO" />
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="INI" />
+                            <p:column headerText="FIN" />
+                            <p:column headerText="INI" />
+                            <p:column headerText="FIN" />
+                            <p:column headerText="INI" />
+                            <p:column headerText="FIN" />
+                            <p:column headerText="INI" />
+                            <p:column headerText="FIN" />
+                         
+                            <p:column headerText="INI" />
+                            <p:column headerText="FIN" />
+                            <p:column headerText="INI" />
+                            <p:column headerText="FIN" />
+                        </p:row>
+                    </p:columnGroup>
+           
+                    <p:column >
+                        <h:outputText value="#{modificaGpoBean.gpoSelected.claveMateria.semestre}" >
+                        </h:outputText>
+                    </p:column>
+                    <p:column >
+                        <h:outputText value="#{modificaGpoBean.gpoSelected.claveMateria.nombreMateria}" >
+                        </h:outputText>
+                    </p:column>
+                    <p:column >
+                        <h:outputText value="#{modificaGpoBean.gpoSelected.claveMateria.horas}" >
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <p:calendar   value="#{modificaGpoBean.lunIni}" locale="es" pattern="HH:mm" timeOnly="true"  />
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.lunFin}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.marIni}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar  locale="es"  value="#{modificaGpoBean.marFin}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                      <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.mieIni}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.mieFin}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.jueIni}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar  locale="es"  value="#{modificaGpoBean.jueFin}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.vieIni}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.vieFin}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.sabIni}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>
+                    <p:column>
+                        <p:calendar locale="es"  value="#{modificaGpoBean.sabFin}" pattern="HH:mm" timeOnly="true" />
+                    </p:column>  
+                    <p:row>
+                        <p:column colspan="3" headerText="TIPO DE AULA">
+                            <h:outputLabel value="ELIGE TIPO DE AULA" />
+                        </p:column>        
+                        <p:column colspan="2" >
+                        <p:selectOneMenu  >
+                            <f:selectItem itemLabel="Seleccione una Opción" itemValue="" />
+                            <f:selectItem itemLabel="Salon" itemValue="1" />
+                            <f:selectItem itemLabel="Sala" itemValue="2" />
+                            <f:selectItem itemLabel="Laboratorio" itemValue="3" />
+                        </p:selectOneMenu>
+                    </p:column>   
+                    <p:column colspan="2">
+                        <p:selectOneMenu >
+                            <f:selectItem itemLabel="Seleccione una Opción" itemValue="" />
+                            <f:selectItem itemLabel="Salon" itemValue="1" />
+                            <f:selectItem itemLabel="Sala" itemValue="2" />
+                            <f:selectItem itemLabel="Laboratorio" itemValue="3" />
+                        </p:selectOneMenu>
+                    </p:column>   
+                    <p:column colspan="2">
+                        <p:selectOneMenu >
+                            <f:selectItem itemLabel="Seleccione una Opción" itemValue="" />
+                            <f:selectItem itemLabel="Salon" itemValue="1" />
+                            <f:selectItem itemLabel="Sala" itemValue="2" />
+                            <f:selectItem itemLabel="Laboratorio" itemValue="3" />
+                        </p:selectOneMenu>
+                    </p:column>   
+                    <p:column colspan="2">
+                        <p:selectOneMenu >
+                            <f:selectItem itemLabel="Seleccione una Opción" itemValue="" />
+                            <f:selectItem itemLabel="Salon" itemValue="1" />
+                            <f:selectItem itemLabel="Sala" itemValue="2" />
+                            <f:selectItem itemLabel="Laboratorio" itemValue="3" />
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:selectOneMenu >
+                            <f:selectItem itemLabel="Seleccione una Opción" itemValue="" />
+                            <f:selectItem itemLabel="Salon" itemValue="1" />
+                            <f:selectItem itemLabel="Sala" itemValue="2" />
+                            <f:selectItem itemLabel="Laboratorio" itemValue="3" />
+                        </p:selectOneMenu>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:selectOneMenu >
+                            <f:selectItem itemLabel="Seleccione una Opción" itemValue="" />
+                            <f:selectItem itemLabel="Salon" itemValue="1" />
+                            <f:selectItem itemLabel="Sala" itemValue="2" />
+                            <f:selectItem itemLabel="Laboratorio" itemValue="3" />
+                        </p:selectOneMenu>
+                    </p:column>
+                    </p:row>
+                </p:dataTable>
+
+-->
+</body>
+</html>

@@ -71,6 +71,9 @@ public class Profesor implements Serializable {
     @Size(max = 50)
     @Column(name = "EMAIL_PROFE")
     private String emailProfe;
+    @Size(max = 12)
+    @Column(name = "TELEFONO")
+    private String telefono;    
     @OneToMany(mappedBy = "rfcProfesor")
     private List<Grupo> grupoList;
 
@@ -144,8 +147,16 @@ public class Profesor implements Serializable {
     public void setEmailProfe(String emailProfe) {
         this.emailProfe = emailProfe;
     }
+        
+    public String getTelefono() {
+		return telefono;
+	}
 
-    @XmlTransient
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	@XmlTransient
     public List<Grupo> getGrupoList() {
         return grupoList;
     }

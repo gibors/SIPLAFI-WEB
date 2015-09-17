@@ -1,0 +1,35 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24/05/2015, 02:20:10 PM
+    Author     : IEEM
+*/
+.nav
+{
+    display: inline;
+}
+
+ul .head
+{
+   display: inline-block ;
+   text-align: center;
+}
+.head
+{
+    list-style: none;    
+    width: 33%;
+    text-align: center;
+}
+.head:hover{
+   background-color: darkolivegreen;
+}
+.head img:hover{
+    cursor: pointer;
+}
+.head a
+{
+    text-decoration: none;
+}
