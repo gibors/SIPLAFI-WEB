@@ -136,16 +136,19 @@
 		                    </p:column>
 		                    <p:column >
 		                        <h:outputText value="#{gpo.estado == 1 ? 'C' : (gpo.estado == 2 ? 'M' : 'N')}" />
-		                    </p:column>	        
+		                    </p:column>
 							<p:column style="text-align: center">
-           						<p:commandButton  icon="ui-icon-pencil" title="editar" actionListener="#{profesorBean.abrirDlgHorarioGrupo}" >
-<!-- 					                <f:setPropertyActionListener value="#{gpo}" target="#{profesorBean.selectedGpo}" /> -->
+           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="editar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" >
           						</p:commandButton>
       						</p:column>		 		                                
 						</p:dataTable>
-						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" >
-							<ui:include src="/modificaHora.xhtml" />
+<!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (TOP) ********* -->
+						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" showEffect="hide" modal="true" >
+							<p:outputPanel id="gpoDetail" >
+								<ui:include src="layouts/modificaHora.xhtml" />
+							</p:outputPanel>
 						</p:dialog>
+<!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (BOTTOM) ********* -->
 					</h:panelGroup>
               		<br/>
 				</h:form>

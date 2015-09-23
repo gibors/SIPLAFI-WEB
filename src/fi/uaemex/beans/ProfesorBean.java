@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 import fi.uaemex.ejbs.GrupoFacade;
 import fi.uaemex.ejbs.ProfesorFacade;
@@ -51,17 +52,13 @@ public class ProfesorBean implements Serializable
         nombreProfe = profe.getNombreProfe() + " " + profe.getApePatProfe() + " " + profe.getApeMatProfe();
     } // Se ejecuta antes de construir el objeto (BOTTOM)
         
-    public void abrirDlgHorarioGrupo()
-    {      
-    	System.out.println(">>>> entro al metodo.. modificado.");
-    	Map<String,Object> options = new HashMap<String, Object>();
-    	options.put("modal", true);
-    	options.put("draggable", false);
-    	options.put("resizable", false);
-    	options.put("contentHeight", 600);
+    public void onGrupoSelected(Grupo gs)
+    {
+    	this.selectedGpo = gs;
+    	RequestContext.getCurrentInstance().execute("PF('dlgModHora').show()");
     	
-    	RequestContext.getCurrentInstance().execute("dlgModHora");
-    	//RequestContext.getCurrentInstance().
+    	System.out.println(">>> se selecciono un grupo ..." + selectedGpo.getNombre());
+    	
     }
     
     public String cerrarSession()
