@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,22 @@ public class ModDatProfesorBean
 	@EJB private ProfesorFacade profeEJB;	
 	@ManagedProperty(value="#{login}") private LoginBean login;
 	
+	public ModDatProfesorBean() 
+	{
+	}
+	
 	@PostConstruct
 	public void init()
 	{
 		profesor = login.getProfe();		
 	}
+	
+    public String cerrarSession()
+    {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        session.invalidate();
+        return "index?faces-redirect=true";
+    }	
 	
 	public String actualizarDatos()
 	{
@@ -51,19 +63,34 @@ public class ModDatProfesorBean
 	
 	public String cambiarPassword()
 	{
+		logg.info(">>>> password: " + passwd + " --  confirmpass: " + passwdConfirm);
 		try
 		{	
-			if(passwd.trim().equals(passwdConfirm.trim()))
+			if ((passwd == null || passwd.isEmpty()) && (passwdConfirm == null || passwdConfirm.isEmpty()))
 			{
-				profesor.setPasswordProfe(passwd);
-				
+				FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"No ha introducido ninguna contraseña",null));
+				return "";
+			}			
+			else if(passwd.trim().length() < 7 && passwdConfirm.trim().length() < 7)
+			{
+				FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"La longitud de la contraseña debe ser mayor que 6 y menor que 15",null));
+				passwd = "";
+				passwdConfirm = "";
+				return "";				
+			}
+			else if(passwd.trim().equals(passwdConfirm.trim()))
+			{
+				profesor.setPasswordProfe(passwd);				
 				profeEJB.edit(profesor);
 				logg.info(" >> DATOS DEL PROFESOR ACTUALIZADOS ");
 				FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Sus datos han sido actualizados con exito!",null));
-			}
+				return "";
+			}		
 			else
 			{
 				FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"Las contraseñas no coinciden, verifique sus datos",null));
+				passwd = "";
+				passwdConfirm = "";				
 			}
 			return "";
 		}

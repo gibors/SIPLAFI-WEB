@@ -7,22 +7,26 @@
 <ui:composition template="/layouts/mainTemplate.xhtml">
 	<ui:define name="title"></ui:define>
   	<ui:define name="content">
-  		<h:form id="f1">  	
+  		<h:form>
 	    	<p:menubar>
-	        	<p:menuitem id="backProfesor" value="Regresar" action="profesor?faces-redirect=true" icon="ui-icon-mail-closed" />    	
+	        	<p:menuitem id="backProfesor" value="Regresar" action="profesor?faces-redirect=true" icon="ui-icon-mail-closed"  />    	
 	      		<f:facet name="options">
-	            	<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink" action="#{profesorBean.cerrarSession()}"/>
+	            	<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink" action="#{modDat.cerrarSession()}" />
 	           	</f:facet>                    
-	     	</p:menubar>  	
+	     	</p:menubar>
+	    </h:form>  	
+  		<h:form id="f1">  		     	
 		  	<p:tabView id="tabV" orientation="left" style="text-align:center">
 		  		<p:tab id="t1" title="Cambiar datos de contacto" >
 			  			<p:panelGrid columns="2" style="tex-align: center;">
 			  				<p:outputLabel value="Correo electr&oacute;nico: " />
 			  				<p:inputText id="mail" value="#{modDat.profesor.emailProfe}"  maxlength="20" validatorMessage="Formato de correo invalido" >
-			  					<f:validateRegex pattern="[A-Z0-9a-z._%-]+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4}" for="mail"/>
+			  					<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" for="mail"/>
 			  				</p:inputText>
 			  				<p:outputLabel value="Tel&eacute;fono: " />
-			  				<p:inputText value="#{modDat.profesor.telefono}" maxlength="12" />
+			  				<p:inputText value="#{modDat.profesor.telefono}" maxlength="12" validatorMessage="El telefono debe ser numerico">
+			  					<f:validateRegex pattern="[0-9]*"></f:validateRegex>
+			  				</p:inputText>
 			  			</p:panelGrid>
 			  			<br/>
 			  			<p:commandButton value="Actualizar" action="#{modDat.actualizarDatos}" process=":f1:tabV:t1" update="msgs" />
@@ -32,14 +36,16 @@
 		  		<p:tab id="t2" title="Cambiar contraseña">
 		  			<p:panelGrid columns="2">
 			  			<p:outputLabel value="Ingrese nueva contrase&ntilde;a" />
-			  			<p:password value="#{modDat.passwd}"  maxlength="15" required="true" requiredMessage="Ingrese la nueva contraseña "/>
+			  			<p:password id="pwd1" value="#{modDat.passwd}"  maxlength="15" required="#{modDat.passwdConfirm != null}" requiredMessage="Ingrese la nueva contraseña" validatorMessage="la constraseña debe contener más de 6 carácteres">
+			  			</p:password>
 			  			<p:outputLabel value="Confirme la nueva contrase&ntilde;a" />
-			  			<p:password value="#{modDat.passwdConfirm}"  maxlength="15" required="true" requiredMessage="Ingrese contraseña de confimacion "/>
+			  			<p:password id="pwd2" value="#{modDat.passwdConfirm}"  maxlength="15" required="#{modDat.passwd != null}" requiredMessage="Ingrese contraseña de confimacion " validatorMessage="la constraseña debe contener más de 6 carácteres">
+			  			</p:password>
 		  			</p:panelGrid>
-			  		<br/>		  			
+			  		<br/>		
 					<p:commandButton value="Actualizar" action="#{modDat.cambiarPassword()}" process=":f1:tabV:t2" update="msgss" />
 			  		<br/>		  								
-					<p:messages id="msgss" />							  			  	
+					<p:messages id="msgss" />
 		  		</p:tab>
 		  	</p:tabView>
 	  	</h:form>
