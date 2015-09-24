@@ -56,8 +56,8 @@
 		                            <p:column colspan="2" headerText="JUEVES" />
 		                            <p:column colspan="2" headerText="VIERNES" />
 		                            <p:column colspan="2" headerText="SABADO" />
-		                            <p:column rowspan="2" headerText="ACCION" style="text-align: center; width: 50px;font-size: 10pt"/>
-		                            <p:column rowspan="2" headerText="EDITAR" style="text-align: center; width: 40px;font-size: 10pt"/>                       
+		                            <p:column rowspan="2" style="text-align:center;font-size: 6pt"/>
+		                            <p:column rowspan="2" style="text-align: center;font-size: 6pt"/>                       
         						</p:row>
 		                        <p:row>
 		                            <p:column headerText="INI" />
@@ -135,15 +135,16 @@
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.estado == 1 ? 'C' : (gpo.estado == 2 ? 'M' : 'N')}" />
+		                    	<p:commandButton icon="ui-icon-check" title="Confirmar"/>
+<!-- 		                        <h:outputText value="#{gpo.estado == 1 ? 'C' : (gpo.estado == 2 ? 'M' : 'N')}" /> -->
 		                    </p:column>
 							<p:column style="text-align: center">
-           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="editar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" >
+           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="Modificar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" >
           						</p:commandButton>
       						</p:column>		 		                                
 						</p:dataTable>
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (TOP) ********* -->
-						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" showEffect="hide" modal="true" >
+						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" showEffect="hide" modal="true"  >
 							<p:outputPanel id="gpoDetail" >
 								<ui:include src="layouts/modificaHora.xhtml" />
 							</p:outputPanel>

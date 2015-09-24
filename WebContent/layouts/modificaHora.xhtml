@@ -1,9 +1,246 @@
 <!DOCTYPE html>
 <html   xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://xmlns.jcp.org/jsf/html"
-        xmlns:p="http://primefaces.org/ui">
+        xmlns:f="http://java.sun.com/jsf/core"        
+        xmlns:p="http://primefaces.org/ui">        
 <h:body>
     	<h:outputText value="Procure evitar traslapes, a continuación se le mostrara un lista de las materias impartidas en el mismo semestre " />
-    	<h:outputText value="#{profesorBean.selectedGpo.claveMateria.nombreMateria}" />
+		<br/>
+		<B><h:outputText value="MATERIAS QUE SE IMPARTEN EN EL MISMO PERIODO "  /> </B><BR/><BR/>
+<!-- ************************* MUESTRA EL HORARIO DE LOS GRUPOS EN EL MISMO SEMESTRE ************** (TOP) -->		
+		<p:dataTable var="gpo" value="#{profesorBean.listGposInSemester}" style="font-size: 6pt;text-align:center;margin-bottom:0" >
+            <p:columnGroup type="header" >
+                <p:row>
+                    <p:column rowspan="2" headerText="SEM"  />                    
+                    <p:column rowspan="2" headerText="MATERIA" />
+                    <p:column rowspan="2" headerText="HRS"  />
+                    <p:column colspan="2" headerText="LUNES"  />
+                    <p:column colspan="2" headerText="MARTES" />
+                    <p:column colspan="2" headerText="MIERCOLES"  />
+                    <p:column colspan="2" headerText="JUEVES"  />
+                    <p:column colspan="2" headerText="VIERNES"  />
+                    <p:column colspan="2" headerText="SABADO"  />
+                </p:row>
+                <p:row>
+                    <p:column headerText="INI" />
+                    <p:column headerText="FIN" />
+                    <p:column headerText="INI" />
+                    <p:column headerText="FIN" />
+                    <p:column headerText="INI" />
+                    <p:column headerText="FIN" />
+                    <p:column headerText="INI" />
+                    <p:column headerText="FIN" />                         
+                    <p:column headerText="INI" />
+                    <p:column headerText="FIN" />
+                    <p:column headerText="INI" />
+                    <p:column headerText="FIN" />
+                </p:row>
+            </p:columnGroup>
+            <p:column >
+                <h:outputText value="#{gpo.claveMateria.semestre}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.claveMateria.nombreMateria}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.claveMateria.horas}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.lunHoraIni != null ? profesorBean.format.format(gpo.horario.lunHoraIni) : '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.lunHoraFin != null ? profesorBean.format.format(gpo.horario.lunHoraFin): '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.marHoraIni != null ? profesorBean.format.format(gpo.horario.marHoraIni): '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.marHoraFin != null ? profesorBean.format.format(gpo.horario.marHoraFin): '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.mieHoraIni != null ? profesorBean.format.format(gpo.horario.mieHoraIni) : '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.mieHoraFin != null ? profesorBean.format.format(gpo.horario.mieHoraFin) : '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.jueHoraIni != null ? profesorBean.format.format(gpo.horario.jueHoraIni) : '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.jueHoraFin != null ? profesorBean.format.format(gpo.horario.jueHoraFin) : '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.vieHoraIni != null ? profesorBean.format.format(gpo.horario.vieHoraIni) : '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.vieHoraFin != null ? profesorBean.format.format(gpo.horario.vieHoraFin) : '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.sabHoraIni != null ? profesorBean.format.format(gpo.horario.sabHoraIni) : '-'}" >
+                </h:outputText>
+            </p:column>
+            <p:column >
+                <h:outputText value="#{gpo.horario.sabHoraFin != null ? profesorBean.format.format(gpo.horario.sabHoraFin) : '-'}" >
+                </h:outputText>
+            </p:column>        
+		</p:dataTable>
+<!-- ************************* MUESTRA EL HORARIO DE LOS GRUPOS EN EL MISMO SEMESTRE ************** (BOTTOM) -->				
+		<br/><br/><br/>
+<!-- *************  MODIFICACION DEL GRUPO SELECCIONADO ****************** (TOP) -->		
+    	<B><h:outputText value=" GRUPO #{profesorBean.selectedGpo.nombre} " /> </B><BR/><BR/>
+		<p:panelGrid id="grid" style="width: 100%;font-size:8pt;text-align:center" >
+	        <f:facet name="header">
+	            <p:row>
+	                <p:column rowspan="2" >SEM </p:column>>
+	                <p:column rowspan="2" >MATERIA</p:column>
+	                <p:column rowspan="2" >HRS</p:column>
+	                <p:column colspan="2" >LUNES</p:column>
+	                <p:column colspan="2" >MARTES</p:column>
+	                <p:column colspan="2" >MIERCOLES</p:column>
+	                <p:column colspan="2" >JUEVES</p:column>
+	                <p:column colspan="2" >VIERNES</p:column>
+	                <p:column colspan="2" >SABADO</p:column>
+	            </p:row>
+	            <p:row>
+	                <p:column >INI</p:column>
+	                <p:column>FIN</p:column>
+	                <p:column >INI</p:column>
+	                <p:column>FIN</p:column>
+	                <p:column >INI</p:column>
+	                <p:column>FIN</p:column>
+	                <p:column >INI</p:column>
+	                <p:column>FIN</p:column>
+	                <p:column >INI</p:column>
+	                <p:column>FIN</p:column>
+	                <p:column >INI</p:column>
+	                <p:column>FIN</p:column>                            
+	            </p:row>
+	        </f:facet>
+	        <p:row >
+	            <p:column >
+	                <h:outputText value="#{profesorBean.selectedGpo.claveMateria.semestre}" >
+	                </h:outputText>
+	            </p:column>
+	            <p:column >
+	                <h:outputText value="#{profesorBean.selectedGpo.claveMateria.nombreMateria}" >
+	                </h:outputText>
+	            </p:column>
+	            <p:column >
+	                <h:outputText value="#{profesorBean.selectedGpo.claveMateria.horas}" >
+	                </h:outputText>
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2"  value="#{profesorBean.selectedGpo.horario.lunHoraIni}" readonlyInput="#{profesorBean.selectedGpo.horario.lunHoraIni == null}" pattern="HH:mm" timeOnly="true" />
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.lunHoraFin}" readonlyInput="#{profesorBean.selectedGpo.horario.lunHoraFin == null}" pattern="HH:mm" timeOnly="true" >
+	                    <p:ajax event="dateSelect" update="select1"/>
+	                    <p:ajax event="blur"   update="select1"/>
+	                </p:calendar>
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.marHoraIni}" readonlyInput="#{profesorBean.selectedGpo.horario.marHoraIni == null}"  pattern="HH:mm" timeOnly="true" />
+	            </p:column>
+	            <p:column>
+	                <p:calendar  locale="es" size="2" value="#{profesorBean.selectedGpo.horario.marHoraFin}" readonlyInput="#{profesorBean.selectedGpo.horario.marHoraFin == null}" pattern="HH:mm" timeOnly="true" >
+	                    <p:ajax event="dateSelect"   update="select2"/>
+	                    <p:ajax event="blur"  update="select2"/>           
+	                </p:calendar>
+	            </p:column>
+	              <p:column>
+	                  <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.mieHoraIni}" readonlyInput="#{profesorBean.selectedGpo.horario.mieHoraIni == null}" pattern="HH:mm" timeOnly="true" />
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.mieHoraFin}" readonlyInput="#{profesorBean.selectedGpo.horario.mieHoraFin == null}" pattern="HH:mm" timeOnly="true" >
+	                    <p:ajax event="dateSelect"   update="select3"/>
+	                    <p:ajax event="blur"  update="select3"/>           
+	                </p:calendar>
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.jueHoraIni}" readonlyInput="#{profesorBean.selectedGpo.horario.jueHoraIni == null}" pattern="HH:mm" timeOnly="true" />
+	            </p:column>
+	            <p:column>
+	                <p:calendar  locale="es" size="2" value="#{profesorBean.selectedGpo.horario.jueHoraFin}" readonlyInput="#{profesorBean.selectedGpo.horario.jueHoraFin == null}" pattern="HH:mm" timeOnly="true" >
+	                    <p:ajax event="dateSelect"   update="select4"/>
+	                    <p:ajax event="blur"  update="select4"/>
+	                </p:calendar>
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.vieHoraIni}" readonlyInput="#{profesorBean.selectedGpo.horario.vieHoraIni == null}" pattern="HH:mm" timeOnly="true" />
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.vieHoraFin}" readonlyInput="#{profesorBean.selectedGpo.horario.vieHoraFin == null}" pattern="HH:mm" timeOnly="true" >
+	                    <p:ajax event="dateSelect"   update="select5"/>
+	                    <p:ajax event="blur"  update="select5"/>                                           
+	                </p:calendar>
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.sabHoraIni}" readonlyInput="#{profesorBean.selectedGpo.horario.sabHoraIni == null}" pattern="HH:mm" timeOnly="true" />
+	            </p:column>
+	            <p:column>
+	                <p:calendar locale="es" size="2" value="#{profesorBean.selectedGpo.horario.sabHoraFin}" readonlyInput="#{profesorBean.selectedGpo.horario.sabHoraFin == null}" pattern="HH:mm" timeOnly="true" >
+	                    <p:ajax event="dateSelect"   update="select6"/>
+	                    <p:ajax event="blur"  update="select6"/>
+	                </p:calendar>
+	            </p:column>
+	        </p:row>
+	        <p:row>
+	            <p:column colspan="3">
+	                <h:outputLabel value="ELIGE TIPO DE AULA" />
+	            </p:column>        
+	            <p:column  colspan="2">
+	                <!--<h:panelGroup id="sel" layout="block">-->
+	                <p:selectOneMenu id="select1" value="#{profesorBean.selectedGpo.horario.aulaLun}" disabled="#{profesorBean.selectedGpo.horario.lunHoraFin == null}">
+	                    <f:selectItem itemLabel="Ninguna" itemValue="0"  />
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                </p:selectOneMenu>
+	                <!--</h:panelGroup>-->
+	            </p:column>
+	            <p:column colspan="2">
+	                <p:selectOneMenu id="select2"  value="#{profesorBean.selectedGpo.horario.aulaMar}" disabled="#{profesorBean.selectedGpo.horario.marHoraFin == null}">
+	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                </p:selectOneMenu>
+	            </p:column>
+	            <p:column colspan="2">
+	                <p:selectOneMenu  id="select3"  value="#{profesorBean.selectedGpo.horario.aulaMie}" disabled="#{profesorBean.selectedGpo.horario.mieHoraFin == null}">
+	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                </p:selectOneMenu>
+	            </p:column>
+	            <p:column colspan="2">
+	                <p:selectOneMenu id="select4"  value="#{profesorBean.selectedGpo.horario.aulaJue}" disabled="#{profesorBean.selectedGpo.horario.jueHoraFin == null}">
+	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                </p:selectOneMenu>
+	            </p:column>
+	            <p:column colspan="2">
+	                <p:selectOneMenu  id="select5"  value="#{profesorBean.selectedGpo.horario.aulaVie}" disabled="#{profesorBean.selectedGpo.horario.vieHoraFin == null}">
+	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                </p:selectOneMenu>
+	            </p:column>   
+	            <p:column colspan="2" >
+	                 <p:selectOneMenu id="select6"  value="#{profesorBean.selectedGpo.horario.aulaSab}" disabled="#{profesorBean.selectedGpo.horario.sabHoraFin == null}">
+	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                </p:selectOneMenu>
+	            </p:column>
+	        </p:row>
+		</p:panelGrid>	    	
+<!-- *************  MODIFICACION DEL GRUPO SELECCIONADO ****************** (BOTTOM) -->			
 </h:body>            
 </html>
