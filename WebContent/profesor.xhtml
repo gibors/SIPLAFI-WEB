@@ -41,7 +41,6 @@
                 </h:form>
                 <br/>
 				<h:form id="formu" >  
-                    <p:messages id="growl" />
                     <h:panelGroup layout="block" > 
 						<p:dataTable id="gposProfe" var="gpo" value="#{profesorBean.gposProfe}" styleClass="tablaProfe"
 	                                 rowKey="#{gpo.idGrupo}" disabledSelection="#{gpo.validado == 0 || gpo.validado == 1 || gpo.validado == 3}" rendered="#{gpo.validado != 0}">
@@ -143,13 +142,26 @@
           						</p:commandButton>
       						</p:column>		 		                                
 						</p:dataTable>
+                    	<p:messages id="growl" />						
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (TOP) ********* -->
-						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" showEffect="hide" modal="true"  >
+						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" showEffect="hide" modal="true" width="95%" height="100%" closeOnEscape="true" >
+						<p:ajax event="close" update="@form" />
 							<p:outputPanel id="gpoDetail" >
 								<ui:include src="layouts/modificaHora.xhtml" />
 							</p:outputPanel>
 						</p:dialog>
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (BOTTOM) ********* -->
+<!--  ********* DIALOG PARA MOSTRAR SI HAY TRASLAPES Y ACEPTAR EL CAMBIO (TOP) ********* -->
+		                <p:dialog id="trDlg"  widgetVar="traslapesDlg" modal="true" showEffect="fade" hideEffect="explode" closable="false">
+		                    <ui:repeat var="mens"  value="#{profesorBean.mensajesTraslape}" varStatus="estatus">
+		                        <h:outputText value="* #{mens}" /> <br/>
+		                    </ui:repeat>
+		                    <br/>
+		                    <h:outputText value="¿Esta seguro que desea enviar este horario para validación?" /> <br/><br/>
+		                    <p:commandButton value="SI"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  process="@all" />
+		                    <p:commandButton value="NO"  styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('traslapesDlg').hide()"/>
+		                </p:dialog>
+<!--  ********* DIALOG PARA MOSTRAR SI HAY TRASLAPES Y ACEPTAR EL CAMBIO (BOTTOM) ********* -->		                
 					</h:panelGroup>
               		<br/>
 				</h:form>

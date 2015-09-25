@@ -134,7 +134,7 @@ public class Grupo implements Serializable {
 
     @XmlTransient
     public Horario getHorario() {
-        return horario;
+        return horario == null ? new Horario() : horario;
     }
 
     public void setHorario(Horario horarioList) {
