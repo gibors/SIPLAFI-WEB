@@ -32,10 +32,12 @@
                         <br/>
                         <br/>
                         <h:panelGroup layout="block" style="text-align: left;background-color: darkolivegreen">
-                            &nbsp;<h:outputText value=" ACCION " style="text-align: left" /><br/>
-                            &nbsp;<h:outputText value=" N - Ninguna acción realizada" style="text-align: left" /><br/>
-                            &nbsp;<h:outputText value=" C - Horario Confirmado" style="text-align: left" /><br/>
-                            &nbsp;<h:outputText value=" M - Horario modificado para validación" style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value=" ESTADO " style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value=" PC \t - Marcado para confirmar" style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value=" PM - Marcado modificado para validación" style="text-align: left" /><br/>
+                           	&nbsp;<h:outputText value=" C - Confirmado" style="text-align: left" /><br/>                                                                                                              
+                            &nbsp;<h:outputText value=" A - Aceptado" style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value=" NA - No Aceptado" style="text-align: left" /><br/>
                         </h:panelGroup>                                      
                     </h:panelGroup>
                 </h:form>
@@ -43,7 +45,7 @@
 				<h:form id="formu" >  
                     <h:panelGroup layout="block" > 
 						<p:dataTable id="gposProfe" var="gpo" value="#{profesorBean.gposProfe}" styleClass="tablaProfe"
-	                                 rowKey="#{gpo.idGrupo}" disabledSelection="#{gpo.validado == 0 || gpo.validado == 1 || gpo.validado == 3}" rendered="#{gpo.validado != 0}">
+	                                 rowKey="#{gpo.idGrupo}">
 	                    	<p:columnGroup type="header">
 		                        <p:row>
 		                            <p:column rowspan="2" headerText="SEM"  />
@@ -55,8 +57,9 @@
 		                            <p:column colspan="2" headerText="JUEVES" />
 		                            <p:column colspan="2" headerText="VIERNES" />
 		                            <p:column colspan="2" headerText="SABADO" />
-		                            <p:column rowspan="2" style="text-align:center;font-size: 6pt"/>
-		                            <p:column rowspan="2" style="text-align: center;font-size: 6pt"/>                       
+		                            <p:column rowspan="2" headerText="ESTADO" style="text-align:center;font-size: 5pt" />
+		                            <p:column rowspan="2" style="text-align:center;font-size: 5pt"/>
+		                            <p:column rowspan="2" style="text-align: center;font-size: 5pt"/>                       
         						</p:row>
 		                        <p:row>
 		                            <p:column headerText="INI" />
@@ -133,16 +136,21 @@
 		                        <h:outputText value="#{gpo.horario.sabHoraFin != null ? profesorBean.format.format(gpo.horario.sabHoraFin) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
+		                    <p:column>
+ 		                        <h:outputText value="#{gpo.estado == 1 ? 'PC' : (gpo.estado == 2 ? 'PM' : (gpo.validado == 1 ? 'A' : (gpo.validado == 2 ? 'NA' :(gpo.validado == 3 ? 'C': ''))))}"  /> 		                    
+		                    </p:column>		                    
 		                    <p:column >
-		                    	<p:commandButton icon="ui-icon-check" title="Confirmar"/>
-<!-- 		                        <h:outputText value="#{gpo.estado == 1 ? 'C' : (gpo.estado == 2 ? 'M' : 'N')}" /> -->
+		                    	<p:commandButton icon="ui-icon-check" title="Confirmar" actionListener="#{profesorBean.confirmarHorario(gpo)}" disabled="#{gpo.estado != 0 or gpo.validado != null}" update="@form"/>
 		                    </p:column>
 							<p:column style="text-align: center">
-           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="Modificar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" >
+           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="Modificar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" disabled="#{gpo.validado >= 2 }">
           						</p:commandButton>
       						</p:column>		 		                                
 						</p:dataTable>
-                    	<p:messages id="growl" />						
+                    	<p:messages id="growl" />
+                    	<br/><br/>
+                    	<p:commandButton value="#{profesorBean.mensajeBoton}" />
+              			<br/><br/>
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (TOP) ********* -->
 						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" showEffect="hide" modal="true" width="95%" height="100%" closeOnEscape="true" >
 						<p:ajax event="close" update="@form" />
@@ -158,8 +166,8 @@
 		                    </ui:repeat>
 		                    <br/>
 		                    <h:outputText value="¿Esta seguro que desea enviar este horario para validación?" /> <br/><br/>
-		                    <p:commandButton value="SI"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  process="@all" />
-		                    <p:commandButton value="NO"  styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('traslapesDlg').hide()"/>
+		                    <p:commandButton value="SI"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{profesorBean.aceptarHorarioConTraslapes()}"  process="@form" update="@form" />
+		                    <p:commandButton value="NO"  styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('traslapesDlg').hide()" />
 		                </p:dialog>
 <!--  ********* DIALOG PARA MOSTRAR SI HAY TRASLAPES Y ACEPTAR EL CAMBIO (BOTTOM) ********* -->		                
 					</h:panelGroup>
