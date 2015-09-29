@@ -31,19 +31,19 @@
                         <b><h:outputText style="text-align: center" value="BIENVENIDO AL SISTEMA PROFESOR(A) #{profesorBean.nombreProfe}" /></b>
                         <br/>
                         <br/>
-                        <h:panelGroup layout="block" style="text-align: left;background-color: darkolivegreen">
+                        <h:panelGroup layout="block" style="text-align: left;background-color: darkolivegreen" rendered="#{!profesorBean.conGrupoAValidar}">
                             &nbsp;<h:outputText value=" ESTADO " style="text-align: left" /><br/>
-                            &nbsp;<h:outputText value=" PC \t - Marcado para confirmar" style="text-align: left" /><br/>
-                            &nbsp;<h:outputText value=" PM - Marcado modificado para validación" style="text-align: left" /><br/>
-                           	&nbsp;<h:outputText value=" C - Confirmado" style="text-align: left" /><br/>                                                                                                              
-                            &nbsp;<h:outputText value=" A - Aceptado" style="text-align: left" /><br/>
-                            &nbsp;<h:outputText value=" NA - No Aceptado" style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value="PC	- Marcado para confirmar" style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value="PM	- Marcado modificado para validación" style="text-align: left" /><br/>
+                           	&nbsp;<h:outputText value="C	- Confirmado" style="text-align: left" /><br/>                                                                                                              
+                            &nbsp;<h:outputText value="A	- Aceptado" style="text-align: left" /><br/>
+                            &nbsp;<h:outputText value="NA	- No Aceptado" style="text-align: left" /><br/>
                         </h:panelGroup>                                      
                     </h:panelGroup>
                 </h:form>
                 <br/>
 				<h:form id="formu" >  
-                    <h:panelGroup layout="block" > 
+                    <h:panelGroup layout="block" rendered="#{!profesorBean.conGrupoAValidar}"> 
 						<p:dataTable id="gposProfe" var="gpo" value="#{profesorBean.gposProfe}" styleClass="tablaProfe"
 	                                 rowKey="#{gpo.idGrupo}">
 	                    	<p:columnGroup type="header">
@@ -57,9 +57,9 @@
 		                            <p:column colspan="2" headerText="JUEVES" />
 		                            <p:column colspan="2" headerText="VIERNES" />
 		                            <p:column colspan="2" headerText="SABADO" />
-		                            <p:column rowspan="2" headerText="ESTADO" style="text-align:center;font-size: 5pt" />
-		                            <p:column rowspan="2" style="text-align:center;font-size: 5pt"/>
-		                            <p:column rowspan="2" style="text-align: center;font-size: 5pt"/>                       
+		                            <p:column rowspan="2" headerText="ESTADO" style="text-align:center;font-size: 6pt" />
+		                            <p:column rowspan="2" />
+		                            <p:column rowspan="2" />                       
         						</p:row>
 		                        <p:row>
 		                            <p:column headerText="INI" />
@@ -149,7 +149,7 @@
 						</p:dataTable>
                     	<p:messages id="growl" />
                     	<br/><br/>
-                    	<p:commandButton value="#{profesorBean.mensajeBoton}" />
+                    	<p:commandButton value="#{profesorBean.mensajeBoton}" action="#{profesorBean.enviarAvalidacionOImprimirFormato()}" />
               			<br/><br/>
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (TOP) ********* -->
 						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" showEffect="hide" modal="true" width="95%" height="100%" closeOnEscape="true" >
@@ -170,6 +170,11 @@
 		                    <p:commandButton value="NO"  styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('traslapesDlg').hide()" />
 		                </p:dialog>
 <!--  ********* DIALOG PARA MOSTRAR SI HAY TRASLAPES Y ACEPTAR EL CAMBIO (BOTTOM) ********* -->		                
+					</h:panelGroup>
+					<h:panelGroup rendered="#{profesorBean.conGrupoAValidar}">
+                    <br/><br/>
+                    <H2 style="color: darkolivegreen;font-style: italic;"> USTED ENVÍO GRUPO(S) PARA VALIDACIÓN</H2> 
+                    <br/><br/>						
 					</h:panelGroup>
               		<br/>
 				</h:form>
