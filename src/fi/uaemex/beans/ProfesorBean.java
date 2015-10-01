@@ -43,17 +43,17 @@ public class ProfesorBean implements Serializable
 	private static final Logger logg = Logger.getLogger(ProfesorBean.class.getName());
     private DateFormat format = new SimpleDateFormat("HH:mm "); 	// Formato para el horario
     private Date lunIn;												// Hora de inicio de la clase para el dia lunes 
-    private Date lunFn; 											// Hora de inicio de la clase para el dia lunes
-    private Date marIn;												// Hora de inicio de la clase para el dia lunes
-    private Date marFn; 											// Hora de inicio de la clase para el dia lunes
-    private Date mieIn;												// Hora de inicio de la clase para el dia lunes
-    private Date mieFn; 											// Hora de inicio de la clase para el dia lunes
-    private Date jueIn;												// Hora de inicio de la clase para el dia lunes
-    private Date jueFn; 											// Hora de inicio de la clase para el dia lunes
-    private Date vieIn;												// Hora de inicio de la clase para el dia lunes
-    private Date vieFn; 											// Hora de inicio de la clase para el dia lunes
-    private Date sabIn;												// Hora de inicio de la clase para el dia lunes
-    private Date sabFn;												// Hora de inicio de la clase para el dia lunes
+    private Date lunFn; 											// Hora de fin de la clase para el dia lunes
+    private Date marIn;												// Hora de inicio de la clase para el dia martes
+    private Date marFn; 											// Hora de fin de la clase para el dia martes
+    private Date mieIn;												// Hora de inicio de la clase para el dia miercoles
+    private Date mieFn; 											// Hora de fin de la clase para el dia miercoles
+    private Date jueIn;												// Hora de inicio de la clase para el dia jueves
+    private Date jueFn; 											// Hora de fin de la clase para el dia jueves
+    private Date vieIn;												// Hora de inicio de la clase para el dia viernes
+    private Date vieFn; 											// Hora de fin de la clase para el dia viernes
+    private Date sabIn;												// Hora de inicio de la clase para el dia sabado
+    private Date sabFn;												// Hora de fin de la clase para el dia sabado
     private List<String> mensajesTraslape;							// Lista con todos los traslapes que se encontraron al cambiar el horario
     private String mensajeBoton;									// Mensaje del boton para enviar a validacion o imprimir el formato #1 
     private Profesor profe;                         				// Profesor logged
@@ -94,8 +94,9 @@ public class ProfesorBean implements Serializable
        nombreProfe = profe.getNombreProfe() + " " + profe.getApePatProfe() + " " + profe.getApeMatProfe();
    } // Se ejecuta antes de construir el objeto (BOTTOM)
         
-    public void onGrupoSelected(Grupo gs)
-    { // Al seleccionar grupo para modificar abre el dialog para modificarlo (TOP)
+     
+   public void onGrupoSelected(Grupo gs)
+   { // Al seleccionar grupo para modificar abre el dialog para modificarlo (TOP)
     	this.selectedGpo = gs;    	
     	listGposInSemester = gpoEJB.findGrupoSemestre(selectedGpo.getClaveMateria().getSemestre(), selectedGpo.getIdGrupo()); // Se obtienen las materias o grupos en el mismo semestre
     	/****** Se utilizan variables auxiliares para el horario del grupo seleccionado porque maraca error en nulos, el componente pcalendar (TOP) ********/
@@ -115,13 +116,12 @@ public class ProfesorBean implements Serializable
     	logg.info(">>> se selecciono un grupo ..." + selectedGpo.getNombre() + " oooo.... " + listGposInSemester.size() + " ::: " +sabIn);    	
     	RequestContext.getCurrentInstance().execute("PF('dlgModHora').show()");    	    	
     } // Al seleccionar grupo para modificar abre el dialog para modificarlo (BOTTOM)
-    
-    
-    public void confirmarHorario(Grupo gpo)
-    { // Marca el grupo para confirmacion (TOP)
+       
+   public void confirmarHorario(Grupo gpo)
+   { // Marca el grupo para confirmacion (TOP)
     	this.selectedGpo = gpo;
         boolean hayModificado = false;
-        
+        boolean faltan = false;
         if(selectedGpo.getEstado() == 2 ) // Si ya fue modificado
         	FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("El grupo ya ha sido modificado, si desea cambiarlo eliga la opción modificar "));
         else
@@ -131,17 +131,29 @@ public class ProfesorBean implements Serializable
         	{ // For que valida si hay algun grupo modificado o no (TOP)
         		if(g.getEstado() == 2)
         			hayModificado = true;
+        		else if(g.getEstado() == 0 && g.getEstado() != 1 && g.getEstado() != 3)
+        			faltan = true;
         	} // For que valida si hay algun grupo modificado o no (BOTTOM)
+        	
         	if(!hayModificado)
-        	{ // Si no hay algun grupo modificado (TOP)        	
-        		setMensajeBoton("Imprimir formato #1");
-        		//todosConfirmadosOAceptados = true;
+        	{ // Si no hay algun grupo modificado (TOP)
+        		setMensajeBoton("Imprimir formato #1");        		
+        		if(faltan)
+        		{
+        			todosConfirmadosOAceptados = false;
+        		}
+        		else 
+        			todosConfirmadosOAceptados = true;
         	} // Si no hay algun grupo modificado (BOTTOM)  
             else
-            	setMensajeBoton("Enviar para validación");               
+            {
+            	setMensajeBoton("Enviar para validación");            	
+        		if(faltan) 
+        			todosConfirmadosOAceptados = false;
+            }
         }
-    } // Marca el grupo para confirmacion (BOTTOM)    
-        
+   } // Marca el grupo para confirmacion (BOTTOM)    
+           
     public String confirmarModificacion()
     {
         float min = 0;
@@ -445,33 +457,35 @@ public class ProfesorBean implements Serializable
         		strBuild.append(s + ".");        	        		
         }
         selectedGpo.setDescripcion(strBuild.toString());
-        
         todosConfirmadosOAceptados = false;
     } // Acepta los cambios para posterior enviar el horario a validacion (BOTTOM)
     
     public String enviarAvalidacionOImprimirFormato()
-    { // Manda a imprimir el formato o envia a validacion los grupos (TOP)   
+    { // Manda a imprimir el formato o envia a validacion los grupos (TOP)
+    	logg.info("todos confirmados " + todosConfirmadosOAceptados);
+    	boolean faltan = false; 
+    	for(Grupo g : gposProfe)
+    	{ // For que valida si hay algun grupo modificado o no (TOP)
+    		if(g.getEstado() == 0 && g.getEstado() != 1 && g.getEstado() != 3)
+    			faltan = true;
+    	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
     	if(todosConfirmadosOAceptados)
     	{ // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)    	
             RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se generará el formato para impresión"));
             // Instruccion para mostrar el formato # 1
-    	} // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME(BOTTOM)
-    	else
+            return "";
+    	} // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME(BOTTOM)     	
+    	else if(faltan)
     	{ // Si hubo modificaciones o faltan grupos por confirmar o modificar (TOP)
-    		
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Faltan materias por confirmar o modificar",null));
+            todosConfirmadosOAceptados = false;
+            return "";
+    	}      	         
+        else
+        {
     		for(Grupo g: gposProfe)
     		{ // For para verificar los grupos del profesor (TOP)
-    			if(g.getEstado() == 0 && g.getValidado() == null)
-    			{ // Si no se confirmo ni modificado (TOP)
-    	            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"El grupo de la materia " + g.getClaveMateria().getNombreMateria() + "debe ser confirmado o modificado",null));
-    	        	return "";    	            
-    			} // Si no se confirmo ni modificado (BOTTOM)
-    			else if(g.getEstado() == 0 && g.getValidado() == 2)
-    			{ // Si el horario fue rechazado y no se modifico (TOP)
-    				FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"El grupo de la materia " + g.getClaveMateria().getNombreMateria() + " debe ser modificado ya que fue rechazado en la validacion",null));
-    		    	return "";    				
-    			} // Si el horario fue rechazado y no se modifico (BOTTOM)
-    			else if(g.getEstado() == 1)
+    			if(g.getEstado() == 1)
     			{ // Si el grupo fue confirmado (TOP)
     				g.setValidado(3);
     				gpoEJB.edit(g);
@@ -533,7 +547,25 @@ public class ProfesorBean implements Serializable
     	} // Si hubo modificaciones o faltan grupos por confirmar o modificar (BOTTOM)
     	return "";
     } // Manda a imprimir el formato o envia a validacion los grupos (BOTTOM)   
-     
+
+//    public boolean faltanGposXConfOModif()
+//    {
+//    	boolean faltan  = false;
+//    	if(gposProfe != null)
+//    	{
+// 	   		for(Grupo gp : gposProfe)
+// 	   		{
+// 	   			if(gp.getEstado() == 0 && gp.getValidado() != 1 && gp.getValidado() != 3)
+// 	   			{ // Si el grupo no ha sido aceptado, confirmado o marcado para confirmacion (TOP)
+// 	   				logg.info(">>> gpo " + gp.toString());
+// 	   				faltan = true;
+// 	   				break;
+// 	   			} // Si el grupo no ha sido aceptado, confirmado o marcado para confirmacion (BOTTOM)
+// 	   		}
+//    	}
+// 	   return faltan;
+//    }
+    
     public String cerrarSession()
     {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -748,5 +780,6 @@ public class ProfesorBean implements Serializable
 	{
 		this.conGrupoAValidar = conGrupoAValidar;
 	}
+
 	
 }
