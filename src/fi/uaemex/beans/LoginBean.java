@@ -29,7 +29,6 @@ public class LoginBean implements Serializable
     private boolean isLoggin;					// Verifica si existe un usuaerio loggeado    
     private Profesor profe;						// Entity para obtener propiedades del profesor 
     private Coordinador coord;					// Entity para obtener propiedades del coordinador
-    //private HttpSession session;    
     @EJB private ProfesorFacade profeSB;		// EJB para acceso al modelo del profesor
     @EJB private CoordinadorFacade coordSB;		// EJB para acceso al modelo del coordinador
             

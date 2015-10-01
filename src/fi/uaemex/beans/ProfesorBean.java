@@ -462,7 +462,6 @@ public class ProfesorBean implements Serializable
     
     public String enviarAvalidacionOImprimirFormato()
     { // Manda a imprimir el formato o envia a validacion los grupos (TOP)
-    	logg.info("todos confirmados " + todosConfirmadosOAceptados);
     	boolean faltan = false; 
     	for(Grupo g : gposProfe)
     	{ // For que valida si hay algun grupo modificado o no (TOP)
@@ -471,7 +470,16 @@ public class ProfesorBean implements Serializable
     	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
     	if(todosConfirmadosOAceptados)
     	{ // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)    	
-            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se generará el formato para impresión"));
+    		for(Grupo g : gposProfe)
+        	{ // For que valida si hay algun grupo modificado o no (TOP)
+        		if(g.getEstado() == 1)
+        		{
+        			g.setValidado(3); // Se setea el grupo a confirmado 
+        			gpoEJB.edit(g);
+        		}
+        	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
+           		
+            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se generará el formato para impresión"));            
             // Instruccion para mostrar el formato # 1
             return "";
     	} // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME(BOTTOM)     	
