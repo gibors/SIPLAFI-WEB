@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/layouts/mainTemplate.xhtml">
+        <ui:define name="title">Alta Grupo</ui:define>
+	<ui:define name="content">
+            <SCRIPT type="text/javascript" language="javascript" >
+                //<![CDATA[
+                function validaTexto()
+                {
+                    if ((event.keyCode > 47 && event.keyCode < 58))
+                        event.returnValue = true;
+                    else
+                        event.returnValue = false;
+                }
+                //]]>
+            </SCRIPT>
+            <h:form id="forma" >
+                    <h:panelGroup id="panelProfesor" >
+                        <p:dataTable style="font-size: 10pt;" id="profeTable" var="prof" value="#{profesoUDBean.listaProfs}" selectionMode="single" 
+                            paginator="true" selection="#{profesoUDBean.profeSelected}" rowKey="#{prof.rfcProfesor}" rows="10" 
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                            rowsPerPageTemplate="5,10,15" filteredValue="#{profesoUDBean.filteredProfesor}">
+                            
+                            <p:column headerText="Rfc" filterBy="#{prof.rfcProfesor}" filterMatchMode="contains">
+                                <h:outputText value="#{prof.rfcProfesor}"/>
+                            </p:column>
+                            <p:column headerText="Nombre" filterBy="#{prof.nombreProfe}" filterMatchMode="contains">
+                                <h:outputText value="#{prof.nombreProfe}"/>
+                            </p:column>
+                            <p:column headerText="Apellido Paterno" filterBy="#{prof.apePatProfe}" filterMatchMode="contains">
+                                    <h:outputText value="#{prof.apePatProfe}"/>
+                            </p:column>
+                            <p:column headerText="APellido Materno" filterBy="#{prof.apeMatProfe}" filterMatchMode="contains">
+                                <h:outputText value="#{prof.apeMatProfe}"/>
+                            </p:column>
+                            <p:column headerText="Grado" filterBy="#{prof.gradoProfe}" filterMatchMode="contains">
+                                <h:outputText value="#{prof.gradoProfe}"/>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton process="profeTable" icon="ui-icon-trash" value="Eliminar" update=":forma:profDetail2,:forma:msgs" action="#{profesoUDBean.validaSeleccion()}" />
+                                <p:commandButton process="profeTable" icon="ui-icon-pencil" value="Editar"  update=":forma:profDetail,:forma:msgs" action="#{profesoUDBean.valida()}" />
+                            </f:facet>
+                        </p:dataTable>
+                        <br></br>
+                        <p:messages id="msgs" />
+                        
+                        <p:dialog  header="DATOS DEL PROFESOR" widgetVar="profDiag" modal="true" showEffect="fade" hideEffect="explode" resizable="false" closeOnEscape="true">
+                            <p:outputPanel id="profDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty profesoUDBean.profeSelected}"  columnClasses="label,value">
+                                <h:outputText value="RFC: " />
+                                <p:outputLabel value="#{profesoUDBean.profeSelected.rfcProfesor}" />
+                                <h:outputText value="Nombre: " />
+                                <p:inputText value="#{profesoUDBean.profeSelected.nombreProfe}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa nombre" maxlength="35" />
+                                <h:outputText value="Apellido Paterno: " />
+                                <p:inputText value="#{profesoUDBean.profeSelected.apePatProfe}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa el apellido paterno" maxlength="35"/>
+                                <h:outputText value="Apellido Materno " />
+                                <p:inputText value="#{profesoUDBean.profeSelected.apeMatProfe}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa apellido materno" maxlength="35"/>
+                                <h:outputText value="Grado" />
+                                <p:inputText value="#{profesoUDBean.profeSelected.gradoProfe}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingrese el grado" maxlength="15"/>
+                                <p:column colspan="2" style="alignment-adjust: central">
+                                    <p:commandButton value="Actualizar" action="#{profesoUDBean.actualizaProfesor}" update="msg" process="profDetail" />
+                                </p:column>
+                                <p:column colspan="2">
+                                    <p:messages id="msg" />
+                                </p:column>
+                            </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+
+                        <p:dialog header="PROFESOR" widgetVar="profDiag2" modal="true" showEffect="fade" hideEffect="explode" resizable="false">
+                            <p:outputPanel id="profDetail2" style="text-align:center;">
+                                <p:panelGrid  columns="1" rendered="#{not empty profesoUDBean.profeSelected}"  columnClasses="label,value">
+                                    <h:outputText value=" ¿seguro que desea eliminar a el(la) profesor(a) #{profesoUDBean.profeSelected.nombreProfe} #{profesoUDBean.profeSelected.apePatProfe}?" />
+                                    <p:commandButton value="CONFIRMAR" action="#{profesoUDBean.deleteProfesor()}"  update="@form" />
+                            </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>                    
+                    </h:panelGroup>
+		</h:form>
+	</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/layouts/mainTemplate.xhtml">
+        <ui:define name="title">planilla ICO</ui:define>
+	<ui:define name="content">
+            <SCRIPT type="text/javascript" language="javascript" >
+                //<![CDATA[
+                function validaTexto()
+                {
+                    if ((event.keyCode > 47 && event.keyCode < 58))
+                        event.returnValue = true;
+                    else
+                        event.returnValue = false;
+                }
+                //]]>
+            </SCRIPT>
+		<h:form id="forma">
+                    <p:dataTable style="font-size: 6pt;" id="horarioTable"  var="rpt" value="#{reportePlanillaBean.listHorario}"
+                                 paginator="true"  rowKey="#{rpt.idHorario}" rows="20"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" 
+                        rowsPerPageTemplate="5,10,15" >
+                        <f:facet name="{Exporters}">
+                            <h:commandLink>
+                                <p:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
+                                <p:graphicImage value="images/excel.png" width="24"/>
+                                <p:dataExporter type="xls" target="horarioTable" fileName="plantilla"  />
+                            </h:commandLink>
+                            <h:commandLink>
+                                <p:graphicImage value="images/pdf.png" width="24"/>
+                                <p:dataExporter type="pdf" target="horarioTable" fileName="plantilla" />
+                            </h:commandLink>
+                            <p:commandButton style="float: right" value="Imprimir" icon="ui-icon-print">
+                                <p:printer target="horarioTable" />                                    
+                            </p:commandButton>
+                            <p:commandButton id="toggler" type="button" value="Elegir columnas" style="float:right" icon="ui-icon-calculator" />
+                            <p:columnToggler datasource="horarioTable" trigger="toggler" />
+                        </f:facet>                        
+                        <p:column headerText="ACADEMIA">
+                            <h:outputText value="#{rpt.idGrupo.claveMateria.idAcademia.nombre}" />
+                        </p:column>   
+                        <p:column headerText="CVEF2">
+                            <h:outputText value="#{rpt.idGrupo.claveMateria.claveMateria}" />
+                        </p:column> 
+                        <p:column headerText="MATERIA" width="100">
+                            <h:outputText value="#{rpt.idGrupo.claveMateria.nombreMateria}" />
+                        </p:column> 
+                        <p:column headerText="GPO">
+                            <h:outputText value="#{rpt.idGrupo.nombre}" />
+                        </p:column>   
+                        <p:column headerText="GRADO">
+                            <h:outputText value="#{rpt.idGrupo.rfcProfesor.gradoProfe}" />
+                        </p:column>     
+                        <p:column headerText="NOMBRE DEL PROFESOR" width="100">
+                            <h:outputText value="#{rpt.idGrupo.rfcProfesor.nombreProfe.concat(' ').concat(rpt.idGrupo.rfcProfesor.apePatProfe).concat(' ').concat(rpt.idGrupo.rfcProfesor.apeMatProfe)}" />
+                        </p:column>                             
+                        <p:column headerText="SEMF2">
+                           <h:outputText value="#{rpt.idGrupo.claveMateria.semestre}" />
+                        </p:column>
+                        <p:column headerText="DUR">
+                           <h:outputText value="#{rpt.idGrupo.claveMateria.horas}" />
+                        </p:column>                                  
+                        <p:column headerText="INI LUN" >
+                            <h:outputText value="#{rpt.lunHoraIni != null ? reportePlanillaBean.fmt.format(rpt.lunHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FIN LUN" >
+                            <h:outputText value="#{rpt.lunHoraFin != null ? reportePlanillaBean.fmt.format(rpt.lunHoraFin): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="INI MAR">
+                            <h:outputText value="#{rpt.marHoraIni != null ? reportePlanillaBean.fmt.format(rpt.marHoraIni): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FIN MAR">
+                            <h:outputText value="#{rpt.marHoraFin != null ? reportePlanillaBean.fmt.format(rpt.marHoraFin): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="INI MIE">
+                            <h:outputText value="#{rpt.mieHoraIni != null ? reportePlanillaBean.fmt.format(rpt.mieHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FIN MIE">
+                            <h:outputText value="#{rpt.mieHoraFin != null ? reportePlanillaBean.fmt.format(rpt.mieHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="INI JUE">
+                            <h:outputText value="#{rpt.jueHoraIni != null ? reportePlanillaBean.fmt.format(rpt.jueHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FIN JUE">
+                            <h:outputText value="#{rpt.jueHoraFin != null ? reportePlanillaBean.fmt.format(rpt.jueHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="INI VIE">
+                            <h:outputText value="#{rpt.vieHoraIni != null ? reportePlanillaBean.fmt.format(rpt.vieHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FIN VIE">
+                            <h:outputText value="#{rpt.vieHoraFin != null ? reportePlanillaBean.fmt.format(rpt.vieHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="INI SAB">
+                            <h:outputText value="#{rpt.sabHoraIni != null ? reportePlanillaBean.fmt.format(rpt.sabHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="FIN SAB">
+                            <h:outputText value="#{rpt.sabHoraFin != null ? reportePlanillaBean.fmt.format(rpt.sabHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>                           
+                    </p:dataTable>
+		</h:form>
+	</ui:define>
+	</ui:composition>
+</h:body>
+</html>

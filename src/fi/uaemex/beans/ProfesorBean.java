@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpSession;
 
@@ -70,7 +79,11 @@ public class ProfesorBean implements Serializable
     @EJB private Horario2Facade hora2EJB;							// EJB para accesos a datos de la entidad Horario2
     @EJB private NotificacionesCoordFacade notifEJB;				// EJB para acceso a datos de las notificaciones del coordinador 
     @ManagedProperty(value = "#{login}") private LoginBean login;   // Propiedad para usar variables de session del bean de login
-    
+    private Properties props;										// Agrega las propiedades para la conexion al servidor de correo
+    private Session session = null;									// Variable de session para conectarse al servidor de correo
+    private String para;											// Almacena el destino del correo
+    private static final String subject ="Nuevo grupo para validacion";	// Guarda el asunto
+    private String mensaje;												// Almacena el mensaje que se enviara por correo
     
    public ProfesorBean()
    {
@@ -544,6 +557,7 @@ public class ProfesorBean implements Serializable
                         coord.setEstado(0); // Estado no leido 
                         
                         notifEJB.create(coord);
+                        enviarMail(g);
     		    		conGrupoAValidar = true;    			    	
     			    }
     			    catch(PersistenceException exP)
@@ -554,7 +568,49 @@ public class ProfesorBean implements Serializable
     		} // For para verificar los grupos del profesor (BOTTOM)
     	} // Si hubo modificaciones o faltan grupos por confirmar o modificar (BOTTOM)
     	return "";
-    } // Manda a imprimir el formato o envia a validacion los grupos (BOTTOM)   
+    } // Manda a imprimir el formato o envia a validacion los grupos (BOTTOM)
+    
+    public void enviarMail(Grupo g)
+    {
+        final String user = "gibran_skato@hotmail.com";
+        final String password ="sirenito_88";
+        
+        mensaje = "El profesor " + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
+        		"ha enviado el grupo " + g.getNombre() +  " de la materia " + g.getClaveMateria().getNombreMateria() + " para validacion \n " +
+        				 "Ingrese a la liga para validar el (los) grupo(s) por validar";
+        para = "giresa.ico@gmail.com";
+        props = new Properties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.live.com");
+        props.put("mail.smtp.port", "587");
+        
+        Authenticator aut = new Authenticator()
+        {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication()
+            {
+                return new PasswordAuthentication(user, password);
+            }
+        };        
+        session = Session.getInstance(props,aut);                
+        try 
+        {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(user));
+            message.setRecipients(Message.RecipientType.TO,
+            InternetAddress.parse(para));
+            message.setSubject(subject);
+            message.setText(mensaje);
+            Transport.send(message);
+            logg.info("EL CORREO FUE ENVIADO EXITOSAMENTE");
+            //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(""));
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }    
 
 //    public boolean faltanGposXConfOModif()
 //    {

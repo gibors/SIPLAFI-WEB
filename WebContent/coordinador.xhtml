@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/layouts/mainTemplate.xhtml">
+        <ui:define name="title">Coordinador Pagina Princicpal</ui:define>
+	<ui:define name="content">
+		<h:form id="forma">
+                    <p:layout style="height: 500px; width: 100%" >
+                        <p:layoutUnit position="west" resizable="false" size="250">
+                            <p:panelMenu>
+                                <p:submenu label="Registrar">
+                                    <p:menuitem value="Profesor" action="altaProfesor?faces-redirect=true"/>
+                                    <p:menuitem value="Materias" action="altaMateria?faces-redirect=true"/>
+                                    <p:menuitem value="Grupos" action="altaGrupo?faces-redirect=true" />
+                                    <p:menuitem value="Laboratorios" action="altaLaboratorios?faces-redirect=true"/>
+                                </p:submenu>
+                                <p:submenu label="Modificar / Eliminar">
+                                    <p:menuitem value="Profesor" action="profesorUpDel?faces-redirect=true" />
+                                    <p:menuitem value="Materias" action="materiaUpDel?faces-redirect=true"/>
+                                    <p:menuitem value="Grupos" action="grupoUpDel?faces-redirect=true"/>
+                                    <p:menuitem value="Laboratorios" />
+                                </p:submenu>
+                                 <p:submenu label="Reportes">
+                                     <p:menuitem value="Generar plantilla" action="planillaFI-ICO?faces-redirect=true" />
+
+                                </p:submenu>
+                            </p:panelMenu>
+                        </p:layoutUnit>
+                        <p:layoutUnit position="center" >
+                        	<h:panelGroup layout="block" style="color:gray;text-align:center">
+                        		<h2>BIENVENIDO AL SISTEMA CORDINADOR(A) </h2> <p:outputLabel value="#{coordinadorBean.coordinador.nombreCoord.concat(' ').concat(coordinadorBean.coordinador.apePatCoord).concat(' ').concat(coordinadorBean.coordinador.apeMatCoord)}" />
+                       		</h:panelGroup>
+                            <p:dataTable id="notifsCoordTable" var="gpoNot" value="#{coordinadorBean.listGposAValidar}" styleClass="tablaProfe" selection="#{coordinadorBean.selecteGpo}" rowKey="#{gpoNot.idGrupo}" rendered="#{coordinadorBean.listGposAValidar.size() > 0}">
+                                <p:column headerText="Notificaciones">
+                                    <p:outputLabel value="El grupo  #{gpoNot.nombre} del profesor #{gpoNot.rfcProfesor.nombreProfe.concat(' ').concat(gpoNot.rfcProfesor.apePatProfe)} necesita ser validado" rendered="#{gpoNot.validado == 0}"/>
+                                    <p:outputLabel value="El grupo  #{gpoNot.nombre} del profesor #{gpoNot.rfcProfesor.nombreProfe.concat(' ').concat(gpoNot.rfcProfesor.apePatProfe)} fue validado con exito" rendered="#{gpoNot.validado != 0}"/>
+                                </p:column>
+                                <p:column style="width: 90px;text-align: center" disabledSelection="#{gpoNot.validado != 0}">
+                                    <p:commandButton value="Validar" action="#{coordinadorBean.validarGrupo()}" icon="ui-icon-circle-check" title="Abrir" disabled="#{gpoNot.validado != 0}">
+                                        <f:setPropertyActionListener value="#{gpoNot}" target="#{coordinadorBean.selecteGpo}" />
+                                        <p:confirm header="Confirmación" message="¿Esta seguro(a) que desea validar este grupo?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                            <br/><br/>
+                            <STRONG><h:outputText value="NO EXITEN NOTIFICACIONES" rendered="#{coordinadorBean.listGposAValidar.size() == 0}"/></STRONG>
+                        </p:layoutUnit>
+                    </p:layout>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode" >
+                        <h:panelGroup layout="block" style="text-align: center">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </h:panelGroup>
+                    </p:confirmDialog>
+                </h:form>
+	</ui:define>
+	</ui:composition>
+</h:body>
+</html>

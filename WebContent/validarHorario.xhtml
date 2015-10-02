@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/layouts/mainTemplate.xhtml">
+            <ui:define name="title">Validaci&oacute;n de horario</ui:define>
+	<ui:define name="content">            
+		<h:form id="forma">
+                    <p:panelGrid style="width: 80%" styleClass="fondo-blanco">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>Grupo</p:column>s
+                                <p:column>Clave</p:column>s
+                                <p:column>Materia</p:column>s
+                            </p:row>                            
+                        </f:facet>
+                        <p:column><h:outputText value="#{validarHorarioBean.selectedGpo.nombre}" /></p:column>
+                        <p:column><h:outputText value="#{validarHorarioBean.selectedGpo.claveMateria.claveMateria}" /></p:column>
+                        <p:column><h:outputText value="#{validarHorarioBean.selectedGpo.claveMateria.nombreMateria}" /></p:column>    
+                    </p:panelGrid>                    
+                    <BR/>
+                    <p:panelGrid style="width: 80%" styleClass="fondo-blanco">
+                     <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="12">HORARIO PROPUESTO</p:column>
+                        </p:row>
+                        <p:row>
+                           <p:column colspan="2" >LUNES</p:column>
+                           <p:column colspan="2" >MARTES</p:column>
+                           <p:column colspan="2" >MIERCOLES</p:column>
+                           <p:column colspan="2" >JUEVES</p:column>
+                           <p:column colspan="2" >VIERNES</p:column>
+                           <p:column colspan="2" >SABADO</p:column>
+                       </p:row>
+                       <p:row>
+                           <p:column >INI</p:column>
+                           <p:column >FIN</p:column>
+                           <p:column >INI</p:column>
+                           <p:column >FIN</p:column>
+                           <p:column >INI</p:column>
+                           <p:column >FIN</p:column>
+                           <p:column >INI</p:column>
+                           <p:column >FIN</p:column>
+                           <p:column >INI</p:column>
+                           <p:column >FIN</p:column>
+                           <p:column >INI</p:column>
+                           <p:column >FIN</p:column>
+                       </p:row>
+                    </f:facet>   
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.lunHoraIni != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.lunHoraIni) : '-'}"/>
+                        </p:column>
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.lunHoraFin != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.lunHoraFin) : '-'}"/>
+                        </p:column>
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.marHoraIni != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.marHoraIni) : '-'}"/>
+                        </p:column>                                                                   
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.marHoraFin != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.marHoraFin) : '-'}"/>
+                        </p:column>
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.mieHoraIni != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.mieHoraIni) : '-'}"/>
+                        </p:column>
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.mieHoraFin != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.mieHoraFin) : '-'}"/>
+                        </p:column>                                
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.jueHoraIni != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.jueHoraIni) : '-'}"/>
+                        </p:column>
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.jueHoraFin != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.jueHoraFin) : '-'}"/>
+                        </p:column>
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.vieHoraIni != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.vieHoraIni) : '-'}"/>
+                        </p:column>                                                                   
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.vieHoraFin != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.vieHoraFin) : '-'}"/>
+                        </p:column>
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.sabHoraIni != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.sabHoraIni) : '-'}"/>
+                        </p:column>
+                        <p:column >
+                            <h:outputText  value="#{validarHorarioBean.horario2.sabHoraFin != null ? validarHorarioBean.fmt.format(validarHorarioBean.horario2.sabHoraFin) : '-'}"/>
+                        </p:column>  
+                        <p:row>
+                            <p:column colspan="12">
+                            <strong><h:outputText value="#{validarHorarioBean.selectedGpo.descripcion}"/></strong>
+                        </p:column>
+                        </p:row>
+                    </p:panelGrid>    
+                    <BR/>
+                    <p:panelGrid style="width: 80%">                    
+                        <p:commandButton value="Aceptar" action="#{validarHorarioBean.aceptarHorario()}">
+                            <p:confirm header="Confirmación" message="¿Esta seguro(a) que desea Aceptar el horario?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:commandButton value="Rechazar" action="#{validarHorarioBean.rechazarHorario()}" >
+                            <p:confirm header="Confirmación" message="¿Esta seguro(a) que desea Rechazar el horario?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                    <BR/>
+                    <p:dataTable var="gpo" value="#{validarHorarioBean.listGpos}"  styleClass="tablaProfe"  >
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column colspan="15" headerText="GRUPOS DEL MISMO SEMESTRE"/>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="2"  headerText="SEM"  />
+                                <p:column rowspan="2" headerText="MATERIA" width="160" />
+                                <p:column rowspan="2" headerText="HRS" />
+                                <p:column colspan="2" headerText="LUNES" />
+                                <p:column colspan="2" headerText="MARTES" />
+                                <p:column colspan="2" headerText="MIERCOLES" />
+                                <p:column colspan="2" headerText="JUEVES" />
+                                <p:column colspan="2" headerText="VIERNES" />
+                                <p:column colspan="2" headerText="SABADO" />
+                            </p:row>
+                            <p:row>
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />                         
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column >
+                            <h:outputText value="#{gpo.claveMateria.semestre}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column width="150">
+                            <h:outputText value="#{gpo.claveMateria.nombreMateria}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.claveMateria.horas}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.lunHoraIni != null ? validarHorarioBean.fmt.format(gpo.horario.lunHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.lunHoraFin != null ? validarHorarioBean.fmt.format(gpo.horario.lunHoraFin): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.marHoraIni != null ? validarHorarioBean.fmt.format(gpo.horario.marHoraIni): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.marHoraFin != null ? validarHorarioBean.fmt.format(gpo.horario.marHoraFin): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.mieHoraIni != null ? validarHorarioBean.fmt.format(gpo.horario.mieHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.mieHoraFin != null ? validarHorarioBean.fmt.format(gpo.horario.mieHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.jueHoraIni != null ? validarHorarioBean.fmt.format(gpo.horario.jueHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.jueHoraFin != null ? validarHorarioBean.fmt.format(gpo.horario.jueHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.vieHoraIni != null ? validarHorarioBean.fmt.format(gpo.horario.vieHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.vieHoraFin != null ? validarHorarioBean.fmt.format(gpo.horario.vieHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.sabHoraIni != null ? validarHorarioBean.fmt.format(gpo.horario.sabHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.sabHoraFin != null ? validarHorarioBean.fmt.format(gpo.horario.sabHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode" >
+                        <h:panelGroup layout="block" style="text-align: center">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </h:panelGroup>
+                    </p:confirmDialog>
+                </h:form>
+	</ui:define>
+	</ui:composition>
+</h:body>
+</html>

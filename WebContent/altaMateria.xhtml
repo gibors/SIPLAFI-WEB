@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/layouts/mainTemplate.xhtml">
+        <ui:define name="title">Alta Materia</ui:define>
+	<ui:define name="content">
+            <SCRIPT type="text/javascript" language="javascript" >
+                //<![CDATA[
+                function validaTexto()
+                {
+                    if ((event.keyCode > 47 && event.keyCode < 58))
+                        event.returnValue = true;
+                    else
+                        event.returnValue = false;
+                }
+                //]]>
+            </SCRIPT>
+		<h:form id="forma">
+                    <h:panelGroup layout="block" style="text-align: center">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="Clave de la materia: " />
+                            <p:spacer />
+                            <p:inputText value="#{altaMateriaBean.claveMateria}" maxlength="8" required="true" requiredMessage="Ingrese clave de la materia" onblur="javascript:this.value = this.value.toUpperCase();" />
+                            <h:outputLabel value="Nombre de la materia: " />
+                            <p:spacer />
+                            <p:inputText value="#{altaMateriaBean.nombreMateria}" maxlength="80" required="true" requiredMessage="Ingrese el nombre de la materia">
+                            </p:inputText>                
+                            <h:outputLabel value="N&uacute;mero de horas : " />
+                            <p:spacer />                            
+                            <p:inputText value="#{altaMateriaBean.horas}" onkeypress="validaTexto()" maxlength="2"  validatorMessage="Ingrese solo números"/>
+                            <h:outputLabel value="Semestre: " />
+                            <p:spacer />
+                            <p:inputText value="#{altaMateriaBean.semestre}" onkeypress="validaTexto()" maxlength="2"  validatorMessage="Ingrese solo números"/>
+                            <h:outputLabel value="Academia " />
+                            <p:spacer />                            
+                            <p:autoComplete value="#{altaMateriaBean.academia}" dropdown="true" completeMethod="#{altaMateriaBean.getAcademy}" required="true" requiredMessage="Seleccione la academia a la que pertenece la materia"
+                                            var="acad" itemLabel="#{acad.nombre}" itemValue="#{acad}" converter="academiaConverter" >
+                                <p:ajax event="itemSelect" listener="#{altaMateriaBean.onItemSelect}" />
+                            </p:autoComplete>
+                        </h:panelGrid>
+                        <p:messages id="msgs" />
+                        <br/>
+                        <br/>
+                        <p:commandButton value="registrar"  action="#{altaMateriaBean.registrarMateria()}" update="msgs" />
+                    </h:panelGroup>
+		</h:form>
+	</ui:define>
+	</ui:composition>
+</h:body>
+</html>

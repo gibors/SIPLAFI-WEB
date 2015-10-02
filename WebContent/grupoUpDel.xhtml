@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/layouts/mainTemplate.xhtml">
+        <ui:define name="title">Modificación del Grupo</ui:define>
+	<ui:define name="content">
+            <SCRIPT type="text/javascript" language="javascript" >
+                //<![CDATA[
+                function validaTexto()
+                {
+                    if ((event.keyCode > 47 && event.keyCode < 58))
+                        event.returnValue = true;
+                    else
+                        event.returnValue = false;
+                }
+                //]]>
+            </SCRIPT>
+		<h:form id="forma">
+                    <h:panelGroup id="grupoPanel">
+                        <p:dataTable style="font-size: 10pt;" id="gpoTable" var="gpo" value="#{grupoUDBean.grupoList}" selectionMode="single"
+                                     paginator="true" selection="#{grupoUDBean.grupoSelected}" rowKey="#{gpo.idGrupo}" rows="10" 
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                        rowsPerPageTemplate="5,10,15" filteredValue="#{grupoUDBean.grupoFiltered}">
+                            <p:column headerText="Nombre del grupo " filterBy="#{gpo.nombre}" filterMatchMode="contains">
+                                <h:outputText value="#{gpo.nombre}"  />
+                            </p:column>
+                            <p:column headerText="Nombre de la materia " filterBy="#{gpo.claveMateria.nombreMateria}" filterMatchMode="contains">
+                                <h:outputText value="#{gpo.claveMateria.nombreMateria}"  />
+                            </p:column>
+                            <p:column headerText="Nombre del Profesor" filterBy="#{gpo.rfcProfesor.nombreProfe}" filterMatchMode="contains">
+                                <h:outputText value="#{gpo.rfcProfesor.nombreProfe}" />
+                            </p:column>
+                            <p:column headerText="Apellido Paterno" filterBy="#{gpo.rfcProfesor.apePatProfe}" filterMatchMode="contains">
+                                <h:outputText value="#{gpo.rfcProfesor.apePatProfe}" />
+                            </p:column>
+                            <p:column headerText="Apellido Materno" filterBy="#{gpo.rfcProfesor.apeMatProfe}" filterMatchMode="contains">
+                                <h:outputText value="#{gpo.rfcProfesor.apeMatProfe}" />
+                            </p:column>                    
+                            <p:column headerText="Periodo">
+                                <h:outputText value="#{gpo.periodo}" />
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:commandButton process="gpoTable" icon="ui-icon-trash" value="Eliminar" update=":forma:gpoDetail2,:forma:msgs"  action='#{grupoUDBean.validaSeleccion("delete")}' />
+                                <p:commandButton process="gpoTable" icon="ui-icon-pencil" value="Editar"  update=":forma:gpoDetail,:forma:msgs" action='#{grupoUDBean.validaSeleccion("update")}' />
+                            </f:facet>
+                        </p:dataTable>
+                   
+                        <br></br>
+                        <p:messages id="msgs" />                        
+                        
+                        <p:dialog  header="DATOS DEL GRUPO" widgetVar="gpoDiag" modal="true" showEffect="fade" hideEffect="explode" resizable="false" closeOnEscape="true">
+                        <p:outputPanel id="gpoDetail" style="text-align:left;">
+                            <p:panelGrid  columns="2" rendered="#{not empty grupoUDBean.grupoSelected}"  columnClasses="label,value">
+                            <p:outputLabel value="Materia: " />
+                            <p:autoComplete size="50" value="#{grupoUDBean.grupoSelected.claveMateria}" dropdown="true" completeMethod="#{grupoUDBean.getMateriaList}" required="true" requiredMessage="Seleccione una materia"
+                                            var="mate" itemLabel="#{mate.nombreMateria}" itemValue="#{mate}" converter="materiaConverter"  />
+                            <p:outputLabel value="Profesor: " />
+                            <p:autoComplete size="40" value="#{grupoUDBean.grupoSelected.rfcProfesor}" dropdown="true" completeMethod="#{grupoUDBean.getProfesorList}" required="true" requiredMessage="Seleccione el profesor para el grupo"
+                                            var="profe" itemLabel="#{profe.nombreProfe.concat(' ').concat(profe.apePatProfe).concat(' ').concat(profe.apeMatProfe)}" itemValue="#{profe}" converter="profesorConverter"/>
+                            <p:outputLabel value="Nombre del grupo: " />
+                            <p:inputText value="#{grupoUDBean.grupoSelected.nombre}" required="true" requiredMessage="Ingrese el nombre del grupo" maxlength="10" />
+                            <p:outputLabel value="Periodo: " />
+                            <p:selectOneMenu id="idPeriodo" value="#{grupoUDBean.grupoSelected.periodo}" required="true">
+                                <f:selectItems value="#{grupoUDBean.periodList}" var="periodo" itemLabel="#{periodo.periodo}" itemValue="#{periodo.periodo}" />
+                            </p:selectOneMenu>
+                            <p:column colspan="2" style="alignment-adjust: central">
+                                <p:commandButton value="Actualizar" action="#{grupoUDBean.actualizarGrupo()}" update="msg" process="grupoPanel" />
+                            </p:column>
+                            <p:column colspan="2">
+                                <p:messages id="msg" />
+                            </p:column>
+                        </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+
+                    <p:dialog header="GRUPO" widgetVar="gpoDiag2" modal="true" showEffect="fade" hideEffect="explode" resizable="false" closeOnEscape="true">
+                        <p:outputPanel id="gpoDetail2" style="text-align:center;">
+                            <p:panelGrid  columns="1" rendered="#{not empty grupoUDBean.grupoSelected}"  columnClasses="label,value">
+                                <h:outputText value=" ¿seguro que desea eliminar el grupo #{grupoUDBean.grupoSelected.nombre}?" />
+                                <p:commandButton value="CONFIRMAR" action="#{grupoUDBean.eliminarGrupo()}"  update="@form" />
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+                    </h:panelGroup>
+		</h:form>
+	</ui:define>
+	</ui:composition>
+</h:body>
+</html>
