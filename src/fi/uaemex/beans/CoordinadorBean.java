@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import fi.uaemex.ejbs.CoordinadorFacade;
 import fi.uaemex.ejbs.GrupoFacade;
@@ -19,7 +19,7 @@ import fi.uaemex.entities.Grupo;
 import fi.uaemex.entities.NotificacionesCoord;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class CoordinadorBean implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
