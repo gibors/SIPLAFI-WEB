@@ -2,12 +2,18 @@
 package fi.uaemex.beans;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -26,8 +32,13 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
 import org.primefaces.context.RequestContext;
 
@@ -43,6 +54,10 @@ import fi.uaemex.entities.Horario2;
 import fi.uaemex.entities.NotificacionesCoord;
 import fi.uaemex.entities.NotificacionesCoordPK;
 import fi.uaemex.entities.Profesor;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperRunManager;
 
 @ManagedBean(name = "profesorBean",eager=true)
 @ViewScoped
@@ -50,6 +65,7 @@ public class ProfesorBean implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logg = Logger.getLogger(ProfesorBean.class.getName());
+    private static final String rutajasper = "reporte\\reporte1.1.jasper";	
     private DateFormat format = new SimpleDateFormat("HH:mm "); 	// Formato para el horario
     private Date lunIn;												// Hora de inicio de la clase para el dia lunes 
     private Date lunFn; 											// Hora de fin de la clase para el dia lunes
@@ -97,7 +113,7 @@ public class ProfesorBean implements Serializable
    public void init()
    { // Se ejecuta antes de construir el objeto (TOP)
     	//profe = login.getProfe();	
-	   profe = profFacade.findUser("QH5Q0S7NYHJTM30", "sirenito88");
+	   profe = profFacade.findUser("QH5Q0S7NYHJTM29", "QH5Q0S7NYHJTM29");
 	   gposProfe = new ArrayList<>();
 	   gposProfe = profe.getGrupoList();
        listAula = aulaEJB.findAll();
@@ -168,7 +184,7 @@ public class ProfesorBean implements Serializable
    } // Marca el grupo para confirmacion (BOTTOM)    
            
     public String confirmarModificacion()
-    {
+    { // Modifica el horario para enviar a validación  (TOP)
         float min = 0;
         float minutos = 0;
         float horas= 0;       
@@ -441,7 +457,7 @@ public class ProfesorBean implements Serializable
         RequestContext.getCurrentInstance().execute("PF('traslapesDlg').show()");
               
         return "";
-    }
+    }// Modifica el horario para enviar a validación  (BOTTOM)
     
     public void aceptarHorarioConTraslapes()
     { // Acepta los cambios para posterior enviar el horario a validacion (TOP)
@@ -473,7 +489,7 @@ public class ProfesorBean implements Serializable
         todosConfirmadosOAceptados = false;
     } // Acepta los cambios para posterior enviar el horario a validacion (BOTTOM)
     
-    public String enviarAvalidacionOImprimirFormato()
+    public String enviarAvalidacionOImprimirFormato() throws NamingException, SQLException
     { // Manda a imprimir el formato o envia a validacion los grupos (TOP)
     	boolean faltan = false; 
     	for(Grupo g : gposProfe)
@@ -482,7 +498,8 @@ public class ProfesorBean implements Serializable
     			faltan = true;
     	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
     	if(todosConfirmadosOAceptados)
-    	{ // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)    	
+    	{ // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)
+    		logg.info("Se generara el formato no 1");
     		for(Grupo g : gposProfe)
         	{ // For que valida si hay algun grupo modificado o no (TOP)
         		if(g.getEstado() == 1)
@@ -492,8 +509,9 @@ public class ProfesorBean implements Serializable
         		}
         	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
            		
-            RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se generará el formato para impresión"));            
-            // Instruccion para mostrar el formato # 1
+            generarFormatoNo1();
+            //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se ha generado el formato # 1"));            
+            
             return "";
     	} // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME(BOTTOM)     	
     	else if(faltan)
@@ -569,6 +587,47 @@ public class ProfesorBean implements Serializable
     	} // Si hubo modificaciones o faltan grupos por confirmar o modificar (BOTTOM)
     	return "";
     } // Manda a imprimir el formato o envia a validacion los grupos (BOTTOM)
+    
+    public void generarFormatoNo1() throws NamingException, SQLException
+    {
+    	   Connection conexion = null;
+           String outputFileName = "Formato1.pdf";
+           Context ctx = new InitialContext();
+    	   DataSource ds = (DataSource) ctx.lookup("mydb");                   	             
+    	   conexion = ds.getConnection();
+    	   conexion.setAutoCommit(true);             
+    	   FacesContext context = FacesContext.getCurrentInstance();
+    	   File reportFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(rutajasper));           
+                   
+           if(reportFile.exists())
+           {
+               Map<String, Object> parameters = new HashMap<>();
+               parameters.put("rfc_profe", profe.getRfcProfesor());
+               try
+               {
+          	   
+                   JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(),parameters, conexion);
+                   byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters,conexion);
+                   HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+
+                   response.setHeader ("Content-Disposition", "attachment; filename=\"" + outputFileName);
+                   response.setContentLength(bytes.length);                   
+                   response.getOutputStream().write(bytes, 0, bytes.length);
+                   response.setContentType ("application/pdf");                
+                   context.responseComplete();
+               }    
+               catch(IOException ioEx)
+               {
+                   System.out.println("Ocurrio un error al leer el archivo JASPER no se encontro" + ioEx.toString());            
+               }            
+               catch(JRException jreEx)
+               {
+                   System.out.println("Ocurrio un error al generar el reporte " + jreEx.toString());            
+               }
+           }
+           else
+               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("NO SE ENCONTRO EL ARCHIVO ESPECIFICO"));
+    }
     
     public void enviarMail(Grupo g)
     {
