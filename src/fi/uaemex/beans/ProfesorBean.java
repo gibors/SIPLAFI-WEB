@@ -113,7 +113,7 @@ public class ProfesorBean implements Serializable
    public void init()
    { // Se ejecuta antes de construir el objeto (TOP)
     	//profe = login.getProfe();	
-	   profe = profFacade.findUser("QH5Q0S7NYHJTM29", "QH5Q0S7NYHJTM29");
+	   profe = profFacade.findUser("QH5Q0S7NYHJTM30", "sirenito88");
 	   gposProfe = new ArrayList<>();
 	   gposProfe = profe.getGrupoList();
        listAula = aulaEJB.findAll();
@@ -509,10 +509,47 @@ public class ProfesorBean implements Serializable
         		}
         	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
            		
-            generarFormatoNo1();
+    		Connection conexion = null;
+            String outputFileName = "Formato1.pdf";
+            Context ctx = new InitialContext();
+            DataSource ds = (DataSource) ctx.lookup("mydb");
+            conexion = ds.getConnection();
+            conexion.setAutoCommit(true);        
+            FacesContext context = FacesContext.getCurrentInstance();
+            File reportFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(rutajasper));
+            
+            if(reportFile.exists())
+            {
+                Map parameters = new HashMap();
+                parameters.put("rfc_profe",profe.getRfcProfesor());
+                try
+                {
+                    JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(),parameters, conexion);
+                    byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters,conexion);
+                    HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+
+                    response.setHeader ("Content-Disposition", "attachment; filename=\"" + outputFileName);
+                    response.setContentLength(bytes.length);
+                    response.getOutputStream().write(bytes, 0, bytes.length);
+                    response.setContentType ("application/pdf");                
+                    context.responseComplete();
+                }    
+                catch(IOException ioEx)
+                {
+                    System.out.println("Ocurrio un error al leer el archivo JASPER " + ioEx.toString());            
+                }            
+                catch(JRException jreEx)
+                {
+                    System.out.println("Ocurrio un error al generar el reporte " + jreEx.toString());            
+                }
+            }
+            else
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("NO SE ENCONTRO EL ARCHIVO ESPECIFICO"));
+            
+            logg.info("Se ha generado el formato # 1 ...>>> ");
+            return "";               	
             //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se ha generado el formato # 1"));            
             
-            return "";
     	} // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME(BOTTOM)     	
     	else if(faltan)
     	{ // Si hubo modificaciones o faltan grupos por confirmar o modificar (TOP)
@@ -587,47 +624,7 @@ public class ProfesorBean implements Serializable
     	} // Si hubo modificaciones o faltan grupos por confirmar o modificar (BOTTOM)
     	return "";
     } // Manda a imprimir el formato o envia a validacion los grupos (BOTTOM)
-    
-    public void generarFormatoNo1() throws NamingException, SQLException
-    {
-    	   Connection conexion = null;
-           String outputFileName = "Formato1.pdf";
-           Context ctx = new InitialContext();
-    	   DataSource ds = (DataSource) ctx.lookup("mydb");                   	             
-    	   conexion = ds.getConnection();
-    	   conexion.setAutoCommit(true);             
-    	   FacesContext context = FacesContext.getCurrentInstance();
-    	   File reportFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(rutajasper));           
-                   
-           if(reportFile.exists())
-           {
-               Map<String, Object> parameters = new HashMap<>();
-               parameters.put("rfc_profe", profe.getRfcProfesor());
-               try
-               {
-          	   
-                   JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(),parameters, conexion);
-                   byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters,conexion);
-                   HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-
-                   response.setHeader ("Content-Disposition", "attachment; filename=\"" + outputFileName);
-                   response.setContentLength(bytes.length);                   
-                   response.getOutputStream().write(bytes, 0, bytes.length);
-                   response.setContentType ("application/pdf");                
-                   context.responseComplete();
-               }    
-               catch(IOException ioEx)
-               {
-                   System.out.println("Ocurrio un error al leer el archivo JASPER no se encontro" + ioEx.toString());            
-               }            
-               catch(JRException jreEx)
-               {
-                   System.out.println("Ocurrio un error al generar el reporte " + jreEx.toString());            
-               }
-           }
-           else
-               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("NO SE ENCONTRO EL ARCHIVO ESPECIFICO"));
-    }
+   
     
     public void enviarMail(Grupo g)
     {
