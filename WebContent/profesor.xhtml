@@ -149,7 +149,11 @@
 						</p:dataTable>
                     	<p:messages id="growl" />
                     	<br/><br/>
-                    	<p:commandButton value="#{profesorBean.todosConfirmadosOAceptados == true ? 'Imprimir Formato #1' : profesorBean.mensajeBoton}" action="#{profesorBean.enviarAvalidacionOImprimirFormato()}" update="@all" />
+<!--                     	<h:commandButton id="botonProf" value="#{profesorBean.todosConfirmadosOAceptados == true ? 'Generar Formato #1' : profesorBean.mensajeBoton}" styleClass="botonProfesor"  > -->
+<!--                     		<f:ajax event="click" listener="profesorBean.enviarAvalidacionOImprimirFormato()}" render="form"/> -->
+<!--                     	</h:commandButton> -->
+                     	<p:commandButton id="botonProf" value="#{profesorBean.todosConfirmadosOAceptados == true ? 'Generar Formato #1' : profesorBean.mensajeBoton}" action="#{profesorBean.enviarAvalidacionOImprimirFormato()}" /> 
+
               			<br/><br/>
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (TOP) ********* -->
 						<p:dialog id="modHorario" widgetVar="dlgModHora" draggable="false" resizable="false" showEffect="hide" modal="true" width="95%" height="100%" closeOnEscape="true" >

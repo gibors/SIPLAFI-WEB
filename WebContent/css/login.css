@@ -3,7 +3,9 @@
 .datos{padding: 25px 0px;height: 350px;}
 .forma{padding-top: 45px }
 .boton-valida{padding: 25px 0px 0px 60px;position: relative;}
-header{width: 100%;height: 159px; }
+header{width: 100%;height: 159px;}
 #pie{width:100%; bottom: 0px;}
 footer{width: 100%;height: 100px;}
 body{background: rgb(129, 123, 65);}
+.botonProfesor{width: 18%;height: 40px;higth: 60px;box-shadow: 3px 2px;border-radius: 5px;background-color: darkgoldenrod; }
+.botonProfesor:HOVER{cursor: pointer;background-color: darkgray;}

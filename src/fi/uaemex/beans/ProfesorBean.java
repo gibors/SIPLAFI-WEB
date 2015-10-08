@@ -36,6 +36,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -49,12 +50,12 @@ import fi.uaemex.ejbs.NotificacionesCoordFacade;
 import fi.uaemex.ejbs.ProfesorFacade;
 import fi.uaemex.entities.Aula;
 import fi.uaemex.entities.Grupo;
-import fi.uaemex.entities.Horario;
 import fi.uaemex.entities.Horario2;
 import fi.uaemex.entities.NotificacionesCoord;
 import fi.uaemex.entities.NotificacionesCoordPK;
 import fi.uaemex.entities.Profesor;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperRunManager;
@@ -65,7 +66,7 @@ public class ProfesorBean implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logg = Logger.getLogger(ProfesorBean.class.getName());
-    private static final String rutajasper = "reporte\\reporte1.1.jasper";	
+    private static final String rutajasper = "/reporte/reporte1.1.jasper";	
     private DateFormat format = new SimpleDateFormat("HH:mm "); 	// Formato para el horario
     private Date lunIn;												// Hora de inicio de la clase para el dia lunes 
     private Date lunFn; 											// Hora de fin de la clase para el dia lunes
@@ -113,7 +114,7 @@ public class ProfesorBean implements Serializable
    public void init()
    { // Se ejecuta antes de construir el objeto (TOP)
     	//profe = login.getProfe();	
-	   profe = profFacade.findUser("QH5Q0S7NYHJTM30", "sirenito88");
+	   profe = profFacade.findUser("QH5Q0S7NYHJTM28", "QH5Q0S7NYHJTM28");
 	   gposProfe = new ArrayList<>();
 	   gposProfe = profe.getGrupoList();
        listAula = aulaEJB.findAll();
@@ -499,7 +500,7 @@ public class ProfesorBean implements Serializable
     	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
     	if(todosConfirmadosOAceptados)
     	{ // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)
-    		logg.info("Se generara el formato no 1");
+    		logg.info(">>>>>>	Se generara el formato # 1.1 ....");
     		for(Grupo g : gposProfe)
         	{ // For que valida si hay algun grupo modificado o no (TOP)
         		if(g.getEstado() == 1)
@@ -510,7 +511,7 @@ public class ProfesorBean implements Serializable
         	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
            		
     		Connection conexion = null;
-            String outputFileName = "Formato1.pdf";
+            String outputFileName = "formato_1.pdf";
             Context ctx = new InitialContext();
             DataSource ds = (DataSource) ctx.lookup("mydb");
             conexion = ds.getConnection();
@@ -520,19 +521,24 @@ public class ProfesorBean implements Serializable
             
             if(reportFile.exists())
             {
-                Map parameters = new HashMap();
+                Map<String,Object> parameters = new HashMap<>();
                 parameters.put("rfc_profe",profe.getRfcProfesor());
                 try
                 {
                     JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(),parameters, conexion);
-                    byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters,conexion);
+                    //byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters,conexion);
                     HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-
-                    response.setHeader ("Content-Disposition", "attachment; filename=\"" + outputFileName);
-                    response.setContentLength(bytes.length);
-                    response.getOutputStream().write(bytes, 0, bytes.length);
-                    response.setContentType ("application/pdf");                
+                    response.setHeader ("Content-Disposition", "attachment; filename=" + outputFileName);
+                    ServletOutputStream stream = response.getOutputStream();
+                    JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+                    stream.flush();
+                    stream.close();
+                    //response.setContentLength(bytes.length);
+                    //response.getOutputStream().write(bytes, 0, bytes.length);
+                    //response.setContentType ("application/pdf");                
                     context.responseComplete();
+                    
+                    //logg.info(">>>> ENTRO AL TRY PERO ALGO PASO .... " + response.getStatus());
                 }    
                 catch(IOException ioEx)
                 {
@@ -546,8 +552,8 @@ public class ProfesorBean implements Serializable
             else
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("NO SE ENCONTRO EL ARCHIVO ESPECIFICO"));
             
-            logg.info("Se ha generado el formato # 1 ...>>> ");
-            return "";               	
+            //logg.info("Se ha generado el formato # 1 ...>>> ");
+            //return "";               	
             //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se ha generado el formato # 1"));            
             
     	} // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME(BOTTOM)     	
