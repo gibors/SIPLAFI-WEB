@@ -114,7 +114,7 @@ public class ProfesorBean implements Serializable
    public void init()
    { // Se ejecuta antes de construir el objeto (TOP)
     	//profe = login.getProfe();	
-	   profe = profFacade.findUser("QH5Q0S7NYHJTM28", "QH5Q0S7NYHJTM28");
+	   profe = profFacade.findUser("QH5Q0S7NYHJTM33", "QH5Q0S7NYHJTM33");
 	   gposProfe = new ArrayList<>();
 	   gposProfe = profe.getGrupoList();
        listAula = aulaEJB.findAll();
@@ -490,7 +490,7 @@ public class ProfesorBean implements Serializable
         todosConfirmadosOAceptados = false;
     } // Acepta los cambios para posterior enviar el horario a validacion (BOTTOM)
     
-    public String enviarAvalidacionOImprimirFormato() throws NamingException, SQLException
+    public String enviarAvalidacion() throws NamingException, SQLException
     { // Manda a imprimir el formato o envia a validacion los grupos (TOP)
     	boolean faltan = false; 
     	for(Grupo g : gposProfe)
@@ -498,66 +498,8 @@ public class ProfesorBean implements Serializable
     		if(g.getEstado() == 0 && g.getEstado() != 1 && g.getEstado() != 3)
     			faltan = true;
     	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
-    	if(todosConfirmadosOAceptados)
-    	{ // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)
-    		logg.info(">>>>>>	Se generara el formato # 1.1 ....");
-    		for(Grupo g : gposProfe)
-        	{ // For que valida si hay algun grupo modificado o no (TOP)
-        		if(g.getEstado() == 1)
-        		{
-        			g.setValidado(3); // Se setea el grupo a confirmado 
-        			gpoEJB.edit(g);
-        		}
-        	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
-           		
-    		Connection conexion = null;
-            String outputFileName = "formato_1.pdf";
-            Context ctx = new InitialContext();
-            DataSource ds = (DataSource) ctx.lookup("mydb");
-            conexion = ds.getConnection();
-            conexion.setAutoCommit(true);        
-            FacesContext context = FacesContext.getCurrentInstance();
-            File reportFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(rutajasper));
-            
-            if(reportFile.exists())
-            {
-                Map<String,Object> parameters = new HashMap<>();
-                parameters.put("rfc_profe",profe.getRfcProfesor());
-                try
-                {
-                    JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(),parameters, conexion);
-                    //byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters,conexion);
-                    HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
-                    response.setHeader ("Content-Disposition", "attachment; filename=" + outputFileName);
-                    ServletOutputStream stream = response.getOutputStream();
-                    JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
-                    stream.flush();
-                    stream.close();
-                    //response.setContentLength(bytes.length);
-                    //response.getOutputStream().write(bytes, 0, bytes.length);
-                    //response.setContentType ("application/pdf");                
-                    context.responseComplete();
-                    
-                    //logg.info(">>>> ENTRO AL TRY PERO ALGO PASO .... " + response.getStatus());
-                }    
-                catch(IOException ioEx)
-                {
-                    System.out.println("Ocurrio un error al leer el archivo JASPER " + ioEx.toString());            
-                }            
-                catch(JRException jreEx)
-                {
-                    System.out.println("Ocurrio un error al generar el reporte " + jreEx.toString());            
-                }
-            }
-            else
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("NO SE ENCONTRO EL ARCHIVO ESPECIFICO"));
-            
-            //logg.info("Se ha generado el formato # 1 ...>>> ");
-            //return "";               	
-            //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se ha generado el formato # 1"));            
-            
-    	} // Si todos los grupos fueron aceptados y/0 confirmados IMPRIME(BOTTOM)     	
-    	else if(faltan)
+    
+    	if(faltan)
     	{ // Si hubo modificaciones o faltan grupos por confirmar o modificar (TOP)
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Faltan materias por confirmar o modificar",null));
             todosConfirmadosOAceptados = false;
@@ -630,7 +572,69 @@ public class ProfesorBean implements Serializable
     	} // Si hubo modificaciones o faltan grupos por confirmar o modificar (BOTTOM)
     	return "";
     } // Manda a imprimir el formato o envia a validacion los grupos (BOTTOM)
-   
+    
+    public String generarFormatoNo1() throws NamingException, SQLException
+    { // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)
+
+    	logg.info(">>>>>>	Se generara el formato # 1.1 ....");
+    	for(Grupo g : gposProfe)
+        { // For que valida si hay algun grupo modificado o no (TOP)
+        	if(g.getEstado() == 1)
+        	{
+       			g.setValidado(3); // Se setea el grupo a confirmado 
+       			gpoEJB.edit(g);
+       		}
+       	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
+           		
+   		Connection conexion = null;
+        String outputFileName = "formato_1.pdf";
+        Context ctx = new InitialContext();
+        DataSource ds = (DataSource) ctx.lookup("mydb");
+        conexion = ds.getConnection();
+        conexion.setAutoCommit(true);        
+        FacesContext context = FacesContext.getCurrentInstance();
+        File reportFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(rutajasper));
+           
+        if(reportFile.exists())
+        {
+        	Map<String,Object> parameters = new HashMap<>();
+        	parameters.put("rfc_profe",profe.getRfcProfesor());
+        	try
+        	{
+	            JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(),parameters, conexion);
+	            //byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters,conexion);
+	            HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+	            response.setHeader ("Content-Disposition", "attachment; filename=" + outputFileName);
+	            response.setContentType ("application/pdf");                                    
+	            ServletOutputStream stream = response.getOutputStream();
+	            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+	            context.getApplication().getStateManager().saveView(context);
+	            stream.flush();
+	            stream.close();
+	            //response.setContentLength(bytes.length);
+	            //response.getOutputStream().write(bytes, 0, bytes.length);
+	            //response.setContentType ("application/pdf");                
+	            context.responseComplete();
+            
+            //logg.info(">>>> ENTRO AL TRY PERO ALGO PASO .... " + response.getStatus());
+        	}    
+	        catch(IOException ioEx)
+	        {
+	            System.out.println("Ocurrio un error al leer el archivo JASPER " + ioEx.toString());            
+	        }            
+	        catch(JRException jreEx)
+	        {
+	            System.out.println("Ocurrio un error al generar el reporte " + jreEx.toString());            
+	        }
+        }
+        else
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("NO SE ENCONTRO EL ARCHIVO ESPECIFICO"));
+            
+            //logg.info("Se ha generado el formato # 1 ...>>> ");
+            //return "";               	
+            //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se ha generado el formato # 1"));            
+        return "";
+    } // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (BOTTOM)
     
     public void enviarMail(Grupo g)
     {

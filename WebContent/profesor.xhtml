@@ -33,8 +33,8 @@
                         <br/>
                         <h:panelGroup layout="block" style="text-align: left;background-color: darkolivegreen;line-height:60%" rendered="#{!profesorBean.conGrupoAValidar}">
                             &nbsp;<pre style="font-weight:bold">ESTADO:</pre>
-                            &nbsp;<pre>PC	- Marcado para confirmar</pre>
-                            &nbsp;<pre>PM	- Marcado modificado para validación</pre>
+                            &nbsp;<pre>PC	- Marcado para confirmación</pre>
+                            &nbsp;<pre>PM	- Modificado para enviar a validación</pre>
                            	&nbsp;<pre>C	- Confirmado</pre>                                                                                          
                             &nbsp;<pre>A	- Aceptado</pre>
                             &nbsp;<pre>NA	- No Aceptado</pre><br/>
@@ -149,10 +149,8 @@
 						</p:dataTable>
                     	<p:messages id="growl" />
                     	<br/><br/>
-<!--                     	<h:commandButton id="botonProf" value="#{profesorBean.todosConfirmadosOAceptados == true ? 'Generar Formato #1' : profesorBean.mensajeBoton}" styleClass="botonProfesor"  > -->
-<!--                     		<f:ajax event="click" listener="profesorBean.enviarAvalidacionOImprimirFormato()}" render="form"/> -->
-<!--                     	</h:commandButton> -->
-                     	<p:commandButton id="botonProf" value="#{profesorBean.todosConfirmadosOAceptados == true ? 'Generar Formato #1' : profesorBean.mensajeBoton}" action="#{profesorBean.enviarAvalidacionOImprimirFormato()}" /> 
+                     	<h:commandButton value="Generar Formato #1" styleClass="botonProfesor" action="#{profesorBean.generarFormatoNo1()}"  rendered="#{profesorBean.todosConfirmadosOAceptados}"  />
+                     	<p:commandButton value="Enviar a Validacion" actionListener="#{profesorBean.enviarAvalidacion()}" rendered="#{!profesorBean.todosConfirmadosOAceptados}" update="@form"/> 
 
               			<br/><br/>
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (TOP) ********* -->

@@ -7,8 +7,8 @@
 <h:body>
 	<ui:composition template="/layouts/mainTemplate.xhtml">
         <ui:define name="title">Coordinador Pagina Princicpal</ui:define>
-	<ui:define name="content">
-		<h:form id="forma">
+	<ui:define name="content">	
+		<h:form id="forma">                                   		
                     <p:layout style="height: 500px; width: 100%" >
                         <p:layoutUnit position="west" resizable="false" size="250">
                             <p:panelMenu>
@@ -26,7 +26,6 @@
                                 </p:submenu>
                                  <p:submenu label="Reportes">
                                      <p:menuitem value="Generar plantilla" action="planillaFI-ICO?faces-redirect=true" />
-
                                 </p:submenu>
                             </p:panelMenu>
                         </p:layoutUnit>
@@ -40,9 +39,10 @@
                                     <p:outputLabel value="El grupo  #{gpoNot.nombre} del profesor #{gpoNot.rfcProfesor.nombreProfe.concat(' ').concat(gpoNot.rfcProfesor.apePatProfe)} fue validado con exito" rendered="#{gpoNot.validado != 0}"/>
                                 </p:column>
                                 <p:column style="width: 90px;text-align: center" disabledSelection="#{gpoNot.validado != 0}">
-                                    <p:commandButton value="Validar" action="#{coordinadorBean.validarGrupo()}" icon="ui-icon-circle-check" title="Abrir" disabled="#{gpoNot.validado != 0}">
+                                    <p:commandButton value="Validar" action="#{coordinadorBean.validarGrupo()}" icon="ui-icon-circle-check" title="Abrir" disabled="#{gpoNot.validado != 0}" >
                                         <f:setPropertyActionListener value="#{gpoNot}" target="#{coordinadorBean.selecteGpo}" />
-                                        <p:confirm header="Confirmación" message="¿Esta seguro(a) que desea validar este grupo?" icon="ui-icon-alert"/>
+                                  		<f:param value="#{coordinadorBean.selecteGpo}" name="grupo" />
+<!--                                    <p:confirm header="Confirmación" message="¿Esta seguro(a) que desea validar este grupo?" icon="ui-icon-alert"/> -->
                                     </p:commandButton>
                                 </p:column>
                             </p:dataTable>

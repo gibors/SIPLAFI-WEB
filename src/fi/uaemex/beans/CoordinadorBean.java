@@ -7,9 +7,14 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import com.sun.faces.context.flash.ELFlash;
 
 import fi.uaemex.ejbs.CoordinadorFacade;
 import fi.uaemex.ejbs.GrupoFacade;
@@ -19,7 +24,7 @@ import fi.uaemex.entities.Grupo;
 import fi.uaemex.entities.NotificacionesCoord;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class CoordinadorBean implements Serializable 
 {
 	private static final long serialVersionUID = 1L;
@@ -49,21 +54,23 @@ public class CoordinadorBean implements Serializable
     }
     
     public CoordinadorBean() 
-    {       
-        
+    {               
     }
     
     public String validarGrupo()
     {
-        System.out.println("SELECTED GRUPO " + selecteGpo.getDescripcion());
+        System.out.println("SELECTED GRUPO " + selecteGpo.getNombre());
         
         for(NotificacionesCoord nt:listNotCoord)
         { // Buscamos la seleccion de notificacion (TOP)
             if(selecteGpo.getIdGrupo() == nt.getNotificacionesCoordPK().getIdGrupo())
             {
                 notifSelected = nt;
+                System.out.println("notificacion encontrada.. " + notifSelected.getDescripcion());
             }// Buscamos la seleccion de notificacion (TOP)
-        }        
+        }               
+        //FacesContext.getCurrentInstance()
+        ELFlash.getFlash().put("grupo", selecteGpo);
         return "validarHorario?faces-redirect=true";
     }
 
@@ -118,14 +125,14 @@ public class CoordinadorBean implements Serializable
         this.notifSelected = notifSelected;
     }
 
-	public Coordinador getCoordinador() {
+	public Coordinador getCoordinador() 
+	{
 		return coordinador;
 	}
 
-	public void setCoordinador(Coordinador coordinador) {
+	public void setCoordinador(Coordinador coordinador) 
+	{
 		this.coordinador = coordinador;
 	}
     
-    
-            
 }
