@@ -1,47 +1,44 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package fi.uaemex.beans;
 
-import fi.uaemex.ejbs.CoordinadorFacade;
-import fi.uaemex.ejbs.GrupoFacade;
-import fi.uaemex.ejbs.Horario2Facade;
-import fi.uaemex.ejbs.HorarioFacade;
-import fi.uaemex.ejbs.NotificacionesCoordFacade;
-import fi.uaemex.entities.Grupo;
-import fi.uaemex.entities.Horario2;
-import fi.uaemex.entities.NotificacionesCoord;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fi.uaemex.entities.Grupo;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class ValidarHorarioBean implements Serializable
 {
-
 	private static final long serialVersionUID = 1L;
+	private static final Logger logg = LoggerFactory.getLogger(ValidarHorarioBean.class);
 	
-	@ManagedProperty("#{param.grupo}")
+	@ManagedProperty("#{coord}")
+	private CoordinadorBean coordinadorB;
 	private Grupo selectedGpo;
-
+	
+	
+	@PostConstruct
+	public void init()
+	{
+		selectedGpo = coordinadorB.getSelecteGpo();
+		logg.info(">> grupo seleccionado ");
+	}
+	
+	public void setCoordinadorB(CoordinadorBean coordinadorB) 
+	{
+		this.coordinadorB = coordinadorB;
+	}
+	
 	public Grupo getSelectedGpo() 
 	{
-		System.out.println(" >>>> Selected grupo : " + selectedGpo == null ? "no hay grupo " : selectedGpo);
 		return selectedGpo;
 	}
 
