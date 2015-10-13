@@ -46,10 +46,12 @@ import org.primefaces.context.RequestContext;
 import fi.uaemex.ejbs.AulaFacade;
 import fi.uaemex.ejbs.GrupoFacade;
 import fi.uaemex.ejbs.Horario2Facade;
+import fi.uaemex.ejbs.HorarioFacade;
 import fi.uaemex.ejbs.NotificacionesCoordFacade;
 import fi.uaemex.ejbs.ProfesorFacade;
 import fi.uaemex.entities.Aula;
 import fi.uaemex.entities.Grupo;
+import fi.uaemex.entities.Horario;
 import fi.uaemex.entities.Horario2;
 import fi.uaemex.entities.NotificacionesCoord;
 import fi.uaemex.entities.NotificacionesCoordPK;
@@ -93,6 +95,7 @@ public class ProfesorBean implements Serializable
     @EJB private ProfesorFacade profFacade;              			// EJB para acceso a datos del profesor
     @EJB private GrupoFacade gpoEJB;                     			// EJB para acceso a datos del grupo
     @EJB private AulaFacade aulaEJB;								// EJB para acceso a datos de la entidad aula
+    @EJB private HorarioFacade HorarioEJB;							// EJB para acceso a datos del Horario modificado para validacion .. 
     @EJB private Horario2Facade hora2EJB;							// EJB para accesos a datos de la entidad Horario2
     @EJB private NotificacionesCoordFacade notifEJB;				// EJB para acceso a datos de las notificaciones del coordinador 
     @ManagedProperty(value = "#{login}") private LoginBean login;   // Propiedad para usar variables de session del bean de login
@@ -554,6 +557,7 @@ public class ProfesorBean implements Serializable
     			    	g.getHorario().setSabHoraIni(sabIn);
     			    	g.getHorario().setSabHoraFin(sabFn);        			    	
     			    	gpoEJB.edit(g);
+    			    	HorarioEJB.edit(g.getHorario());  		
                         NotificacionesCoord coord = new NotificacionesCoord();
                         coord.setNotificacionesCoordPK(new NotificacionesCoordPK(g.getIdGrupo(),new Date()));
                         coord.setDescripcion(g.getDescripcion());
