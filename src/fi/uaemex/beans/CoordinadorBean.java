@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -36,6 +37,7 @@ public class CoordinadorBean implements Serializable
     private Grupo selecteGpo;										// Grupo que se selecciona para validacion 
     private Coordinador coordinador;								// Entidad para el coordinador
     private List<Grupo> listGposAValidar;							// Lista con todos los grupos con notificacoin para validacion.
+    private List<Grupo> listGposSemester;							// Lista de grupos en el mismo semestre del grupo seleccionado para validación
     private DateFormat fmt = new SimpleDateFormat("HH:mm");			// Formato de fecha/hora para mostrar el horario
     @EJB private CoordinadorFacade coorFac;							// EJB para acceso a datos del coordinador 
     @EJB private NotificacionesCoordFacade notifCoordEJB;			// EJB para acceso a datos de las notificaciones para el coordinador
@@ -54,7 +56,7 @@ public class CoordinadorBean implements Serializable
            g.setDescripcion(nt.getDescripcion());
            listGposAValidar.add(g);
         }  // Por cada notificacion se agrega a la lista de grupo con notificaciones (BOTTOM)
-        logg.info(">>> Grupos a validar : " + listGposAValidar.size() + " -- " + listGposAValidar.get(0).toString());
+      //  logg.info(">>> Grupos a validar : " + listGposAValidar.size() + " -- " + listGposAValidar.get(0).toString());
     }
     
     public CoordinadorBean() 
@@ -64,19 +66,43 @@ public class CoordinadorBean implements Serializable
     public void validarGrupo()
     {
         logg.info("SELECTED GRUPO " + selecteGpo.getNombre());
-        
+        listGposSemester = new ArrayList<>();
+        listGposSemester = gpoEJB.findGrupoSemestre(selecteGpo.getClaveMateria().getSemestre(),selecteGpo.getIdGrupo());
+        logg.info(">>> GRUPOS EN EL MISMO SEMESTRE : " + listGposSemester.size());
         for(NotificacionesCoord nt:listNotCoord)
         { // Buscamos la seleccion de notificacion (TOP)
             if(selecteGpo.getIdGrupo() == nt.getNotificacionesCoordPK().getIdGrupo())
             {
                 notifSelected = nt;
                 logg.info("notificacion encontrada.. " + notifSelected.getDescripcion());
-            }// Buscamos la seleccion de notificacion (TOP)
-        }
+            }
+        } // Buscamos la seleccion de notificacion (BOTTOM)
         
     	RequestContext.getCurrentInstance().execute("PF('dlgValida').show()");
     }
-
+    
+    public String aceptarHorario()
+    {
+    	logg.info(">>> SELECTED GPO TO VALIDATE " + (selecteGpo == null ? "nulo" : selecteGpo.getNombre()));    	
+    	selecteGpo.setValidado(1); // Aceptado
+    	notifSelected.setEstado(1);
+    	notifSelected.setFechaHoraValidacion(new Date());
+    	notifCoordEJB.edit(notifSelected);
+    	gpoEJB.edit(selecteGpo);
+    	logg.info(">>> HORARIO ACEPTADO");
+    	return "";
+    }
+    
+    public String rechazarHorario()
+    {
+    	selecteGpo.setValidado(2); // Rechazado
+    	gpoEJB.edit(selecteGpo);
+    	notifSelected.setEstado(2);
+    	notifSelected.setFechaHoraValidacion(new Date());
+    	notifCoordEJB.edit(notifSelected);
+    	logg.info(">>>> GRUPO RECHAZADOO");
+    	return "";
+    }
 //    public LoginBean getLogin()
 //    {
 //        return login;
@@ -143,6 +169,14 @@ public class CoordinadorBean implements Serializable
 
 	public void setFmt(DateFormat fmt) {
 		this.fmt = fmt;
+	}
+
+	public List<Grupo> getListGposSemester() {
+		return listGposSemester;
+	}
+
+	public void setListGposSemester(List<Grupo> listGposSemester) {
+		this.listGposSemester = listGposSemester;
 	}
     
 	

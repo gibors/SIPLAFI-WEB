@@ -33,39 +33,43 @@
                         	<h:panelGroup layout="block" style="color:gray;text-align:center">
                         		<h2>BIENVENIDO AL SISTEMA CORDINADOR(A) </h2> <p:outputLabel value="#{coord.coordinador.nombreCoord.concat(' ').concat(coord.coordinador.apePatCoord).concat(' ').concat(coord.coordinador.apeMatCoord)}" />
                        		</h:panelGroup>
+                       		<br /><br />
                             <p:dataTable id="notifsCoordTable" var="gpoNot" value="#{coord.listGposAValidar}" styleClass="tablaProfe" selection="#{coord.selecteGpo}" rowKey="#{gpoNot.idGrupo}" rendered="#{coord.listGposAValidar.size() > 0}">
                                 <p:column headerText="Notificaciones">
                                     <p:outputLabel value="El grupo  #{gpoNot.nombre} del profesor #{gpoNot.rfcProfesor.nombreProfe.concat(' ').concat(gpoNot.rfcProfesor.apePatProfe)} necesita ser validado" rendered="#{gpoNot.validado == 0}"/>
                                     <p:outputLabel value="El grupo  #{gpoNot.nombre} del profesor #{gpoNot.rfcProfesor.nombreProfe.concat(' ').concat(gpoNot.rfcProfesor.apePatProfe)} fue validado con exito" rendered="#{gpoNot.validado != 0}"/>
                                 </p:column>
                                 <p:column style="width: 90px;text-align: center" disabledSelection="#{gpoNot.validado != 0}">
-                                    <p:commandButton value="Validar" action="#{coord.validarGrupo()}" icon="ui-icon-circle-check" title="Abrir" disabled="#{gpoNot.validado != 0}" update=":forma:panelValida">
+                                    <p:commandButton value="Validar" action="#{coord.validarGrupo()}" icon="ui-icon-circle-check" title="Abrir" disabled="#{gpoNot.validado != 0}" update="@form">
                                         <f:setPropertyActionListener value="#{gpoNot}" target="#{coord.selecteGpo}" />
                                     </p:commandButton>
                                 </p:column>
                             </p:dataTable>
                             <br/><br/>
-                            <STRONG><h:outputText value="NO EXITEN NOTIFICACIONES" rendered="#{coord.listGposAValidar.size() == 0}"/></STRONG>
+                            <strong><h:outputText value="NO EXITEN NOTIFICACIONES" rendered="#{coord.listGposAValidar.size() == 0}"/></strong>
                   		</p:layoutUnit>
                     </p:layout>
-					<p:dialog id="validaDlg" widgetVar="dlgValida" closeOnEscape="true" modal="true" width="90%" resizable="false" draggable="false">      	                            
+					<p:dialog id="validaDlg" widgetVar="dlgValida" closeOnEscape="true" modal="true" width="95%" height="600" resizable="false" draggable="false" header="Validación del grupo">
+					<p:scrollPanel style="height">      	                            
 						<p:outputPanel id="panelValida">
-					        <p:panelGrid id="gridValida" styleClass="fondo-blanco" >
-					            <f:facet name="header">
-					                <p:row>
-					                    <p:column width="33%">Grupo</p:column>
-					                    <p:column width="33%">Clave</p:column>
-					                    <p:column width="34%">Materia</p:column>
-					                </p:row>    
-					            </f:facet>
-					            <p:column><p:outputLabel value="#{coord.selecteGpo.nombre}" /></p:column>
-					            <p:column><p:outputLabel value="#{coord.selecteGpo.claveMateria.claveMateria}" /></p:column>
-					            <p:column><p:outputLabel value="#{coord.selecteGpo.claveMateria.nombreMateria}" /></p:column>    
-					        </p:panelGrid> 								
+							<p:panelGrid style="font-size:8pt;">
+								<f:facet name="header">
+									<p:row>
+										<p:column>Grupo</p:column>
+										<p:column>Clave</p:column>
+										<p:column>Materia</p:column>										
+									</p:row>
+								</f:facet>
+								<p:row>							
+    								<p:column ><p:outputLabel value="#{coord.selecteGpo.nombre}" /></p:column>
+					            	<p:column ><p:outputLabel value="#{coord.selecteGpo.claveMateria.claveMateria}" /></p:column>
+					            	<p:column ><p:outputLabel value="#{coord.selecteGpo.claveMateria.nombreMateria}" /></p:column>
+					       		</p:row>
+					       	</p:panelGrid>					       	
 						</p:outputPanel>
-	                    <BR/>
-	                    <p:panelGrid style="width: 80%" styleClass="fondo-blanco">
-	                     <f:facet name="header">
+	                    <br />
+	                    <p:panelGrid style="width:80%;font-size:8pt;" styleClass="fondo-blanco" >
+	                   	<f:facet name="header">
 	                        <p:row>
 	                            <p:column colspan="12">HORARIO PROPUESTO</p:column>
 	                        </p:row>
@@ -91,10 +95,11 @@
 	                           <p:column >INI</p:column>
 	                           <p:column >FIN</p:column>
 	                       </p:row>
-	                    </f:facet>   
-	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.lunHoraIni != null ? coord.fmt.format(coord.selecteGpo.horario.lunHoraIni) : '-'}"/>
-	                        </p:column>
+	                    </f:facet> 
+	                   	<p:row>  
+		                	<p:column >
+		                   		<h:outputText  value="#{coord.selecteGpo.horario.lunHoraIni != null ? coord.fmt.format(coord.selecteGpo.horario.lunHoraIni) : '-'}"/>
+		                 	</p:column>
 	                        <p:column >
 	                            <h:outputText  value="#{coord.selecteGpo.horario.lunHoraFin != null ? coord.fmt.format(coord.selecteGpo.horario.lunHoraFin) : '-'}"/>
 	                        </p:column>
@@ -127,15 +132,125 @@
 	                        </p:column>
 	                        <p:column >
 	                            <h:outputText  value="#{coord.selecteGpo.horario.sabHoraFin != null ? coord.fmt.format(coord.selecteGpo.horario.sabHoraFin) : '-'}"/>
-	                        </p:column>  
-	                        <p:row>
-	                            <p:column colspan="12">
-	                            <strong><h:outputText value="#{coord.selecteGpo.descripcion}"/></strong>
 	                        </p:column>
-	                        </p:row>
-	                    </p:panelGrid>    
-                    <br/>					
-					</p:dialog>         
+		               	</p:row>	                          
+	                   	<p:row>
+	                   		<p:column colspan="2">Descripcion:</p:column>
+	                    	<p:column colspan="10">
+	                        	<strong><h:outputText value="#{coord.selecteGpo.descripcion}"/></strong>
+	                       	</p:column>
+	                    </p:row>                        
+	                    </p:panelGrid>
+	                    <br /><br />	
+						<p:commandButton value="Aceptar" action="#{coord.aceptarHorario()}" process="@this" update="@all">
+                            <p:confirm header="Confirmación" message="¿Esta seguro(a) que desea Aceptar el horario?" icon="ui-icon-alert"/>	                    
+	                   	</p:commandButton> 
+	                  	<p:spacer width="20" />
+	                   	<p:commandButton value="Rechazar" action="#{coord.rechazarHorario()}" process="@this" update="@all">
+                            <p:confirm header="Confirmación" message="¿Esta seguro(a) que desea Rechazar el horario?" icon="ui-icon-alert"/>	                    
+	                   	</p:commandButton>	                                        
+	                    <br /><br />	                    
+                    	<p:dataTable var="gpo" value="#{coord.listGposSemester}"  styleClass="tablaProfe"  style="font-size:6pt;">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column colspan="15" headerText="GRUPOS DEL MISMO SEMESTRE"/>
+                            </p:row>
+                            <p:row>
+                                <p:column rowspan="2"  headerText="SEM"  />
+                                <p:column rowspan="2" headerText="MATERIA" width="160" />
+                                <p:column rowspan="2" headerText="HRS" />
+                                <p:column colspan="2" headerText="LUNES" />
+                                <p:column colspan="2" headerText="MARTES" />
+                                <p:column colspan="2" headerText="MIERCOLES" />
+                                <p:column colspan="2" headerText="JUEVES" />
+                                <p:column colspan="2" headerText="VIERNES" />
+                                <p:column colspan="2" headerText="SABADO" />
+                            </p:row>
+                            <p:row>
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />                         
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                                <p:column headerText="INI" />
+                                <p:column headerText="FIN" />
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column >
+                            <h:outputText value="#{gpo.claveMateria.semestre}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column width="150">
+                            <h:outputText value="#{gpo.claveMateria.nombreMateria}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.claveMateria.horas}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.lunHoraIni != null ? coord.fmt.format(gpo.horario.lunHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.lunHoraFin != null ? coord.fmt.format(gpo.horario.lunHoraFin): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.marHoraIni != null ? coord.fmt.format(gpo.horario.marHoraIni): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.marHoraFin != null ? coord.fmt.format(gpo.horario.marHoraFin): '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.mieHoraIni != null ? coord.fmt.format(gpo.horario.mieHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.mieHoraFin != null ? coord.fmt.format(gpo.horario.mieHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.jueHoraIni != null ? coord.fmt.format(gpo.horario.jueHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.jueHoraFin != null ? coord.fmt.format(gpo.horario.jueHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.vieHoraIni != null ? coord.fmt.format(gpo.horario.vieHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.vieHoraFin != null ? coord.fmt.format(gpo.horario.vieHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.sabHoraIni != null ? coord.fmt.format(gpo.horario.sabHoraIni) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                        <p:column >
+                            <h:outputText value="#{gpo.horario.sabHoraFin != null ? coord.fmt.format(gpo.horario.sabHoraFin) : '-'}" >
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>	                	
+                    <br/><br/><br/>		
+                   	</p:scrollPanel>                  	
+					</p:dialog>     
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                   		<h:panelGroup layout="block" style="text-align: center">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </h:panelGroup>
+                    </p:confirmDialog> 
                 </h:form>
 	</ui:define>
 	</ui:composition>

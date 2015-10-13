@@ -143,7 +143,7 @@
 		                    	<p:commandButton icon="ui-icon-check" title="Confirmar" actionListener="#{profesorBean.confirmarHorario(gpo)}" disabled="#{gpo.estado != 0 or gpo.validado != null}" update="@form"/>
 		                    </p:column>
 							<p:column style="text-align: center">
-           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="Modificar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" disabled="#{gpo.validado >= 2 }">
+           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="Modificar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" disabled="#{gpo.validado == 1 or gpo.validado == 3 }">
           						</p:commandButton>
       						</p:column>		 		                                
 						</p:dataTable>

@@ -113,8 +113,8 @@ public class ProfesorBean implements Serializable
    @PostConstruct
    public void init()
    { // Se ejecuta antes de construir el objeto (TOP)
-    	//profe = login.getProfe();	
-	   profe = profFacade.findUser("QH5Q0S7NYHJTM33", "QH5Q0S7NYHJTM33");
+	   profe = login.getProfe();	
+	   //profe = profFacade.findUser("QH5Q0S7NYHJTM33", "QH5Q0S7NYHJTM33");
 	   gposProfe = new ArrayList<>();
 	   gposProfe = profe.getGrupoList();
        listAula = aulaEJB.findAll();
