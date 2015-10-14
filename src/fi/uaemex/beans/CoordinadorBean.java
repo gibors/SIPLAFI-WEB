@@ -13,6 +13,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
@@ -111,7 +113,13 @@ public class CoordinadorBean implements Serializable
 //    public void setLogin(LoginBean login)
 //        this.login = login;
 //    }
-
+    public String cerrarSession()
+    {
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        session.invalidate();
+        return "index?faces-redirect=true";
+    }
+    
     public List<NotificacionesCoord> getListNotCoord()
     {
         return listNotCoord;

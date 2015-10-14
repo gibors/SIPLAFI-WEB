@@ -48,21 +48,25 @@ public class LoginFilter implements Filter {
     }
 
 
-    public FilterConfig getFilterConfig() {
+    public FilterConfig getFilterConfig() 
+    {
         return (this.filterConfig);
     }
 
-    public void setFilterConfig(FilterConfig filterConfig) {
+    public void setFilterConfig(FilterConfig filterConfig) 
+    {
         this.filterConfig = filterConfig;
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException 
+    {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void destroy() {
+    public void destroy() 
+    {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -8,26 +8,26 @@
 	<ui:composition template="/layouts/mainTemplate.xhtml">
         <ui:define name="title">Coordinador Pagina Princicpal</ui:define>
 	<ui:define name="content">	
-		<h:form id="forma">                                   		
+		<h:form id="forma">
+                  	<p:menubar>
+                        <f:facet name="options">
+                         	<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink"/>
+                    	</f:facet>                    
+                  	</p:menubar>		        
+                  	<br/>                           		
                     <p:layout style="height: 500px; width: 100%" >
                         <p:layoutUnit position="west" resizable="false" size="250">
-                            <p:panelMenu>
-                                <p:submenu label="Registrar">
-                                    <p:menuitem value="Profesor" action="altaProfesor?faces-redirect=true"/>
-                                    <p:menuitem value="Materias" action="altaMateria?faces-redirect=true"/>
-                                    <p:menuitem value="Grupos" action="altaGrupo?faces-redirect=true" />
-                                    <p:menuitem value="Laboratorios" action="altaLaboratorios?faces-redirect=true"/>
-                                </p:submenu>
-                                <p:submenu label="Modificar / Eliminar">
+                            <p:menu>
+                                <p:submenu label="Administrar">
                                     <p:menuitem value="Profesor" action="profesorUpDel?faces-redirect=true" />
                                     <p:menuitem value="Materias" action="materiaUpDel?faces-redirect=true"/>
                                     <p:menuitem value="Grupos" action="grupoUpDel?faces-redirect=true"/>
                                     <p:menuitem value="Laboratorios" />
                                 </p:submenu>
-                                 <p:submenu label="Reportes">
-                                     <p:menuitem value="Generar plantilla" action="planillaFI-ICO?faces-redirect=true" />
+                                <p:submenu label="Plantilla">
+                                	<p:menuitem value="Generar plantilla" action="planillaFI-ICO?faces-redirect=true" />
                                 </p:submenu>
-                            </p:panelMenu>
+                            </p:menu>
                         </p:layoutUnit>
                         <p:layoutUnit position="center" >
                         	<h:panelGroup layout="block" style="color:gray;text-align:center">
