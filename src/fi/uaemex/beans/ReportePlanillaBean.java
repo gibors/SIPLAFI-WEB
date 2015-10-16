@@ -19,9 +19,6 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class ReportePlanillaBean implements Serializable
 {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger logg = Logger.getLogger(ReportePlanillaBean.class.getName());
     private List<Horario> listHorario;
@@ -38,7 +35,7 @@ public class ReportePlanillaBean implements Serializable
         }
         catch(EJBException exEJB)
         {                
-            logg.log(Level.SEVERE, "OcurriÃ³ un error al obtener los datos de los horarios " + exEJB.toString());
+            logg.log(Level.SEVERE, "Ocurrió un error al obtener los datos de los horarios " + exEJB.toString());
         }      
     }
     public ReportePlanillaBean() 
@@ -65,7 +62,5 @@ public class ReportePlanillaBean implements Serializable
     {
         this.fmt = fmt;
     }
-    
-    
-        
+       
 }

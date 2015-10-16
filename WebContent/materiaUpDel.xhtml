@@ -6,9 +6,9 @@
       xmlns:p="http://primefaces.org/ui">
 <h:body>
 	<ui:composition template="/layouts/mainTemplate.xhtml">
-        <ui:define name="title">Alta Grupo</ui:define>
+        <ui:define name="title">Administrar Materias</ui:define>
 	<ui:define name="content">
-            <SCRIPT type="text/javascript" language="javascript" >
+            <script type="text/javascript" language="javascript" >
                 //<![CDATA[
                 function validaTexto()
                 {
@@ -18,14 +18,20 @@
                         event.returnValue = false;
                 }
                 //]]>
-            </SCRIPT>
+            </script>
             <h:form id="forma">
+           		<p:menubar>
+	        		<p:menuitem id="backProfesor" value="Regresar" onclick="javascript:history.go(-1)" icon="ui-icon-arrowreturnthick-1-w"  />    	
+	      			<f:facet name="options">
+	            		<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink"  />
+	           		</f:facet>                    
+	     		</p:menubar>
+	     		<br /><br />
                 <h:panelGroup id="materiaPanel">
                     <p:dataTable style="font-size: 10pt;" id="matTable" var="mat" value="#{materiaUDBean.matList}" selectionMode="single" 
                     paginator="true" selection="#{materiaUDBean.matSelected}" rowKey="#{mat.claveMateria}" rows="10" 
                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                    rowsPerPageTemplate="5,10,15" filteredValue="#{materiaUDBean.filteredMat}">
-                        
+                    rowsPerPageTemplate="5,10,15" filteredValue="#{materiaUDBean.filteredMat}">                        
                         <p:column headerText="Clave de la materia: " filterBy="#{mat.claveMateria}" filterMatchMode="contains">
                             <h:outputText value="#{mat.claveMateria}"  />
                         </p:column>
@@ -42,21 +48,45 @@
                             <h:outputText value="#{mat.idAcademia.nombre}" />
                         </p:column>
                         <f:facet name="footer">
+                            <p:commandButton process="matTable" icon="ui-icon-plusthick" value="Agregar"  update=":forma:altaMatDetail" oncomplete="PF('altaMatDiag').show()" />                        
+                            <p:commandButton process="matTable" icon="ui-icon-pencil" value="Editar"  update=":forma:matDetail,:forma:msgs" action='#{materiaUDBean.validaSeleccion("update")}' />                        
                             <p:commandButton process="matTable" icon="ui-icon-trash" value="Eliminar" update=":forma:matDetail2,:forma:msgs" action='#{materiaUDBean.validaSeleccion("delete")}' />
-                            <p:commandButton process="matTable" icon="ui-icon-pencil" value="Editar"  update=":forma:matDetail,:forma:msgs" action='#{materiaUDBean.validaSeleccion("update")}' />
                         </f:facet>
                     </p:dataTable>
                     
                     <br></br>
                     <p:messages id="msgs" />
-
-                    <p:dialog  header="DATOS DE LA MATERIA" widgetVar="matDiag" modal="true" showEffect="fade" hideEffect="explode" resizable="false" closeOnEscape="true">
+ 					<p:dialog  header="NUEVA MATERIA" widgetVar="altaMatDiag" modal="true" showEffect="fade" hideEffect="explode" resizable="false" closeOnEscape="true">
+                        <p:outputPanel id="altaMatDetail" style="text-align:left;">
+                            <p:panelGrid  columns="2" columnClasses="label,value">
+	                            <h:outputLabel value="Clave de la materia: " />
+	                            <p:inputText value="#{materiaUDBean.claveMateria}" size="9" maxlength="6" required="true" requiredMessage="Ingrese clave de la materia" onblur="javascript:this.value = this.value.toUpperCase();" />
+	                            <h:outputLabel value="Nombre de la materia: " />
+	                            <p:inputText value="#{materiaUDBean.nombreMateria}" size="50" maxlength="80" onblur="javascript:this.value = this.value.toUpperCase();" required="true" requiredMessage="Ingrese el nombre de la materia"/>
+	                            <h:outputLabel value="N&uacute;mero de horas : " />
+	                            <p:inputText value="#{materiaUDBean.horas}" onkeypress="validaTexto()" maxlength="2"  validatorMessage="Ingrese solo números"/>
+	                            <h:outputLabel value="Semestre: " />
+	                            <p:inputText value="#{materiaUDBean.semestre}" onkeypress="validaTexto()" maxlength="2"  validatorMessage="Ingrese solo números"/>
+	                            <h:outputLabel value="Academia " />
+	                            <p:autoComplete value="#{materiaUDBean.academia}" dropdown="true" completeMethod="#{materiaUDBean.getAcademy}" required="true" requiredMessage="Seleccione la academia a la que pertenece la materia"
+	                            var="acad" itemLabel="#{acad.nombre}" itemValue="#{acad}" converter="academiaConverter" forceSelection="true" >
+	                            </p:autoComplete>
+	                            <p:column colspan="2" style="alignment-adjust: central">
+	                                <p:commandButton value="Guardar" action="#{materiaUDBean.registrarMateria()}" update="msg1" process="altaMatDetail" />
+	                            </p:column>
+	                            <p:column colspan="2">
+	                                <p:messages id="msg1" />
+	                            </p:column>                            
+                        	</p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+                    <p:dialog  header="ACTUALIZAR MATERIA" widgetVar="matDiag" modal="true" showEffect="fade" hideEffect="explode" resizable="false" closeOnEscape="true">
                         <p:outputPanel id="matDetail" style="text-align:center;">
                             <p:panelGrid  columns="2" rendered="#{not empty materiaUDBean.matSelected}"  columnClasses="label,value">
                             <h:outputLabel value="Clave de la materia: " />
                             <h:outputText value="#{materiaUDBean.matSelected.claveMateria}" />
                             <h:outputLabel value="Nombre de la materia: " />
-                            <p:inputText value="#{materiaUDBean.matSelected.nombreMateria}" maxlength="80" required="true" requiredMessage="Ingrese el nombre de la materia"/>
+                            <p:inputText value="#{materiaUDBean.matSelected.nombreMateria}" maxlength="80" required="true" requiredMessage="Ingrese el nombre de la materia" onblur="javascript:this.value = this.value.toUpperCase()"/>
                             <h:outputLabel value="N&uacute;mero de horas : " />
                             <p:inputText value="#{materiaUDBean.matSelected.horas}" onkeypress="validaTexto()" maxlength="2"  validatorMessage="Ingrese solo números"/>
                             <h:outputLabel value="Semestre: " />
@@ -67,20 +97,19 @@
                                 <p:ajax event="itemSelect" listener="#{materiaUDBean.onItemSelect}" />
                             </p:autoComplete>
                             <p:column colspan="2" style="alignment-adjust: central">
-                                <p:commandButton value="Actualizar" action="#{materiaUDBean.updateMateria()}" update="msg" process="materiaPanel" />
+                                <p:commandButton value="Actualizar" action="#{materiaUDBean.updateMateria()}" update="msg2" process="matDetail" />
                             </p:column>
                             <p:column colspan="2">
-                                <p:messages id="msg" />
+                                <p:messages id="msg2" />
                             </p:column>                            
                         </p:panelGrid>
                         </p:outputPanel>
                     </p:dialog>
-
-                    <p:dialog header="MATERIA" widgetVar="matDiag2" modal="true" showEffect="fade" hideEffect="explode" resizable="false">
+                    <p:dialog header="ELIMINAR MATERIA" widgetVar="matDiag2" modal="true" showEffect="fade" hideEffect="explode" resizable="false">
                         <p:outputPanel id="matDetail2" style="text-align:center;">
                             <p:panelGrid  columns="1" rendered="#{not empty materiaUDBean.matSelected}"  columnClasses="label,value">
                                 <h:outputText value=" ¿seguro que desea eliminar la materia #{materiaUDBean.matSelected.nombreMateria}?" />
-                                <p:commandButton value="CONFIRMAR" action="#{materiaUDBean.deleteMateria()}"  update="@form" />
+                                <p:commandButton value="CONFIRMAR" action="#{materiaUDBean.deleteMateria()}" process="matDetail2"  update="@form" />
                             </p:panelGrid>
                         </p:outputPanel>
                     </p:dialog>

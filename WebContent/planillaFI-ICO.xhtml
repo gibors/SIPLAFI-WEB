@@ -7,8 +7,8 @@
 <h:body>
 	<ui:composition template="/layouts/mainTemplate.xhtml">
         <ui:define name="title">planilla ICO</ui:define>
-	<ui:define name="content">
-            <SCRIPT type="text/javascript" language="javascript" >
+		<ui:define name="content">
+            <script type="text/javascript" language="javascript" >
                 //<![CDATA[
                 function validaTexto()
                 {
@@ -18,28 +18,31 @@
                         event.returnValue = false;
                 }
                 //]]>
-            </SCRIPT>
-		<h:form id="forma">
+            </script>
+			<h:form id="forma">					
                     <p:dataTable style="font-size: 6pt;" id="horarioTable"  var="rpt" value="#{reportePlanillaBean.listHorario}"
-                                 paginator="true"  rowKey="#{rpt.idHorario}" rows="20"
+                      	paginator="true"  rowKey="#{rpt.idHorario}" rows="20"
                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}" 
-                        rowsPerPageTemplate="5,10,15" >
-                        <f:facet name="{Exporters}">
-                            <h:commandLink>
-                                <p:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
-                                <p:graphicImage value="images/excel.png" width="24"/>
-                                <p:dataExporter type="xls" target="horarioTable" fileName="plantilla"  />
-                            </h:commandLink>
-                            <h:commandLink>
-                                <p:graphicImage value="images/pdf.png" width="24"/>
-                                <p:dataExporter type="pdf" target="horarioTable" fileName="plantilla" />
-                            </h:commandLink>
+                        rowsPerPageTemplate="5,10,15"  >
+               			<f:facet name="{Exporters}" >
+							<h:commandLink>
+								<p:spacer width="20" />
+                             	<p:graphicImage value="images/excel.png" width="30" height="30"/>
+                             	<p:dataExporter type="xls" target="horarioTable" fileName="plantilla"  />
+                         	</h:commandLink>
+								<p:spacer width="10" />                         	
+                			<h:commandLink>
+                             	<p:graphicImage value="images/pdf.png" width="30" height="30"/>
+                             	<p:dataExporter type="pdf" target="horarioTable" fileName="plantilla" />
+                         	</h:commandLink>       
+							<p:spacer width="20" />                         	        			
                             <p:commandButton style="float: right" value="Imprimir" icon="ui-icon-print">
                                 <p:printer target="horarioTable" />                                    
                             </p:commandButton>
+							<p:spacer width="10" />                            
                             <p:commandButton id="toggler" type="button" value="Elegir columnas" style="float:right" icon="ui-icon-calculator" />
-                            <p:columnToggler datasource="horarioTable" trigger="toggler" />
-                        </f:facet>                        
+                            <p:columnToggler datasource="horarioTable" trigger="toggler" />	               			
+               			</f:facet>
                         <p:column headerText="ACADEMIA">
                             <h:outputText value="#{rpt.idGrupo.claveMateria.idAcademia.nombre}" />
                         </p:column>   
@@ -113,8 +116,8 @@
                             </h:outputText>
                         </p:column>                           
                     </p:dataTable>
-		</h:form>
-	</ui:define>
+			</h:form>
+		</ui:define>
 	</ui:composition>
 </h:body>
 </html>

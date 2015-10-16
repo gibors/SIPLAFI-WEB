@@ -4,8 +4,6 @@ package fi.uaemex.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -17,6 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
 
 import org.primefaces.context.RequestContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fi.uaemex.ejbs.GrupoFacade;
 import fi.uaemex.ejbs.MateriaFacade;
@@ -31,26 +31,25 @@ import fi.uaemex.entities.Profesor;
 @ViewScoped
 public class GrupoUDBean implements Serializable{
    
-    private static final Logger logger = Logger.getLogger(GrupoUDBean.class.getName());
-    private Grupo grupoSelected ;
-    private List<Grupo> grupoFiltered;
-    private List<Profesor> profeList;
-    private List<Materia> mateList;
-    private List<Grupo> grupoList;
-    private List<Periodos> periodList;
-    @EJB
-    private MateriaFacade mateEJB;
-    @EJB
-    private ProfesorFacade profeEJB;
-    @EJB
-    private GrupoFacade grupoEJB;
-    @EJB
-    private PeriodosFacade periodoEJB;
-
+	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LoggerFactory.getLogger(GrupoUDBean.class);
+    private Materia materia;						// Materia para el grupo
+    private Profesor profesor;						// Profesor que impartira la materia
+    private String nombreGrupo;						// Nombre del grupo 
+    private String periodo;							// Periodo para el grupo
+    private Grupo grupoSelected ;					// Grupo seleccionado
+    private List<Grupo> grupoFiltered;				// Lista de grupos filtrados en la busqueda
+    private List<Profesor> profeList;				// Lista de profesores 
+    private List<Materia> mateList;					// Lista de materias 
+    private List<Grupo> grupoList;					// Lista de grupos
+    private List<Periodos> periodList;				// Lista de periodos 
+    @EJB private MateriaFacade mateEJB;				// EJB para acceso a datos de la materia
+    @EJB private ProfesorFacade profeEJB;			// EJB para acceso a datos del profesor
+    @EJB private GrupoFacade grupoEJB;				// EJB para acceso a datos del grupo
+    @EJB private PeriodosFacade periodoEJB;			// EJB para acceso a datos del periodo
     
     public GrupoUDBean()
-    {
-        
+    {        
     }
     
     @PostConstruct
@@ -65,7 +64,7 @@ public class GrupoUDBean implements Serializable{
         }
         catch(EJBException exEJB)
         {
-            logger.log(Level.INFO,"OcurriÃ³ un error al obtener los datos de las materias y los profesor " + exEJB.toString());
+            logger.info("Ocurrió un error al obtener los datos de las materias y los profesor " + exEJB.toString());
         }
     }
     
@@ -83,6 +82,7 @@ public class GrupoUDBean implements Serializable{
                 RequestContext.getCurrentInstance().execute("PF('gpoDiag2').show()");
         }
     }
+    
     public List<Materia> getMateriaList(String query)
     {
         List<Materia> listMat = new ArrayList<>();
@@ -104,6 +104,25 @@ public class GrupoUDBean implements Serializable{
         }        
         return listProf;
     }    
+
+    public String registrarGrupo()
+    {
+        Grupo group = new Grupo();        
+        group.setClaveMateria(materia);
+        group.setRfcProfesor(profesor);
+        group.setNombre(nombreGrupo.trim().toUpperCase());
+        group.setPeriodo(periodo);
+        try
+        {
+            grupoEJB.create(group);
+        }
+        catch(PersistenceException exP)
+        {
+            logger.warn("Ocurrió un error al insertar el grupo");            
+        }
+        return "grupoUpDel?faces-redirect=true";        
+    }
+    
     public String actualizarGrupo()
     {
         try
@@ -112,7 +131,7 @@ public class GrupoUDBean implements Serializable{
         }
         catch(PersistenceException exJPA)
         {
-            logger.log(Level.WARNING,"OcurriÃ³ un error al actualizar el grupo " + exJPA.toString());
+            logger.warn("Ocurrió un error al actualizar el grupo " + exJPA.toString());
         }
         return "grupoUpDel?faces-redirect=true";
     }
@@ -125,9 +144,9 @@ public class GrupoUDBean implements Serializable{
         }
         catch(PersistenceException exJPA)
         {
-            logger.log(Level.WARNING,"OcurriÃ³ un error al eliminar el grupo " + exJPA.toString());
+            logger.warn("Ocurrió un error al eliminar el grupo " + exJPA.toString());
         }
-        return "grupoUpDel";
+        return "grupoUpDel?faces-redirect=true";
     }
 
     public Grupo getGrupoSelected() 
@@ -140,47 +159,93 @@ public class GrupoUDBean implements Serializable{
         this.grupoSelected = grupoSelected;
     }
 
-    public List<Profesor> getProfeList() {
+    public List<Profesor> getProfeList() 
+    {
         return profeList;
     }
 
-    public void setProfeList(List<Profesor> profeList) {
+    public void setProfeList(List<Profesor> profeList) 
+    {
         this.profeList = profeList;
     }
 
-    public List<Materia> getMateList() {
+    public List<Materia> getMateList() 
+    {
         return mateList;
     }
 
-    public void setMateList(List<Materia> mateList) {
+    public void setMateList(List<Materia> mateList) 
+    {
         this.mateList = mateList;
     }
 
-    public List<Grupo> getGrupoList() {
+    public List<Grupo> getGrupoList() 
+    {
         return grupoList;
     }
 
-    public void setGrupoList(List<Grupo> grupoList) {
+    public void setGrupoList(List<Grupo> grupoList) 
+    {
         this.grupoList = grupoList;
     }
 
-    public List<Grupo> getGrupoFiltered() {
+    public List<Grupo> getGrupoFiltered() 
+    {
         return grupoFiltered;
     }
 
-    public void setGrupoFiltered(List<Grupo> grupoFiltered) {
+    public void setGrupoFiltered(List<Grupo> grupoFiltered) 
+    {
         this.grupoFiltered = grupoFiltered;
     }
 
-    public List<Periodos> getPeriodList() {
+    public List<Periodos> getPeriodList() 
+    {
         return periodList;
     }
 
-    public void setPeriodList(List<Periodos> periodList) {
+    public void setPeriodList(List<Periodos> periodList) 
+    {
         this.periodList = periodList;
     }
-    
-    
-    
-}
 
+	public Materia getMateria() 
+	{
+		return materia;
+	}
+
+	public void setMateria(Materia materia) 
+	{
+		this.materia = materia;
+	}
+
+	public Profesor getProfesor() 
+	{
+		return profesor;
+	}
+
+	public void setProfesor(Profesor profesor) 
+	{
+		this.profesor = profesor;
+	}
+
+	public String getNombreGrupo() 
+	{
+		return nombreGrupo;
+	}
+
+	public void setNombreGrupo(String nombreGrupo) 
+	{
+		this.nombreGrupo = nombreGrupo;
+	}
+
+	public String getPeriodo() 
+	{
+		return periodo;
+	}
+
+	public void setPeriodo(String periodo) 
+	{
+		this.periodo = periodo;
+	}
+}
