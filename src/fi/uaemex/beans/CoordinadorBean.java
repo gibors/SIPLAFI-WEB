@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -14,6 +15,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.context.RequestContext;
@@ -33,7 +42,7 @@ public class CoordinadorBean implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logg = LoggerFactory.getLogger(CoordinadorBean.class);
-	//@ManagedProperty(value = "#{login}") private LoginBean login;	// Propiedad para usar el bean de session login  
+	@ManagedProperty(value = "#{login}") private LoginBean login;	// Propiedad para usar el bean de session login  
     private List<NotificacionesCoord> listNotCoord;					// Lista que guarda las notificaciones para los diversos grupos que necesiten ser validados
     private NotificacionesCoord notifSelected;						// Entidad para las  notificaciones para el coordinador 
     private Grupo selecteGpo;										// Grupo que se selecciona para validacion 
@@ -48,8 +57,8 @@ public class CoordinadorBean implements Serializable
     @PostConstruct
     public void init()
     {
-        //coordinador = login.getCoord();
-        coordinador = coorFac.findUser("QH5Q0S7NYHJTM40", "QH5Q0S7NYHJTM40");
+        coordinador = login.getCoord();
+        //coordinador = coorFac.findUser("QH5Q0S7NYHJTM40", "QH5Q0S7NYHJTM40");        
         listNotCoord = notifCoordEJB.findNewNotif();
         listGposAValidar = new ArrayList<>();
         for(NotificacionesCoord nt: listNotCoord)
@@ -91,6 +100,11 @@ public class CoordinadorBean implements Serializable
     	notifSelected.setFechaHoraValidacion(new Date());
     	notifCoordEJB.edit(notifSelected);
     	gpoEJB.edit(selecteGpo);
+    	String mensaje = "El(La) Coordinador(a) " + 
+    		" ha validado el grupo <b>" + selecteGpo.getNombre() +  "</b> de la materia <b>" + selecteGpo.getClaveMateria().getNombreMateria() + "</b> \n " +
+    		" y fue aceptado, Ingrese a la liga para imprimir el formato #1 el(los) grupo(s) \n http://localhost:8282/SIPLAFI-WEB/index.jsf ó http://localhost:8080/SIPLAFI-WEB/index.jsf";
+       	enviarMail(selecteGpo, mensaje);
+    	
     	logg.info(">>> HORARIO ACEPTADO");
     	return "";
     }
@@ -102,17 +116,64 @@ public class CoordinadorBean implements Serializable
     	notifSelected.setEstado(2);
     	notifSelected.setFechaHoraValidacion(new Date());
     	notifCoordEJB.edit(notifSelected);
+    	String mensaje = "El(La) Coordinador(a) " + 
+          	" ha validado el grupo <b>" + selecteGpo.getNombre() +  "</b> de la materia <b>" + selecteGpo.getClaveMateria().getNombreMateria() + "</b> \n " +
+          	" y rechazo el horario propuesto, Ingrese a la liga para modificar el(los) grupo(s) \n http://localhost:8282/SIPLAFI-WEB/index.jsf ó http://localhost:8080/SIPLAFI-WEB/index.jsf";
+       	enviarMail(selecteGpo, mensaje);
     	logg.info(">>>> GRUPO RECHAZADOO");
     	return "";
     }
-//    public LoginBean getLogin()
-//    {
-//        return login;
-//    }
-//
-//    public void setLogin(LoginBean login)
-//        this.login = login;
-//    }
+    
+    public void enviarMail(Grupo g,String mensaje)
+    {
+        final String user = "gibran_skato@hotmail.com";
+        final String password ="sirenito_88";
+        
+        String para = "giresa.ico@gmail.com";
+        String subject = "Se ha valido un grupo";
+        Properties props = new Properties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.live.com");
+        props.put("mail.smtp.port", "587");
+        
+        Authenticator aut = new Authenticator()
+        {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication()
+            {
+                return new PasswordAuthentication(user, password);
+            }
+        };        
+        Session session = Session.getInstance(props,aut);                
+        try 
+        {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(user));
+            message.setRecipients(Message.RecipientType.TO,
+            InternetAddress.parse(para));
+            message.setSubject(subject);
+            message.setContent(mensaje,"text/html");
+            //message.setText(mensaje);
+            Transport.send(message);
+            logg.info("EL CORREO FUE ENVIADO EXITOSAMENTE");
+            //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(""));
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }    
+    
+    public LoginBean getLogin()
+    {
+        return login;
+    }
+
+    public void setLogin(LoginBean login)
+    {
+        this.login = login;
+    }
     public String cerrarSession()
     {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
