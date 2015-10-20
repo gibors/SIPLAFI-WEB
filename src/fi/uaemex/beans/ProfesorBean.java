@@ -69,39 +69,39 @@ public class ProfesorBean implements Serializable
 	private static final long serialVersionUID = 1L;
 	private static final Logger logg = Logger.getLogger(ProfesorBean.class.getName());
     private static final String rutajasper = "/reporte/reporte1.1.jasper";	
-    private DateFormat format = new SimpleDateFormat("HH:mm "); 	// Formato para el horario
-    private Date lunIn;												// Hora de inicio de la clase para el dia lunes 
-    private Date lunFn; 											// Hora de fin de la clase para el dia lunes
-    private Date marIn;												// Hora de inicio de la clase para el dia martes
-    private Date marFn; 											// Hora de fin de la clase para el dia martes
-    private Date mieIn;												// Hora de inicio de la clase para el dia miercoles
-    private Date mieFn; 											// Hora de fin de la clase para el dia miercoles
-    private Date jueIn;												// Hora de inicio de la clase para el dia jueves
-    private Date jueFn; 											// Hora de fin de la clase para el dia jueves
-    private Date vieIn;												// Hora de inicio de la clase para el dia viernes
-    private Date vieFn; 											// Hora de fin de la clase para el dia viernes
-    private Date sabIn;												// Hora de inicio de la clase para el dia sabado
-    private Date sabFn;												// Hora de fin de la clase para el dia sabado
-    private List<String> mensajesTraslape;							// Lista con todos los traslapes que se encontraron al cambiar el horario
-    private String mensajeBoton;									// Mensaje del boton para enviar a validacion o imprimir el formato #1 
-    private Profesor profe;                         				// Profesor logged
-    private String nombreProfe;                     				// nombre para mostrar del profesor
-    private List<Grupo> gposProfe;                  				// obtiene la lista de los grupos del profesor
-    private List<Grupo> listGposInSemester;							// Almacena los grupos de las materias en el mismo horario del grupo seleccionado para modificar
-    private List<Aula> listAula; 									// Lista de las aulas requeridas para la clase
-    private Grupo selectedGpo;										// Almacena el grupo que es seleccionado para editar el horario
-    private boolean todosConfirmadosOAceptados;						// Obtiene verdadero si todos los grupos del profesor estan confirmados o aceptados
-    private boolean conGrupoAValidar;								// Obtiene verdadero si algun grupo necesita ser validado
-    @EJB private ProfesorFacade profFacade;              			// EJB para acceso a datos del profesor
-    @EJB private GrupoFacade gpoEJB;                     			// EJB para acceso a datos del grupo
-    @EJB private AulaFacade aulaEJB;								// EJB para acceso a datos de la entidad aula
-    @EJB private HorarioFacade HorarioEJB;							// EJB para acceso a datos del Horario modificado para validacion .. 
-    @EJB private Horario2Facade hora2EJB;							// EJB para accesos a datos de la entidad Horario2
-    @EJB private NotificacionesCoordFacade notifEJB;				// EJB para acceso a datos de las notificaciones del coordinador 
-    @ManagedProperty(value = "#{login}") private LoginBean login;   // Propiedad para usar variables de session del bean de login
-    private Properties props;										// Agrega las propiedades para la conexion al servidor de correo
-    private Session session = null;									// Variable de session para conectarse al servidor de correo
-    private String para;											// Almacena el destino del correo
+    private DateFormat format = new SimpleDateFormat("HH:mm "); 		// Formato para el horario
+    private Date lunIn;													// Hora de inicio de la clase para el dia lunes 
+    private Date lunFn; 												// Hora de fin de la clase para el dia lunes
+    private Date marIn;													// Hora de inicio de la clase para el dia martes
+    private Date marFn; 												// Hora de fin de la clase para el dia martes
+    private Date mieIn;													// Hora de inicio de la clase para el dia miercoles
+    private Date mieFn; 												// Hora de fin de la clase para el dia miercoles
+    private Date jueIn;													// Hora de inicio de la clase para el dia jueves
+    private Date jueFn; 												// Hora de fin de la clase para el dia jueves
+    private Date vieIn;													// Hora de inicio de la clase para el dia viernes
+    private Date vieFn; 												// Hora de fin de la clase para el dia viernes
+    private Date sabIn;													// Hora de inicio de la clase para el dia sabado
+    private Date sabFn;													// Hora de fin de la clase para el dia sabado
+    private List<String> mensajesTraslape;								// Lista con todos los traslapes que se encontraron al cambiar el horario
+    private String mensajeBoton;										// Mensaje del boton para enviar a validacion o imprimir el formato #1 
+    private Profesor profe;                         					// Profesor logged
+    private String nombreProfe;                     					// nombre para mostrar del profesor
+    private List<Grupo> gposProfe;                  					// obtiene la lista de los grupos del profesor
+    private List<Grupo> listGposInSemester;								// Almacena los grupos de las materias en el mismo horario del grupo seleccionado para modificar
+    private List<Aula> listAula; 										// Lista de las aulas requeridas para la clase
+    private Grupo selectedGpo;											// Almacena el grupo que es seleccionado para editar el horario
+    private boolean todosConfirmadosOAceptados;							// Obtiene verdadero si todos los grupos del profesor estan confirmados o aceptados
+    private boolean conGrupoAValidar;									// Obtiene verdadero si algun grupo necesita ser validado
+    @EJB private ProfesorFacade profFacade;              				// EJB para acceso a datos del profesor
+    @EJB private GrupoFacade gpoEJB;                     				// EJB para acceso a datos del grupo
+    @EJB private AulaFacade aulaEJB;									// EJB para acceso a datos de la entidad aula
+    @EJB private HorarioFacade HorarioEJB;								// EJB para acceso a datos del Horario modificado para validacion .. 
+    @EJB private Horario2Facade hora2EJB;								// EJB para accesos a datos de la entidad Horario2
+    @EJB private NotificacionesCoordFacade notifEJB;					// EJB para acceso a datos de las notificaciones del coordinador 
+    @ManagedProperty(value = "#{login}") private LoginBean login;   	// Propiedad para usar variables de session del bean de login
+    private Properties props;											// Agrega las propiedades para la conexion al servidor de correo
+    private Session session = null;										// Variable de session para conectarse al servidor de correo
+    private String para;												// Almacena el destino del correo
     private static final String subject ="Nuevo grupo para validacion";	// Guarda el asunto
     private String mensaje;												// Almacena el mensaje que se enviara por correo
     
@@ -164,7 +164,7 @@ public class ProfesorBean implements Serializable
         	{ // For que valida si hay algun grupo modificado o no (TOP)
         		if(g.getEstado() == 2)
         			hayModificado = true;
-        		else if(g.getEstado() == 0 && g.getEstado() != 1 && g.getEstado() != 3)
+        		else if(g.getEstado() == 0 && g.getValidado() != 1 && g.getValidado() != 3)
         			faltan = true;
         	} // For que valida si hay algun grupo modificado o no (BOTTOM)
         	
@@ -186,15 +186,50 @@ public class ProfesorBean implements Serializable
             }
         }
    } // Marca el grupo para confirmacion (BOTTOM)    
-           
-    public String confirmarModificacion()
-    { // Modifica el horario para enviar a validación  (TOP)
+   
+//   public String deshacerModificacion(Grupo g)
+//   {
+//	   this.selectedGpo = g;
+//	   Horario2 horario = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
+//	   hora2EJB.remove(horario);
+//	   
+//	   return "";
+//   }
+   
+   public String confirmarModificacion()
+   { // Modifica el horario para enviar a validación  (TOP)
         float min = 0;
         float minutos = 0;
         float horas= 0;       
         float horaXDia = 0;
         mensajesTraslape = new ArrayList<>();
         
+        if(selectedGpo.getValidado() == 2)
+        { // Si el grupo ya fue validado y fue rechazado (TOP)
+        	Horario2 horarioRespaldo = hora2EJB.find(selectedGpo.getHorario().getIdHorario()); // Se busca si se guardo un horario anterior
+        	if(horarioRespaldo != null)
+        	{ // Si el horario de respaldo es encontrado (TOP)
+        		if
+        		(
+        			(lunIn == null ? horarioRespaldo.getLunHoraIni() == null : lunIn.equals(horarioRespaldo.getLunHoraIni())) && 
+        			(marIn == null ? horarioRespaldo.getMarHoraIni() == null : marIn.equals(horarioRespaldo.getMarHoraIni())) &&
+        			(mieIn == null ? horarioRespaldo.getMieHoraIni() == null : mieIn.equals(horarioRespaldo.getMieHoraIni())) &&
+        			(jueIn == null ? horarioRespaldo.getJueHoraIni() == null : jueIn.equals(horarioRespaldo.getJueHoraIni())) &&
+        			(vieIn == null ? horarioRespaldo.getVieHoraIni() == null : vieIn.equals(horarioRespaldo.getVieHoraIni())) &&
+        			(sabIn == null ? horarioRespaldo.getSabHoraIni() == null : sabIn.equals(horarioRespaldo.getSabHoraIni())) && 
+        			(lunFn == null ? horarioRespaldo.getLunHoraFin() == null : lunFn.equals(horarioRespaldo.getLunHoraFin())) && 
+        			(marFn == null ? horarioRespaldo.getMarHoraFin() == null : marFn.equals(horarioRespaldo.getMarHoraFin())) &&
+        			(mieFn == null ? horarioRespaldo.getMieHoraFin() == null : mieFn.equals(horarioRespaldo.getMieHoraFin())) &&
+        			(jueFn == null ? horarioRespaldo.getJueHoraFin() == null : jueFn.equals(horarioRespaldo.getJueHoraFin())) &&
+        			(vieFn == null ? horarioRespaldo.getVieHoraFin() == null : vieFn.equals(horarioRespaldo.getVieHoraFin())) &&
+        			(sabFn == null ? horarioRespaldo.getSabHoraFin() == null : sabFn.equals(horarioRespaldo.getSabHoraFin()))
+        		)
+        		{ // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (TOP)
+        			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"Si va a elegir el horario anterior,cancele y vaya a la opcion deshacer modificación",null));
+        			return "";
+        		} // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (BOTTOM)
+        	} // Si el horario de respaldo es encontrado (BOTTOM)
+        } // Si el grupo ya fue validado y fue rechazado (BOTTOM)
 		List<Grupo> listTrasLun = gpoEJB.findTraslapeLun(lunIn,lunFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
         List<Grupo> listTrasMar = gpoEJB.findTraslapeMar(marIn,marFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
         List<Grupo> listTrasMie = gpoEJB.findTraslapeMie(mieIn,mieFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
@@ -461,7 +496,7 @@ public class ProfesorBean implements Serializable
         RequestContext.getCurrentInstance().execute("PF('traslapesDlg').show()");
               
         return "";
-    }// Modifica el horario para enviar a validación  (BOTTOM)
+   }// Modifica el horario para enviar a validación  (BOTTOM)
     
     public void aceptarHorarioConTraslapes()
     { // Acepta los cambios para posterior enviar el horario a validacion (TOP)

@@ -76,7 +76,9 @@ public class Profesor implements Serializable {
     private String telefono;    
     @OneToMany(mappedBy = "rfcProfesor")
     private List<Grupo> grupoList;
-
+    @Column(name = "APRECIACION")
+    private double apreciacion;
+    
     public Profesor() {
     }
 
@@ -164,8 +166,16 @@ public class Profesor implements Serializable {
     public void setGrupoList(List<Grupo> grupoList) {
         this.grupoList = grupoList;
     }
+    
+    public double getApreciacion() {
+		return apreciacion;
+	}
 
-    @Override
+	public void setApreciacion(double apreciacion) {
+		this.apreciacion = apreciacion;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (rfcProfesor != null ? rfcProfesor.hashCode() : 0);

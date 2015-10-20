@@ -33,11 +33,11 @@
                         <br/>
                         <h:panelGroup layout="block" style="text-align: left;background-color: darkolivegreen;line-height:60%" rendered="#{!profesorBean.conGrupoAValidar}">
                             &nbsp;<pre style="font-weight:bold">ESTADO:</pre>
-                            &nbsp;<pre>PC	- Marcado para confirmación</pre>
-                            &nbsp;<pre>PM	- Modificado para enviar a validación</pre>
-                           	&nbsp;<pre>C	- Confirmado</pre>                                                                                          
-                            &nbsp;<pre>A	- Aceptado</pre>
-                            &nbsp;<pre>NA	- No Aceptado</pre><br/>
+                            &nbsp;<pre style="font-weight:bold">PC	- Marcado para confirmación</pre>
+                            &nbsp;<pre style="font-weight:bold">PV	- Modificado para enviar a validación</pre>
+                           	&nbsp;<pre style="font-weight:bold">C	- Confirmado</pre>                                                                                          
+                            &nbsp;<pre style="font-weight:bold">A	- Aceptado</pre>
+                            &nbsp;<pre style="font-weight:bold">NA	- No Aceptado</pre><br/>
                         </h:panelGroup>                                      
                     </h:panelGroup>
                 </h:form>
@@ -137,10 +137,11 @@
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column>
- 		                        <h:outputText value="#{gpo.estado == 1 ? 'PC' : (gpo.estado == 2 ? 'PM' : (gpo.validado == 1 ? 'A' : (gpo.validado == 2 ? 'NA' :(gpo.validado == 3 ? 'C': ''))))}"  /> 		                    
+ 		                        <h:outputText value="#{gpo.estado == 1 ? 'PC' : (gpo.estado == 2 ? 'PV' : (gpo.validado == 1 ? 'A' : (gpo.validado == 2 ? 'NA' :(gpo.validado == 3 ? 'C': ''))))}"  /> 		                    
 		                    </p:column>		                    
 		                    <p:column >
-		                    	<p:commandButton icon="ui-icon-check" title="Confirmar" actionListener="#{profesorBean.confirmarHorario(gpo)}" disabled="#{gpo.estado != 0 or gpo.validado != null}" update="@form"/>
+		                    	<p:commandButton icon="ui-icon-check" title="Confirmar" actionListener="#{profesorBean.confirmarHorario(gpo)}" disabled="#{gpo.estado != 0 or gpo.validado != null}" update="@form" rendered="#{gpo.validado != 2}"/>
+		                    	<p:commandButton icon=".ui-icon-arrowreturnthick-1-w" title="Deshacer modificación" actionListener="#{profesorBean.confirmarHorario(gpo)}" update="@form" rendered="#{gpo.validado == 2}"/>		                    	
 		                    </p:column>
 							<p:column style="text-align: center">
            						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="Modificar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" disabled="#{gpo.validado == 1 or gpo.validado == 3 }">

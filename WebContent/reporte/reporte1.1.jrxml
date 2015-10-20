@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.0.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-10-20T11:43:38 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte1" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="68a01100-741a-4fee-a750-cf5ce6080f73">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gibrannAdapter"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="rfc_profe" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+	P.GRADO_PROFE,
+	p.RFC_PROFESOR,
+	per.periodo,
+	per.descripcion,
+	p.NOMBRE_PROFE,
+	p.APE_PAT_PROFE,
+	p.APE_MAT_PROFE,
+	p.EMAIL_PROFE,
+	m.NOMBRE_MATERIA,	
+	m.SEMESTRE,
+	case when h.LUN_HORA_INI is not null then h.LUN_HORA_INI else '-' end lun_in,
+	case when h.LUN_HORA_FIN is not null then h.LUN_HORA_FIN else '-' end lun_fi,
+	case when h.MAR_HORA_INI is not null then h.MAR_HORA_INI else '-' end mar_in,
+	case when h.MAR_HORA_FIN is not null then h.MAR_HORA_FIN else '-' end mar_fi,
+	case when h.MIE_HORA_INI is not null then h.MIE_HORA_INI else '-' end mie_in,
+	case when h.MIE_HORA_FIN is not null then h.MIE_HORA_FIN else '-' end mie_fi,
+	case when h.JUE_HORA_INI is not null then h.JUE_HORA_INI else '-' end jue_in,
+	case when h.JUE_HORA_FIN is not null then h.JUE_HORA_FIN else '-' end jue_fi,
+	case when h.VIE_HORA_INI is not null then h.VIE_HORA_INI else '-' end vie_in,
+	case when h.VIE_HORA_FIN is not null then h.VIE_HORA_FIN else '-' end vie_fi,
+	case when h.SAB_HORA_INI is not null then h.SAB_HORA_INI else '-' end sab_in,
+	case when h.SAB_HORA_FIN is not null then h.SAB_HORA_FIN else '-' end sab_fi,
+	h.aula_lun,
+	h.aula_mar,
+	h.aula_mie,
+	h.aula_jue,
+	h.aula_vie,
+	h.aula_sab,		
+	g.VALIDADO
+from
+	grupo g,
+	profesor p,
+	materia m,
+	horario h,
+	periodos per
+where 
+	g.RFC_PROFESOR = p.RFC_PROFESOR
+and
+	g.CLAVE_MATERIA = m.CLAVE_MATERIA
+and
+	g.ID_GRUPO = h.ID_GRUPO
+and
+	g.periodo = per.periodo
+and
+	g.RFC_PROFESOR = $P{rfc_profe}
+order by 
+	m.SEMESTRE]]>
+	</queryString>
+	<field name="NOMBRE_MATERIA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SEMESTRE" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="GRADO_PROFE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="RFC_PROFESOR" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE_PROFE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="APE_PAT_PROFE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="APE_MAT_PROFE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="EMAIL_PROFE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lun_in" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lun_fi" class="java.lang.String"/>
+	<field name="mar_in" class="java.lang.String"/>
+	<field name="mar_fi" class="java.lang.String"/>
+	<field name="mie_in" class="java.lang.String"/>
+	<field name="mie_fi" class="java.lang.String"/>
+	<field name="jue_in" class="java.lang.String"/>
+	<field name="jue_fi" class="java.lang.String"/>
+	<field name="vie_in" class="java.lang.String"/>
+	<field name="vie_fi" class="java.lang.String"/>
+	<field name="sab_in" class="java.lang.String"/>
+	<field name="sab_fi" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VALIDADO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aula_lun" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aula_mar" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aula_mie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aula_jue" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aula_vie" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aula_sab" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="fecha" class="java.util.Date" calculation="System">
+		<initialValueExpression><![CDATA[new java.util.Date()]]></initialValueExpression>
+	</variable>
+	<variable name="fmYear" class="java.text.SimpleDateFormat" calculation="System">
+		<initialValueExpression><![CDATA[new java.text.SimpleDateFormat("yyyy")]]></initialValueExpression>
+	</variable>
+	<variable name="fmDay" class="java.text.SimpleDateFormat">
+		<initialValueExpression><![CDATA[new java.text.SimpleDateFormat("dd")]]></initialValueExpression>
+	</variable>
+	<variable name="fmMes" class="java.text.SimpleDateFormat" calculation="System">
+		<initialValueExpression><![CDATA[new java.text.SimpleDateFormat("MM")]]></initialValueExpression>
+	</variable>
+	<title>
+		<band height="210" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="87" y="5" width="293" height="15" uuid="4c65dfbe-69ab-4f6d-9dd3-e08749be92cc">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Universidad Autónoma del Estado de México]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="0" width="50" height="50" uuid="9713f570-1b64-445b-b99c-62ffbe3f4d69"/>
+				<imageExpression><![CDATA["../images/escudo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="87" y="20" width="293" height="15" uuid="a8fe0c50-1824-4f8e-b705-4f5136762c29">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[UAEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="293" height="15" uuid="05c6b274-e7fc-4563-ac96-db8a39df69f3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[M. EN I. MIREYA SALGADO GALLEGOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="85" width="293" height="15" uuid="99a6c04e-83ad-4454-80da-23b83c4a210e">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COORDINADORA DE DOCENCIA DE LA LICENCIATURA EN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="100" width="460" height="15" uuid="055064bb-7614-4aa1-8d87-86446d5faa4d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[INGENIERÍA EN COMPUTACIÓN DE LA FACULTAD DE INGENIERÍA DE LA UAEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="120" width="293" height="15" uuid="89804b56-8216-4842-8895-b14da98645ac">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P R E S E N T E]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="180" y="43" width="391" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="9d4660e9-30b6-4698-820f-01548248d9c0"/>
+				<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ciudad Universitaria de Toluca, Mexico a ".concat($V{fmDay}.format($V{fecha})).concat(" de ").concat((java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 1 ? "Enero" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 2 ? "Febrero" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 3 ? "Marzo" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 4 ? "Abril" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 5 ? "Mayo" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 6 ? "Junio" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 7 ? "Julio" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 8 ? "Agosto" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 9 ? "Septiembre" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 10 ? "Octubre" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 11 ? "Noviembre" : "Diciembre" )))))))))))).concat(" de ").concat($V{fmYear}.format($V{fecha}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="0" y="158" width="571" height="52" forecolor="#000000" backcolor="#FFFFFF" uuid="32f9040f-355b-471f-9b6d-4ed34361b454"/>
+				<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="styled">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El (La) que suscribe, <style isBold='true'>"+ $F{NOMBRE_PROFE} + " " + $F{APE_PAT_PROFE} + " " + $F{APE_MAT_PROFE} + "</style> , somete a su consideración la relación de la(s) materia(s) a impartir en el semestre <style isBold='true'>" + $F{descripcion} +"</style>, en la Coordinación de Ingeniería en Computación de la Facultad de Ingeniería de la Universidad Autónoma del Estado de México."]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="90" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<frame>
+				<reportElement x="2" y="20" width="582" height="64" uuid="8051ee7f-f21e-4e21-a8bd-b58edfa98ea3"/>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="97" height="30" forecolor="#FFFFFF" backcolor="#B5AAAA" uuid="2717debf-a336-4015-a48d-1e671d4f908f">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[LUNES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="97" y="0" width="97" height="30" forecolor="#FFFFFF" backcolor="#B5AAAA" uuid="d4f405f7-416f-4e0d-bd03-923cbef9f984">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[MARTES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="194" y="0" width="97" height="30" forecolor="#FFFFFF" backcolor="#B5AAAA" uuid="7f0306a9-f5d2-4d55-a2a4-8cfa22d4e118">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[MIERCOLES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="291" y="0" width="97" height="30" forecolor="#FFFFFF" backcolor="#B5AAAA" uuid="11f44b4e-be31-4456-8693-1ba6c35adb07">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[JUEVES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="388" y="0" width="97" height="30" forecolor="#FFFFFF" backcolor="#B5AAAA" uuid="70310bbf-2ce5-4899-9186-17b86a9cb03e">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[VIERNES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="485" y="0" width="96" height="30" forecolor="#FFFFFF" backcolor="#B5AAAA" uuid="154ff0f6-2716-4536-9a10-3417cfc91c40">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#050000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[SABADO]]></text>
+				</staticText>
+				<textField>
+					<reportElement mode="Transparent" x="0" y="30" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="49b66722-6507-4bb7-bc04-164ce25aa6e8">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{lun_in} + " - " + $F{lun_fi}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="97" y="30" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="921bea4d-cddc-4831-9b30-c15774f76c9c">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mar_in} + " - " + $F{mar_fi}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="194" y="30" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="246d872c-cc4b-4e0c-ba32-f2697306d940">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{mie_in} + " - " + $F{mie_fi}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="291" y="30" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="b43e6026-747a-4612-bd04-80f1c05a3c22">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{jue_in} + " - " + $F{jue_fi}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="388" y="30" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="8b4cdf5d-47a7-41fe-a756-e239f52560b6">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vie_in} + " - " + $F{vie_fi}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="485" y="30" width="96" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="8b79cc24-fb4b-49d2-83a8-a8bbc9941f70">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{sab_in} + " - " + $F{sab_fi}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="0" y="46" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="8684ff7a-35e0-4f0b-8a2c-0069ae2d9732">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{aula_lun}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="97" y="46" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="0cddfa25-ffed-4779-9890-4a824c15299f">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{aula_mar}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="194" y="46" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="1439c7f1-d113-4c3d-be8e-2c7fbbea4bfc">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{aula_mie}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="291" y="46" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="ceb2ba9a-4b9f-4a95-acf0-273579e55d4e">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{aula_jue}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="388" y="46" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="af9a6c68-72a0-4957-a1c7-dda36f3d68f2">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{aula_vie}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Transparent" x="485" y="46" width="96" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="c056ac3a-db51-4a7f-9547-b8dd233de1f4">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{aula_sab}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField>
+				<reportElement x="0" y="0" width="290" height="15" uuid="47d057c0-155a-4f44-a3b0-cc0cff01c78b">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["Materia: " + $F{NOMBRE_MATERIA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="290" y="0" width="289" height="15" uuid="72211696-1071-4317-9c37-44638c04d00b">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA["Mismo horario: " + ($F{VALIDADO} == null ? "--" : ($F{VALIDADO} == 3 ? "Si" : "No"))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="195">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="1" width="571" height="20" uuid="c3b73cac-be58-42f4-902b-056b94f246be"/>
+				<text><![CDATA[* Favor de especificar el o los días para el uso de sala o laboratorio de las unidades de aprendizaje que así lo requiera(n).]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="21" width="257" height="20" uuid="5ae0884b-c0a1-4883-b00e-612b0b2521d7"/>
+				<textElement markup="styled">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[<style isBold="true">Sin otro particular, reciba un afectuoso saludo.</style>]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="" x="232" y="39" width="100" height="15" uuid="e17e3bfa-5dc6-4921-a840-26c37cc0d3d0"/>
+				<textElement markup="styled"/>
+				<text><![CDATA[<style isBold= "true">ATENTAMENTE</style>]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="95" width="378" height="15" uuid="5b133740-5fa7-4362-bc64-1676ee44b868"/>
+				<text><![CDATA[Favor de proporcionar los siguientes datos (sólo en caso de ser actualizados)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="73" width="90" height="16" uuid="9142bf53-f618-43c2-a1da-dd83d7064050"/>
+				<text><![CDATA[Nombre y Firma]]></text>
+			</staticText>
+			<line>
+				<reportElement x="129" y="70" width="290" height="3" uuid="b5242850-cdf7-4e12-97b8-c8d5f9aa9427"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="120" width="95" height="12" uuid="9672f9e1-8811-46ca-bb27-b3400eb445c1">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Grado académico:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="138" width="95" height="12" uuid="047603bf-6699-483b-baa8-969fd6fa32e1">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[R.F.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="157" width="95" height="12" uuid="23a9f1fe-a5dc-4ff1-b063-ba84a44d15bb">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Números telefónicos :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="176" width="95" height="12" uuid="a0b365c2-9d10-4e51-9454-624430e0f981">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Particular:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="100" y="130" width="279" height="1" uuid="daf91c96-9b43-4af3-9865-383db9c8d651"/>
+			</line>
+			<line>
+				<reportElement x="50" y="149" width="189" height="1" uuid="bb3d6a21-81b2-47a8-bff7-83e83ae22c38"/>
+			</line>
+			<line>
+				<reportElement x="87" y="168" width="153" height="1" uuid="2730fca8-6b49-48be-8342-c0877d4afe5b"/>
+			</line>
+			<line>
+				<reportElement x="60" y="188" width="179" height="1" uuid="d8397738-bec8-4e36-be9c-652243ee7e1f"/>
+			</line>
+			<staticText>
+				<reportElement x="260" y="138" width="95" height="12" uuid="f0249070-9fe7-4d33-88f7-d4a0a5ec453a">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[E-mail:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="162" width="95" height="12" uuid="dad098ec-c3bd-4ba3-9f85-a24fa689aab6">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Oficina:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="182" width="95" height="12" uuid="903e0ded-294a-4524-a31a-a023ce5e3440">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Celular:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="313" y="147" width="165" height="1" uuid="ab95e867-d4cf-4136-a0eb-7371553f5411"/>
+			</line>
+			<line>
+				<reportElement x="314" y="169" width="165" height="1" uuid="ae675ed9-27ef-479a-9b04-ffc49acfa74a"/>
+			</line>
+			<line>
+				<reportElement x="313" y="188" width="165" height="1" uuid="5a03e873-b003-449b-97bf-6a9d7d558b48"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

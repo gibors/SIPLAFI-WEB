@@ -115,7 +115,9 @@ public class Horario implements Serializable {
     @JoinColumn(name = "ID_GRUPO", referencedColumnName = "ID_GRUPO")
     @OneToOne
     private Grupo idGrupo;
-
+    @Column(name="OBSERVACIONES")
+    private String observaciones;
+    
     public Horario() {
     }
 
@@ -289,8 +291,18 @@ public class Horario implements Serializable {
         hash += (idHorario != null ? idHorario.hashCode() : 0);
         return hash;
     }
+    
+    
 
-    @Override
+    public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+
+	@Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Horario)) {

@@ -35,7 +35,9 @@ public class Periodos implements Serializable {
     @Size(max = 150)
     @Column(name = "descripcion")
     private String descripcion;
-
+    @Column(name = "ACTUAL")
+    private String actual;
+    
     public Periodos() {
     }
 
@@ -65,8 +67,16 @@ public class Periodos implements Serializable {
         hash += (periodo != null ? periodo.hashCode() : 0);
         return hash;
     }
+        
+    public String getActual() {
+		return actual;
+	}
 
-    @Override
+	public void setActual(String actual) {
+		this.actual = actual;
+	}
+
+	@Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Periodos)) {
