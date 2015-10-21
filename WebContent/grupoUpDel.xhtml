@@ -23,7 +23,7 @@
            		<p:menubar>
 	        		<p:menuitem id="backProfesor" value="Regresar" onclick="javascript:history.go(-1)" icon="ui-icon-arrowreturnthick-1-w"  />    	
 	      			<f:facet name="options">
-	            		<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink" action="#{coord.cerrarSession()}" />
+	            		<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink"  />
 	           		</f:facet>                    
 	     		</p:menubar>
 	     		<br /><br />		
@@ -68,7 +68,7 @@
 		                        <p:autoComplete size="40" value="#{grupoUDBean.profesor}" dropdown="true" completeMethod="#{grupoUDBean.getProfesorList}" required="true" requiredMessage="Seleccione el profesor para el grupo"
 		                                        var="profe" itemLabel="#{profe.nombreProfe.concat(' ').concat(profe.apePatProfe).concat(' ').concat(profe.apeMatProfe)}" itemValue="#{profe}" converter="profesorConverter"/>
 		                        <p:outputLabel value="Nombre del grupo: " />
-		                        <p:inputText value="#{grupoUDBean.nombreGrupo}" required="true" requiredMessage="Ingrese el nombre del grupo" maxlength="10" onblur="javascript:this.value = this.value.toUpperCase()" />
+		                        <p:inputText value="#{grupoUDBean.nombreGrupo}" required="true" requiredMessage="Ingrese el nombre del grupo" maxlength="10" />
 		                        <p:outputLabel value="Periodo: " />
 		                        <p:selectOneMenu id="idPeriodo" value="#{grupoUDBean.periodo}" required="true">
 		                            <f:selectItems value="#{grupoUDBean.periodList}" var="periodo" itemLabel="#{periodo.periodo}" itemValue="#{periodo.periodo}" />
@@ -92,7 +92,7 @@
 		                        <p:autoComplete size="40" value="#{grupoUDBean.grupoSelected.rfcProfesor}" dropdown="true" completeMethod="#{grupoUDBean.getProfesorList}" required="true" requiredMessage="Seleccione el profesor para el grupo"
 		                                        var="profe" itemLabel="#{profe.nombreProfe.concat(' ').concat(profe.apePatProfe).concat(' ').concat(profe.apeMatProfe)}" itemValue="#{profe}" converter="profesorConverter"/>
 		                        <p:outputLabel value="Nombre del grupo: " />
-		                        <p:inputText value="#{grupoUDBean.grupoSelected.nombre}" required="true" requiredMessage="Ingrese el nombre del grupo" maxlength="10" onblur="javascript:this.value = this.value.toUpperCase()"/>
+		                        <p:inputText value="#{grupoUDBean.grupoSelected.nombre}" required="true" requiredMessage="Ingrese el nombre del grupo" maxlength="10" />
 		                        <p:outputLabel value="Periodo: " />
 		                        <p:selectOneMenu id="idPeriodo2" value="#{grupoUDBean.grupoSelected.periodo}" required="true">
 		                            <f:selectItems value="#{grupoUDBean.periodList}" var="periodo" itemLabel="#{periodo.periodo}" itemValue="#{periodo.periodo}" />

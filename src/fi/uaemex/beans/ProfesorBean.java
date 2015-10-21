@@ -533,7 +533,7 @@ public class ProfesorBean implements Serializable
     	boolean faltan = false; 
     	for(Grupo g : gposProfe)
     	{ // For que valida si hay algun grupo modificado o no (TOP)
-    		if(g.getEstado() == 0 && g.getValidado() != 1 && g.getValidado() != 3)
+    		if(g.getEstado() == 0 && g.getEstado() != 1 && g.getEstado() != 3)
     			faltan = true;
     	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
     
@@ -578,10 +578,7 @@ public class ProfesorBean implements Serializable
     			    try
     			    {
     			    	g.setValidado(0); // Se marca como grupo para validación
-    			    	if(hora2EJB.find(horarioAnterior.getIdHorario()) == null)
-    			    	{
-    			    		hora2EJB.create(horarioAnterior);
-    			    	}
+    			    	hora2EJB.create(horarioAnterior);
     			    	g.getHorario().setLunHoraIni(lunIn);
     			    	g.getHorario().setLunHoraFin(lunFn);
     			    	g.getHorario().setMarHoraIni(marIn);
@@ -683,9 +680,9 @@ public class ProfesorBean implements Serializable
         final String user = "gibran_skato@hotmail.com";
         final String password ="sirenito_88";
         
-        mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
-        		"</b>  ha enviado el grupo <b>" + g.getNombre() +  "</b> de la materia <b>" + g.getClaveMateria().getNombreMateria() + "</b> para validacion, \n " +
-        				 "Ingrese a la liga para validar el(los) grupo(s) \n http://localhost:8282/SIPLAFI-WEB/coordinador.jsf ó http://localhost:8080/SIPLAFI-WEB/coordinador.jsf";
+        mensaje = "El profesor " + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
+        		"ha enviado el grupo " + g.getNombre() +  " de la materia " + g.getClaveMateria().getNombreMateria() + " para validacion \n " +
+        				 "Ingrese a la liga para validar el (los) grupo(s) por validar";
         para = "giresa.ico@gmail.com";
         props = new Properties();
         props.put("mail.transport.protocol", "smtp");
@@ -710,8 +707,7 @@ public class ProfesorBean implements Serializable
             message.setRecipients(Message.RecipientType.TO,
             InternetAddress.parse(para));
             message.setSubject(subject);
-            message.setContent(mensaje,"text/html");
-            //message.setText(mensaje);
+            message.setText(mensaje);
             Transport.send(message);
             logg.info("EL CORREO FUE ENVIADO EXITOSAMENTE");
             //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(""));
