@@ -92,6 +92,7 @@ public class ProfesorBean implements Serializable
     private Grupo selectedGpo;											// Almacena el grupo que es seleccionado para editar el horario
     private boolean todosConfirmadosOAceptados;							// Obtiene verdadero si todos los grupos del profesor estan confirmados o aceptados
     private boolean conGrupoAValidar;									// Obtiene verdadero si algun grupo necesita ser validado
+    private boolean seHaConfirmadoTodo;									// Si todos los grupos estan confirmados o aceptados 
     @EJB private ProfesorFacade profFacade;              				// EJB para acceso a datos del profesor
     @EJB private GrupoFacade gpoEJB;                     				// EJB para acceso a datos del grupo
     @EJB private AulaFacade aulaEJB;									// EJB para acceso a datos de la entidad aula
@@ -107,10 +108,6 @@ public class ProfesorBean implements Serializable
     
    public ProfesorBean()
    {
-	   if(todosConfirmadosOAceptados)
-		   mensajeBoton = "Imprimir formato #1";   
-	   else
-		   mensajeBoton = "No hay accion que realizar";		   
    }
    
    @PostConstruct
@@ -122,8 +119,9 @@ public class ProfesorBean implements Serializable
 	   gposProfe = profe.getGrupoList();
        listAula = aulaEJB.findAll();
        todosConfirmadosOAceptados = gpoEJB.todosAceptadosOConfirmados(profe.getRfcProfesor(), gposProfe.size());
-       logg.info(">>>> " + todosConfirmadosOAceptados );
+       if(todosConfirmadosOAceptados) seHaConfirmadoTodo = true;
        conGrupoAValidar = gpoEJB.hayGruposParaValidar(profe.getRfcProfesor());
+       logg.info(">>>> " + todosConfirmadosOAceptados  + " -- Con grupo a validar:  " + conGrupoAValidar);       
        nombreProfe = profe.getNombreProfe() + " " + profe.getApePatProfe() + " " + profe.getApeMatProfe();
    } // Se ejecuta antes de construir el objeto (BOTTOM)
         
@@ -155,6 +153,14 @@ public class ProfesorBean implements Serializable
     	this.selectedGpo = gpo;
         boolean hayModificado = false;
         boolean faltan = false;
+        
+        if(selectedGpo.getValidado() != null && selectedGpo.getValidado() == 2)
+        { // Si el horario del grupo ya fue modificado y rechazado por la coordinación (TOP)
+        	Horario2 hora = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
+        	if(hora != null)
+        		hora2EJB.remove(hora);
+        } // Si el horario del grupo ya fue modificado y rechazado por la coordinación (BOTTOM)
+        
         if(selectedGpo.getEstado() == 2 ) // Si ya fue modificado
         	FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("El grupo ya ha sido modificado, si desea cambiarlo eliga la opción modificar "));
         else
@@ -164,7 +170,7 @@ public class ProfesorBean implements Serializable
         	{ // For que valida si hay algun grupo modificado o no (TOP)
         		if(g.getEstado() == 2)
         			hayModificado = true;
-        		else if(g.getEstado() == 0 && g.getValidado() != 1 && g.getValidado() != 3)
+        		else if(g.getEstado() == 0 && g.getValidado() != null && g.getValidado() != 1 && g.getValidado() != 3)
         			faltan = true;
         	} // For que valida si hay algun grupo modificado o no (BOTTOM)
         	
@@ -187,15 +193,6 @@ public class ProfesorBean implements Serializable
         }
    } // Marca el grupo para confirmacion (BOTTOM)    
    
-//   public String deshacerModificacion(Grupo g)
-//   {
-//	   this.selectedGpo = g;
-//	   Horario2 horario = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
-//	   hora2EJB.remove(horario);
-//	   
-//	   return "";
-//   }
-   
    public String confirmarModificacion()
    { // Modifica el horario para enviar a validación  (TOP)
         float min = 0;
@@ -204,32 +201,32 @@ public class ProfesorBean implements Serializable
         float horaXDia = 0;
         mensajesTraslape = new ArrayList<>();
         
-        if(selectedGpo.getValidado() == 2)
-        { // Si el grupo ya fue validado y fue rechazado (TOP)
-        	Horario2 horarioRespaldo = hora2EJB.find(selectedGpo.getHorario().getIdHorario()); // Se busca si se guardo un horario anterior
-        	if(horarioRespaldo != null)
-        	{ // Si el horario de respaldo es encontrado (TOP)
-        		if
-        		(
-        			(lunIn == null ? horarioRespaldo.getLunHoraIni() == null : lunIn.equals(horarioRespaldo.getLunHoraIni())) && 
-        			(marIn == null ? horarioRespaldo.getMarHoraIni() == null : marIn.equals(horarioRespaldo.getMarHoraIni())) &&
-        			(mieIn == null ? horarioRespaldo.getMieHoraIni() == null : mieIn.equals(horarioRespaldo.getMieHoraIni())) &&
-        			(jueIn == null ? horarioRespaldo.getJueHoraIni() == null : jueIn.equals(horarioRespaldo.getJueHoraIni())) &&
-        			(vieIn == null ? horarioRespaldo.getVieHoraIni() == null : vieIn.equals(horarioRespaldo.getVieHoraIni())) &&
-        			(sabIn == null ? horarioRespaldo.getSabHoraIni() == null : sabIn.equals(horarioRespaldo.getSabHoraIni())) && 
-        			(lunFn == null ? horarioRespaldo.getLunHoraFin() == null : lunFn.equals(horarioRespaldo.getLunHoraFin())) && 
-        			(marFn == null ? horarioRespaldo.getMarHoraFin() == null : marFn.equals(horarioRespaldo.getMarHoraFin())) &&
-        			(mieFn == null ? horarioRespaldo.getMieHoraFin() == null : mieFn.equals(horarioRespaldo.getMieHoraFin())) &&
-        			(jueFn == null ? horarioRespaldo.getJueHoraFin() == null : jueFn.equals(horarioRespaldo.getJueHoraFin())) &&
-        			(vieFn == null ? horarioRespaldo.getVieHoraFin() == null : vieFn.equals(horarioRespaldo.getVieHoraFin())) &&
-        			(sabFn == null ? horarioRespaldo.getSabHoraFin() == null : sabFn.equals(horarioRespaldo.getSabHoraFin()))
-        		)
-        		{ // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (TOP)
-        			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"Si va a elegir el horario anterior,cancele y vaya a la opcion deshacer modificación",null));
-        			return "";
-        		} // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (BOTTOM)
-        	} // Si el horario de respaldo es encontrado (BOTTOM)
-        } // Si el grupo ya fue validado y fue rechazado (BOTTOM)
+//        if(selectedGpo != null && selectedGpo.getValidado() == 2)
+//        { // Si el grupo ya fue validado y fue rechazado (TOP)
+//        	Horario2 horarioRespaldo = hora2EJB.find(selectedGpo.getHorario().getIdHorario()); // Se busca si se guardo un horario anterior
+//        	if(horarioRespaldo != null)
+//        	{ // Si el horario de respaldo es encontrado (TOP)
+//        		if
+//        		(
+//        			(lunIn == null ? horarioRespaldo.getLunHoraIni() == null : lunIn.equals(horarioRespaldo.getLunHoraIni())) && 
+//        			(marIn == null ? horarioRespaldo.getMarHoraIni() == null : marIn.equals(horarioRespaldo.getMarHoraIni())) &&
+//        			(mieIn == null ? horarioRespaldo.getMieHoraIni() == null : mieIn.equals(horarioRespaldo.getMieHoraIni())) &&
+//        			(jueIn == null ? horarioRespaldo.getJueHoraIni() == null : jueIn.equals(horarioRespaldo.getJueHoraIni())) &&
+//        			(vieIn == null ? horarioRespaldo.getVieHoraIni() == null : vieIn.equals(horarioRespaldo.getVieHoraIni())) &&
+//        			(sabIn == null ? horarioRespaldo.getSabHoraIni() == null : sabIn.equals(horarioRespaldo.getSabHoraIni())) && 
+//        			(lunFn == null ? horarioRespaldo.getLunHoraFin() == null : lunFn.equals(horarioRespaldo.getLunHoraFin())) && 
+//        			(marFn == null ? horarioRespaldo.getMarHoraFin() == null : marFn.equals(horarioRespaldo.getMarHoraFin())) &&
+//        			(mieFn == null ? horarioRespaldo.getMieHoraFin() == null : mieFn.equals(horarioRespaldo.getMieHoraFin())) &&
+//        			(jueFn == null ? horarioRespaldo.getJueHoraFin() == null : jueFn.equals(horarioRespaldo.getJueHoraFin())) &&
+//        			(vieFn == null ? horarioRespaldo.getVieHoraFin() == null : vieFn.equals(horarioRespaldo.getVieHoraFin())) &&
+//        			(sabFn == null ? horarioRespaldo.getSabHoraFin() == null : sabFn.equals(horarioRespaldo.getSabHoraFin()))
+//        		)
+//        		{ // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (TOP)
+//        			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"Si va a elegir el horario anterior,cancele y vaya a la opcion deshacer modificación",null));
+//        			return "";
+//        		} // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (BOTTOM)
+//        	} // Si el horario de respaldo es encontrado (BOTTOM)
+//        } // Si el grupo ya fue validado y fue rechazado (BOTTOM)
 		List<Grupo> listTrasLun = gpoEJB.findTraslapeLun(lunIn,lunFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
         List<Grupo> listTrasMar = gpoEJB.findTraslapeMar(marIn,marFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
         List<Grupo> listTrasMie = gpoEJB.findTraslapeMie(mieIn,mieFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
@@ -533,7 +530,7 @@ public class ProfesorBean implements Serializable
     	boolean faltan = false; 
     	for(Grupo g : gposProfe)
     	{ // For que valida si hay algun grupo modificado o no (TOP)
-    		if(g.getEstado() == 0 && g.getEstado() != 1 && g.getEstado() != 3)
+    		if(g.getEstado() == 0 && g.getValidado() != null && g.getValidado() != 1 && g.getValidado() != 3)
     			faltan = true;
     	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
     
@@ -612,10 +609,8 @@ public class ProfesorBean implements Serializable
     	return "";
     } // Manda a imprimir el formato o envia a validacion los grupos (BOTTOM)
     
-    public String generarFormatoNo1() throws NamingException, SQLException
-    { // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)
-
-    	logg.info(">>>>>>	Se generara el formato # 1.1 ....");
+    public String confirmarTodoElHorario()
+    {
     	for(Grupo g : gposProfe)
         { // For que valida si hay algun grupo modificado o no (TOP)
         	if(g.getEstado() == 1)
@@ -624,7 +619,15 @@ public class ProfesorBean implements Serializable
        			gpoEJB.edit(g);
        		}
        	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
-           		
+    	seHaConfirmadoTodo = true;
+    	return "profesor?faces-redirect=true";
+    }
+    
+    public String generarFormatoNo1() throws NamingException, SQLException
+    { // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)
+
+    	logg.info(">>>>>>	Se generara el formato # 1.1 ....");
+    	           		
    		Connection conexion = null;
         String outputFileName = "formato_1.pdf";
         Context ctx = new InitialContext();
@@ -654,7 +657,7 @@ public class ProfesorBean implements Serializable
 	            //response.getOutputStream().write(bytes, 0, bytes.length);
 	            //response.setContentType ("application/pdf");                
 	            context.responseComplete();
-            
+	            return "profesor?faces-redirect=true";            
             //logg.info(">>>> ENTRO AL TRY PERO ALGO PASO .... " + response.getStatus());
         	}    
 	        catch(IOException ioEx)
@@ -669,9 +672,6 @@ public class ProfesorBean implements Serializable
         else
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("NO SE ENCONTRO EL ARCHIVO ESPECIFICO"));
             
-            //logg.info("Se ha generado el formato # 1 ...>>> ");
-            //return "";               	
-            //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se ha generado el formato # 1"));            
         return "";
     } // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (BOTTOM)
     
@@ -717,24 +717,6 @@ public class ProfesorBean implements Serializable
         }
     }    
 
-//    public boolean faltanGposXConfOModif()
-//    {
-//    	boolean faltan  = false;
-//    	if(gposProfe != null)
-//    	{
-// 	   		for(Grupo gp : gposProfe)
-// 	   		{
-// 	   			if(gp.getEstado() == 0 && gp.getValidado() != 1 && gp.getValidado() != 3)
-// 	   			{ // Si el grupo no ha sido aceptado, confirmado o marcado para confirmacion (TOP)
-// 	   				logg.info(">>> gpo " + gp.toString());
-// 	   				faltan = true;
-// 	   				break;
-// 	   			} // Si el grupo no ha sido aceptado, confirmado o marcado para confirmacion (BOTTOM)
-// 	   		}
-//    	}
-// 	   return faltan;
-//    }
-    
     public String cerrarSession()
     {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -948,6 +930,14 @@ public class ProfesorBean implements Serializable
 	public void setConGrupoAValidar(boolean conGrupoAValidar) 
 	{
 		this.conGrupoAValidar = conGrupoAValidar;
+	}
+
+	public boolean isSeHaConfirmadoTodo() {
+		return seHaConfirmadoTodo;
+	}
+
+	public void setSeHaConfirmadoTodo(boolean seHaConfirmadoTodo) {
+		this.seHaConfirmadoTodo = seHaConfirmadoTodo;
 	}
 
 	

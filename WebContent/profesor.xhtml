@@ -150,8 +150,10 @@
 						</p:dataTable>
                     	<p:messages id="growl" />
                     	<br/><br/>
-                     	<h:commandButton value="Generar Formato #1" styleClass="botonProfesor" action="#{profesorBean.generarFormatoNo1()}"  rendered="#{profesorBean.todosConfirmadosOAceptados}"  />
-                     	<p:commandButton value="Enviar a Validacion" actionListener="#{profesorBean.enviarAvalidacion()}" rendered="#{!profesorBean.todosConfirmadosOAceptados}" update="@form"/> 
+                     	<p:commandButton value="Enviar a Validacion" actionListener="#{profesorBean.enviarAvalidacion()}" rendered="#{!profesorBean.todosConfirmadosOAceptados}" update="@form">                     	
+                     	</p:commandButton>
+                     	<p:commandButton value="Confirmar" action="#{profesorBean.confirmarTodoElHorario()}"  rendered="#{profesorBean.todosConfirmadosOAceptados and !profesorBean.seHaConfirmadoTodo}" update="@form"/>                     	 
+                     	<h:commandButton value="Generar Formato #1" styleClass="botonProfesor" action="#{profesorBean.generarFormatoNo1()}"  rendered="#{profesorBean.todosConfirmadosOAceptados and profesorBean.seHaConfirmadoTodo}" />
 
               			<br/><br/>
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (TOP) ********* -->
