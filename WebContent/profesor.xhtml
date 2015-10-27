@@ -137,7 +137,7 @@
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column>
- 		                        <h:outputText value="#{gpo.estado == 1 ? 'PC' : (gpo.estado == 2 ? 'PV' : (gpo.validado == 1 ? 'A' : (gpo.validado == 2 ? 'NA' :(gpo.validado == 3 ? 'C': ''))))}"  /> 		                    
+ 		                        <h:outputText value="#{gpo.estado == 1 || gpo.estado == 3 ? 'PC' : (gpo.estado == 2 ? 'PV' : (gpo.validado == 1 ? 'A' : (gpo.validado == 2 ? 'NA' :(gpo.validado == 3 ? 'C': ''))))}"  /> 		                    
 		                    </p:column>		                    
 		                    <p:column >
 		                    	<p:commandButton icon="ui-icon-check" title="Confirmar" actionListener="#{profesorBean.confirmarHorario(gpo)}" disabled="#{gpo.estado != 0 or gpo.validado != null}" update="@form" rendered="#{gpo.validado != 2}"/>
@@ -166,11 +166,11 @@
 <!--  ********* DIALOG PARA LA MODIFICACION DEL HORARIO (BOTTOM) ********* -->
 <!--  ********* DIALOG PARA MOSTRAR SI HAY TRASLAPES Y ACEPTAR EL CAMBIO (TOP) ********* -->
 		                <p:dialog id="trDlg"  widgetVar="traslapesDlg" modal="true" showEffect="fade" hideEffect="explode" closable="false">
-		                    <ui:repeat var="mens"  value="#{profesorBean.mensajesTraslape}" varStatus="estatus">
+		                    <ui:repeat var="mens" value="#{profesorBean.mensajesTraslape}" varStatus="estatus">
 		                        <h:outputText value="* #{mens}" /> <br/>
 		                    </ui:repeat>
 		                    <br/>
-		                    <h:outputText value="¿Esta seguro que desea enviar este horario para validación?" /> <br/><br/>
+		                    <h:outputText value="¿Esta seguro que desea enviar este horario para validación o como notificacion para la coordinación?" /> <br/><br/>
 		                    <p:commandButton value="SI"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{profesorBean.aceptarHorarioConTraslapes()}"  process="@form" update="@form" />
 		                    <p:commandButton value="NO"  styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('traslapesDlg').hide()" />
 		                </p:dialog>

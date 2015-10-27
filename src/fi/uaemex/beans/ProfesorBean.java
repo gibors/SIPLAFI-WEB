@@ -82,6 +82,12 @@ public class ProfesorBean implements Serializable
     private Date vieFn; 												// Hora de fin de la clase para el dia viernes
     private Date sabIn;													// Hora de inicio de la clase para el dia sabado
     private Date sabFn;													// Hora de fin de la clase para el dia sabado
+    private String aulaLunes;											// Guarda el aula para el lunes 
+    private String aulaMartes;											// Guarda el aula para el Martes
+    private String aulaMiercoles;										// Guarda el aula para el Miercoles
+    private String aulaJueves;											// Guarda el aula para el Jueves	
+    private String aulaViernes;											// Guarda el aula para el Viernes
+    private String aulaSabado;    										// Guarda el aula para el Sabado
     private List<String> mensajesTraslape;								// Lista con todos los traslapes que se encontraron al cambiar el horario
     private String mensajeBoton;										// Mensaje del boton para enviar a validacion o imprimir el formato #1 
     private Profesor profe;                         					// Profesor logged
@@ -92,7 +98,7 @@ public class ProfesorBean implements Serializable
     private Grupo selectedGpo;											// Almacena el grupo que es seleccionado para editar el horario
     private boolean todosConfirmadosOAceptados;							// Obtiene verdadero si todos los grupos del profesor estan confirmados o aceptados
     private boolean conGrupoAValidar;									// Obtiene verdadero si algun grupo necesita ser validado
-    private boolean seHaConfirmadoTodo;									// Si todos los grupos estan confirmados o aceptados 
+    private boolean seHaConfirmadoTodo;									// Si todos los grupos estan confirmados o aceptados
     @EJB private ProfesorFacade profFacade;              				// EJB para acceso a datos del profesor
     @EJB private GrupoFacade gpoEJB;                     				// EJB para acceso a datos del grupo
     @EJB private AulaFacade aulaEJB;									// EJB para acceso a datos de la entidad aula
@@ -103,7 +109,7 @@ public class ProfesorBean implements Serializable
     private Properties props;											// Agrega las propiedades para la conexion al servidor de correo
     private Session session = null;										// Variable de session para conectarse al servidor de correo
     private String para;												// Almacena el destino del correo
-    private static final String subject ="Nuevo grupo para validacion";	// Guarda el asunto
+    private String subject;												// Guarda el asunto del correo 
     private String mensaje;												// Almacena el mensaje que se enviara por correo
     
    public ProfesorBean()
@@ -143,6 +149,12 @@ public class ProfesorBean implements Serializable
     	vieFn = selectedGpo.getHorario().getVieHoraFin();
     	sabIn = selectedGpo.getHorario().getSabHoraIni();
     	sabFn = selectedGpo.getHorario().getSabHoraFin();
+    	aulaLunes = selectedGpo.getHorario().getAulaLun();
+    	aulaMartes = selectedGpo.getHorario().getAulaMar();
+    	aulaMiercoles = selectedGpo.getHorario().getAulaMie();
+    	aulaJueves = selectedGpo.getHorario().getAulaJue();
+    	aulaViernes = selectedGpo.getHorario().getAulaVie();
+    	aulaSabado = selectedGpo.getHorario().getAulaSab();    	
     	/****** Se utilizan variables auxiliares para el horario del grupo seleccionado porque maraca error en nulos, el componente pcalendar (TOP) ********/    	
     	logg.info(">>> se selecciono un grupo ..." + selectedGpo.getNombre() + " oooo.... " + listGposInSemester.size() + " ::: " +sabIn);    	
     	RequestContext.getCurrentInstance().execute("PF('dlgModHora').show()");    	    	
@@ -158,7 +170,21 @@ public class ProfesorBean implements Serializable
         { // Si el horario del grupo ya fue modificado y rechazado por la coordinación (TOP)
         	Horario2 hora = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
         	if(hora != null)
+        	{
+            	selectedGpo.getHorario().setLunHoraIni(hora.getLunHoraIni());
+            	selectedGpo.getHorario().setLunHoraFin(hora.getLunHoraFin());
+            	selectedGpo.getHorario().setMarHoraIni(hora.getMarHoraIni());
+            	selectedGpo.getHorario().setMarHoraFin(hora.getMarHoraFin());
+            	selectedGpo.getHorario().setMieHoraIni(hora.getMieHoraIni());
+            	selectedGpo.getHorario().setMieHoraFin(hora.getMieHoraFin());
+            	selectedGpo.getHorario().setJueHoraIni(hora.getJueHoraIni());
+            	selectedGpo.getHorario().setJueHoraFin(hora.getJueHoraFin());
+            	selectedGpo.getHorario().setVieHoraIni(hora.getVieHoraIni());
+            	selectedGpo.getHorario().setVieHoraFin(hora.getVieHoraFin());
+            	selectedGpo.getHorario().setSabHoraIni(hora.getSabHoraIni());
+            	selectedGpo.getHorario().setSabHoraFin(hora.getSabHoraFin());
         		hora2EJB.remove(hora);
+        	}
         } // Si el horario del grupo ya fue modificado y rechazado por la coordinación (BOTTOM)
         
         if(selectedGpo.getEstado() == 2 ) // Si ya fue modificado
@@ -176,7 +202,6 @@ public class ProfesorBean implements Serializable
         	
         	if(!hayModificado)
         	{ // Si no hay algun grupo modificado (TOP)
-        		setMensajeBoton("Imprimir formato #1");        		
         		if(faltan)
         		{
         			todosConfirmadosOAceptados = false;
@@ -186,7 +211,6 @@ public class ProfesorBean implements Serializable
         	} // Si no hay algun grupo modificado (BOTTOM)  
             else
             {
-            	setMensajeBoton("Enviar para validación");            	
         		if(faltan) 
         			todosConfirmadosOAceptados = false;
             }
@@ -304,7 +328,7 @@ public class ProfesorBean implements Serializable
             horas = horas + horaXDia;
             horaXDia = horaXDia + (min > 0 ? min/60 : 0);
             if(min > 0) minutos = minutos + min/60;
-        //    System.out.println(" Aula " + horarioGpo.getAulaLun());
+            // System.out.println(" Aula " + horarioGpo.getAulaLun());
             
             if(lunIn.getTime() >= lunFn.getTime())
             { // Si la hora inicial es mayor o igual que la hora final (TOP)
@@ -447,13 +471,44 @@ public class ProfesorBean implements Serializable
         		(mieFn == null ? selectedGpo.getHorario().getMieHoraFin() == null : mieFn.equals(selectedGpo.getHorario().getMieHoraFin())) &&
         		(jueFn == null ? selectedGpo.getHorario().getJueHoraFin() == null : jueFn.equals(selectedGpo.getHorario().getJueHoraFin())) &&
         		(vieFn == null ? selectedGpo.getHorario().getVieHoraFin() == null : vieFn.equals(selectedGpo.getHorario().getVieHoraFin())) &&
-        		(sabFn == null ? selectedGpo.getHorario().getSabHoraFin() == null : sabFn.equals(selectedGpo.getHorario().getSabHoraFin()))
+        		(sabFn == null ? selectedGpo.getHorario().getSabHoraFin() == null : sabFn.equals(selectedGpo.getHorario().getSabHoraFin())) &&
+        		(aulaLunes == null ? selectedGpo.getHorario().getAulaLun() == null : aulaLunes.equals(selectedGpo.getHorario().getAulaLun())) &&
+        		(aulaMartes == null ? selectedGpo.getHorario().getAulaMar() == null : aulaMartes.equals(selectedGpo.getHorario().getAulaMar())) &&
+        		(aulaMiercoles == null ? selectedGpo.getHorario().getAulaMie() == null : aulaMiercoles.equals(selectedGpo.getHorario().getAulaMie())) &&
+        		(aulaJueves == null ? selectedGpo.getHorario().getAulaJue() == null : aulaJueves.equals(selectedGpo.getHorario().getAulaJue())) &&
+        		(aulaViernes == null ? selectedGpo.getHorario().getAulaVie() == null : aulaViernes.equals(selectedGpo.getHorario().getAulaVie())) &&
+        		(aulaSabado == null ? selectedGpo.getHorario().getAulaSab() == null : aulaSabado.equals(selectedGpo.getHorario().getAulaSab()))        		
         	)
         { // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (TOP)
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"No realizaste ninguna modficación del horario",null));
         	return "";
         } // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (BOTTOM)
-        
+
+        if (	
+        		((lunIn == null ? selectedGpo.getHorario().getLunHoraIni() == null : lunIn.equals(selectedGpo.getHorario().getLunHoraIni())) && 
+        		(marIn == null ? selectedGpo.getHorario().getMarHoraIni() == null : marIn.equals(selectedGpo.getHorario().getMarHoraIni())) &&
+        		(mieIn == null ? selectedGpo.getHorario().getMieHoraIni() == null : mieIn.equals(selectedGpo.getHorario().getMieHoraIni())) &&
+        		(jueIn == null ? selectedGpo.getHorario().getJueHoraIni() == null : jueIn.equals(selectedGpo.getHorario().getJueHoraIni())) &&
+        		(vieIn == null ? selectedGpo.getHorario().getVieHoraIni() == null : vieIn.equals(selectedGpo.getHorario().getVieHoraIni())) &&
+        		(sabIn == null ? selectedGpo.getHorario().getSabHoraIni() == null : sabIn.equals(selectedGpo.getHorario().getSabHoraIni())) && 
+        		(lunFn == null ? selectedGpo.getHorario().getLunHoraFin() == null : lunFn.equals(selectedGpo.getHorario().getLunHoraFin())) && 
+        		(marFn == null ? selectedGpo.getHorario().getMarHoraFin() == null : marFn.equals(selectedGpo.getHorario().getMarHoraFin())) &&
+        		(mieFn == null ? selectedGpo.getHorario().getMieHoraFin() == null : mieFn.equals(selectedGpo.getHorario().getMieHoraFin())) &&
+        		(jueFn == null ? selectedGpo.getHorario().getJueHoraFin() == null : jueFn.equals(selectedGpo.getHorario().getJueHoraFin())) &&
+        		(vieFn == null ? selectedGpo.getHorario().getVieHoraFin() == null : vieFn.equals(selectedGpo.getHorario().getVieHoraFin())) &&
+        		(sabFn == null ? selectedGpo.getHorario().getSabHoraFin() == null : sabFn.equals(selectedGpo.getHorario().getSabHoraFin())))   &&
+        		((aulaLunes == null ? selectedGpo.getHorario().getAulaLun() != null : !aulaLunes.equals(selectedGpo.getHorario().getAulaLun())) ||
+        		(aulaMartes == null ? selectedGpo.getHorario().getAulaMar() != null : !aulaMartes.equals(selectedGpo.getHorario().getAulaMar())) ||
+        		(aulaMiercoles == null ? selectedGpo.getHorario().getAulaMie() != null : !aulaMiercoles.equals(selectedGpo.getHorario().getAulaMie())) ||     
+        		(aulaJueves == null ? selectedGpo.getHorario().getAulaJue() != null : !aulaJueves.equals(selectedGpo.getHorario().getAulaJue())) ||
+        		(aulaViernes == null ? selectedGpo.getHorario().getAulaVie() != null : !aulaViernes.equals(selectedGpo.getHorario().getAulaVie())) ||
+        		(aulaSabado == null ? selectedGpo.getHorario().getAulaSab() != null : !aulaSabado.equals(selectedGpo.getHorario().getAulaSab())))		        		
+        	)
+        { // Si solo se modifica el aula que se usará para la materia (TOP)
+            //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"No realizaste ninguna modficación del horario",null));
+        	selectedGpo.setEstado(3);
+        //	return "";
+        } // Si solo se modifica el aula que se usará para la materia (BOTTOM)
 // *********** Verifica que no exista traslapes con las materias del mismo semestre (TOP)******************************
         if(!listTrasLun.isEmpty())
         { // Si hay traslape en lunes (TOP)
@@ -497,6 +552,8 @@ public class ProfesorBean implements Serializable
     
     public void aceptarHorarioConTraslapes()
     { // Acepta los cambios para posterior enviar el horario a validacion (TOP)
+    	boolean hayModificado = false;
+    	boolean faltan = false;
     	selectedGpo.getHorario().setLunHoraIni(lunIn);
     	selectedGpo.getHorario().setLunHoraFin(lunFn);
     	selectedGpo.getHorario().setMarHoraIni(marIn);
@@ -509,10 +566,13 @@ public class ProfesorBean implements Serializable
     	selectedGpo.getHorario().setVieHoraFin(vieFn);
     	selectedGpo.getHorario().setSabHoraIni(sabIn);
     	selectedGpo.getHorario().setSabHoraFin(sabFn);
-    	selectedGpo.setEstado(2); // Se pone en estado modificado al grupo seleccionado
-        setMensajeBoton("Enviar para validación");
-        
-        StringBuilder strBuild = new StringBuilder("");
+    	selectedGpo.getHorario().setAulaLun(aulaLunes);
+    	selectedGpo.getHorario().setAulaMar(aulaMartes);
+    	selectedGpo.getHorario().setAulaMie(aulaMiercoles);
+    	selectedGpo.getHorario().setAulaJue(aulaJueves);
+    	selectedGpo.getHorario().setAulaVie(aulaViernes);
+    	selectedGpo.getHorario().setAulaSab(aulaSabado);
+    	StringBuilder strBuild = new StringBuilder("");
         for(int i=0; i < mensajesTraslape.size();i++)
         {
     		String s = mensajesTraslape.get(i);
@@ -522,11 +582,38 @@ public class ProfesorBean implements Serializable
         		strBuild.append(s + ".");        	        		
         }
         selectedGpo.setDescripcion(strBuild.toString());
-        todosConfirmadosOAceptados = false;
+        
+    	if(selectedGpo.getEstado() != 3)
+    		selectedGpo.setEstado(2); // Se pone en estado modificado al grupo seleccionado
+
+		//selectedGpo.setEstado(1); // Solo se enviara como notificacion y se confirma el grupo..
+		for(Grupo g : gposProfe)
+    	{ // For que valida si hay algun grupo modificado o no (TOP)
+    		if(g.getEstado() == 2)
+    			hayModificado = true;
+    		else if(g.getEstado() == 0 && g.getValidado() != null && g.getValidado() != 1 && g.getValidado() != 3)
+    			faltan = true;
+    	} // For que valida si hay algun grupo modificado o no (BOTTOM)
+    	
+    	if(!hayModificado)
+    	{ // Si no hay algun grupo modificado (TOP)
+    		if(faltan)
+    		{
+    			todosConfirmadosOAceptados = false;
+    		}
+    		else 
+    			todosConfirmadosOAceptados = true;
+    	} // Si no hay algun grupo modificado (BOTTOM)  
+        else
+        {
+    		if(faltan) 
+    			todosConfirmadosOAceptados = false;
+        }        
+    	  
     } // Acepta los cambios para posterior enviar el horario a validacion (BOTTOM)
     
     public String enviarAvalidacion() throws NamingException, SQLException
-    { // Manda a imprimir el formato o envia a validacion los grupos (TOP)
+    { // Envia el cambio de horario del grupo seleccionado a validacion (TOP)
     	boolean faltan = false; 
     	for(Grupo g : gposProfe)
     	{ // For que valida si hay algun grupo modificado o no (TOP)
@@ -549,6 +636,12 @@ public class ProfesorBean implements Serializable
     				g.setValidado(3);
     				gpoEJB.edit(g);
     			} // Si el grupo fue confirmado (BOTTOM)
+    			else if(g.getEstado() == 3)
+    			{ // Si solo se modificaron las aulas del grupo (TOP)
+    				g.setValidado(3);
+    				gpoEJB.edit(g);
+    				HorarioEJB.edit(g.getHorario());    				
+    			} // Si solo se modificaron las aulas del grupo (BOTTOM)
     			else if(g.getEstado() == 2)
     			{ // Si el grupo fue modificado (TOP)
     				Horario2 horarioAnterior = new Horario2();
@@ -607,10 +700,10 @@ public class ProfesorBean implements Serializable
     		} // For para verificar los grupos del profesor (BOTTOM)
     	} // Si hubo modificaciones o faltan grupos por confirmar o modificar (BOTTOM)
     	return "";
-    } // Manda a imprimir el formato o envia a validacion los grupos (BOTTOM)
+    } // Envia el cambio de horario del grupo seleccionado a validacion (BOTTOM)
     
     public String confirmarTodoElHorario()
-    {
+    { // Si hay pura confirmacion en el ultimo ingreso al sistema (TOP)
     	for(Grupo g : gposProfe)
         { // For que valida si hay algun grupo modificado o no (TOP)
         	if(g.getEstado() == 1)
@@ -618,10 +711,17 @@ public class ProfesorBean implements Serializable
        			g.setValidado(3); // Se setea el grupo a confirmado 
        			gpoEJB.edit(g);
        		}
+        	else if(g.getEstado() == 3)
+        	{
+       			g.setValidado(3); // Se setea el grupo a confirmado 
+       			gpoEJB.edit(g);
+       			HorarioEJB.edit(g.getHorario());
+       			enviarMail(g);
+        	}
        	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
     	seHaConfirmadoTodo = true;
     	return "profesor?faces-redirect=true";
-    }
+    } // Si hay pura confirmacion en el ultimo ingreso al sistema (BOTTOM)
     
     public String generarFormatoNo1() throws NamingException, SQLException
     { // Si odos los grupos fueron aceptados y/0 confirmados IMPRIME (TOP)
@@ -644,7 +744,6 @@ public class ProfesorBean implements Serializable
         	try
         	{
 	            JasperPrint jasperPrint = JasperFillManager.fillReport(reportFile.getPath(),parameters, conexion);
-	            //byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), parameters,conexion);
 	            HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
 	            response.setHeader ("Content-Disposition", "attachment; filename=" + outputFileName);
 	            response.setContentType ("application/pdf");                                    
@@ -653,9 +752,6 @@ public class ProfesorBean implements Serializable
 	            context.getApplication().getStateManager().saveView(context);
 	            stream.flush();
 	            stream.close();
-	            //response.setContentLength(bytes.length);
-	            //response.getOutputStream().write(bytes, 0, bytes.length);
-	            //response.setContentType ("application/pdf");                
 	            context.responseComplete();
 	            return "profesor?faces-redirect=true";            
             //logg.info(">>>> ENTRO AL TRY PERO ALGO PASO .... " + response.getStatus());
@@ -680,10 +776,22 @@ public class ProfesorBean implements Serializable
         final String user = "gibran_skato@hotmail.com";
         final String password ="sirenito_88";
         
-        mensaje = "El profesor " + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
-        		"ha enviado el grupo " + g.getNombre() +  " de la materia " + g.getClaveMateria().getNombreMateria() + " para validacion \n " +
-        				 "Ingrese a la liga para validar el (los) grupo(s) por validar";
+        if(g.getEstado() == 2)
+        {
+        	mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
+        		"</b> ha enviado el grupo <b>" + g.getNombre() +  "</b> de la materia <b>" + g.getClaveMateria().getNombreMateria() + "</b> para validacion \n " +
+        				 "Ingrese a la liga para validar el (los) grupo(s)  http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
+        	subject = "Nuevo grupo para validacion";
+        }
+        else if(g.getEstado() == 3)
+        {
+            mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
+            		"</b> modifico solo el tipo de uala para el grupo <b>" + g.getNombre() +  "</b> de la materia <b>" + g.getClaveMateria().getNombreMateria() + "</b> \n " +
+            				 "Ingrese a la liga para ver la planilla http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
+        	subject = "Se realizó la modificacion solo de aulas";            
+        }
         para = "giresa.ico@gmail.com";
+        
         props = new Properties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
@@ -707,7 +815,7 @@ public class ProfesorBean implements Serializable
             message.setRecipients(Message.RecipientType.TO,
             InternetAddress.parse(para));
             message.setSubject(subject);
-            message.setText(mensaje);
+            message.setContent(mensaje,"text/html");
             Transport.send(message);
             logg.info("EL CORREO FUE ENVIADO EXITOSAMENTE");
             //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(""));
@@ -932,13 +1040,74 @@ public class ProfesorBean implements Serializable
 		this.conGrupoAValidar = conGrupoAValidar;
 	}
 
-	public boolean isSeHaConfirmadoTodo() {
+	public boolean isSeHaConfirmadoTodo() 
+	{
 		return seHaConfirmadoTodo;
 	}
 
-	public void setSeHaConfirmadoTodo(boolean seHaConfirmadoTodo) {
+	public void setSeHaConfirmadoTodo(boolean seHaConfirmadoTodo) 
+	{
 		this.seHaConfirmadoTodo = seHaConfirmadoTodo;
 	}
 
-	
+	public String getAulaLunes() 
+	{
+		return aulaLunes;
+	}
+
+	public void setAulaLunes(String aulaLunes) 
+	{
+		this.aulaLunes = aulaLunes;
+	}
+
+	public String getAulaMartes() 
+	{
+		return aulaMartes;
+	}
+
+	public void setAulaMartes(String aulaMartes) 
+	{
+		this.aulaMartes = aulaMartes;
+	}
+
+	public String getAulaMiercoles() 
+	{
+		return aulaMiercoles;
+	}
+
+	public void setAulaMiercoles(String aulaMiercoles) 
+	{
+		this.aulaMiercoles = aulaMiercoles;
+	}
+
+	public String getAulaJueves() 
+	{
+		return aulaJueves;
+	}
+
+	public void setAulaJueves(String aulaJueves) 
+	{
+		this.aulaJueves = aulaJueves;
+	}
+
+	public String getAulaViernes() 
+	{
+		return aulaViernes;
+	}
+
+	public void setAulaViernes(String aulaViernes) 
+	{
+		this.aulaViernes = aulaViernes;
+	}
+
+	public String getAulaSabado() 
+	{
+		return aulaSabado;
+	}
+
+	public void setAulaSabado(String aulaSabado) 
+	{
+		this.aulaSabado = aulaSabado;
+	}
+
 }
