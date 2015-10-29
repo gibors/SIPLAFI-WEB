@@ -8,6 +8,11 @@
 	<ui:composition template="/layouts/mainTemplate.xhtml">
             <ui:define name="title">valida grupo profesor</ui:define>
             <ui:define name="content">
+				<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+ 
+				<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+    				<p:graphicImage url="images/statusBar.png" />
+				</p:dialog>            
            		<h:form >
                     <h:panelGroup layout="block" style="text-align: center">
                         <p:menubar>
