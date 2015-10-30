@@ -142,7 +142,7 @@
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column>
- 		                        <h:outputText value="#{gpo.estado == 1 || gpo.estado == 3 ? 'PC' : (gpo.estado == 2 ? 'PV' : (gpo.validado == 1 ? 'A' : (gpo.validado == 2 ? 'NA' :(gpo.validado == 3 ? 'C': ''))))}"  /> 		                    
+ 		                        <h:outputText value="#{(gpo.estado == 1 || gpo.estado == 3) ? 'PC' : (gpo.estado == 2 ? 'PV' : (gpo.validado == 1 ? 'A' : (gpo.validado == 2 ? 'NA' :(gpo.validado == 3 ? 'C': ''))))}"  /> 		                    
 		                    </p:column>		                    
 		                    <p:column >
 		                    	<p:commandButton icon="ui-icon-check" title="Confirmar" actionListener="#{profesorBean.confirmarHorario(gpo)}" disabled="#{gpo.estado != 0 or gpo.validado != null}" update="@form" rendered="#{gpo.validado != 2}"/>

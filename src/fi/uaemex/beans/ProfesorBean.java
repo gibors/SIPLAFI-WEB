@@ -216,8 +216,10 @@ public class ProfesorBean implements Serializable
         		{
         			todosConfirmadosOAceptados = false;
         		}
-        		else 
+        		else
+        		{
         			todosConfirmadosOAceptados = true;
+        		}
         	} // Si no hay algun grupo modificado (BOTTOM)  
             else
             {
@@ -718,19 +720,20 @@ public class ProfesorBean implements Serializable
     		if(g.getValidado() != null && g.getValidado() == 2)
     		{
     			hora2EJB.remove(hora2EJB.find(g.getHorario().getIdHorario()));
-    			g.setValidado(3);
     		}
         	if(g.getEstado() == 1)
         	{
        			g.setValidado(3); // Se setea el grupo a confirmado
-       			HorarioEJB.edit(g.getHorario()); 
+       			HorarioEJB.edit(g.getHorario());       			
        			gpoEJB.edit(g);
+       			g.setEstado(0);       			
        		}
         	else if(g.getEstado() == 3)
         	{
-       			g.setValidado(3); // Se setea el grupo a confirmado 
+       			g.setValidado(3); // Se setea el grupo a confirmado
        			gpoEJB.edit(g);
        			HorarioEJB.edit(g.getHorario());
+       			g.setEstado(0);       			
        			enviarMail(g);
         	}
        	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
