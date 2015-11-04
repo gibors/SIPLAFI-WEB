@@ -186,12 +186,12 @@ public class ProfesorBean implements Serializable
             	selectedGpo.getHorario().setVieHoraFin(hora.getVieHoraFin());
             	selectedGpo.getHorario().setSabHoraIni(hora.getSabHoraIni());
             	selectedGpo.getHorario().setSabHoraFin(hora.getSabHoraFin());
-            	selectedGpo.getHorario().setAulaLun(aulaLunes);
-            	selectedGpo.getHorario().setAulaMar(aulaMartes);
-            	selectedGpo.getHorario().setAulaMie(aulaMiercoles);
-            	selectedGpo.getHorario().setAulaJue(aulaJueves);
-            	selectedGpo.getHorario().setAulaVie(aulaViernes);
-            	selectedGpo.getHorario().setAulaSab(aulaSabado);        
+            	selectedGpo.getHorario().setAulaLun(hora.getAulaLun());
+            	selectedGpo.getHorario().setAulaMar(hora.getAulaMar());
+            	selectedGpo.getHorario().setAulaMie(hora.getAulaMie());
+            	selectedGpo.getHorario().setAulaJue(hora.getAulaJue());
+            	selectedGpo.getHorario().setAulaVie(hora.getAulaVie());
+            	selectedGpo.getHorario().setAulaSab(hora.getAulaSab());        
             	//selectedGpo.setValidado(null);
         		//hora2EJB.remove(hora);
         	}
