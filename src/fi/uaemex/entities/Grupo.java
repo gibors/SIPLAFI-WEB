@@ -97,8 +97,6 @@ public class Grupo implements Serializable {
     private Integer estado=0;
     @Transient
     private String descripcion;   
-    @JoinColumn(name = "periodos.periodo")
-    private String periodo;
     
     public Grupo() 
     {
@@ -179,17 +177,7 @@ public class Grupo implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-          
-    
-    
+       
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

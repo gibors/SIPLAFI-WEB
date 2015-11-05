@@ -7,6 +7,8 @@
 	<persistence-unit name="SIPLAFI-WEB" transaction-type="JTA">
 	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 	<jta-data-source>mydb</jta-data-source>
+	<class>fi.uaemex.entities.Apreciacion</class>
+	<class>fi.uaemex.entities.ApreciacionPK</class>
  	<exclude-unlisted-classes>false</exclude-unlisted-classes> 	 	
 <!--  		<properties> 	 		    	    -->
 <!--  	    	<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />  -->

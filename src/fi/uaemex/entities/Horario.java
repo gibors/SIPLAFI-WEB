@@ -117,11 +117,24 @@ public class Horario implements Serializable {
     private Grupo idGrupo;
     @Column(name="OBSERVACIONES")
     private String observaciones;
+    @JoinColumn(name="PERIODO")
+    private String periodo;
     
-    public Horario() {
+    public Horario() 
+    {
     }
+    
+    public String getPeriodo() {
+		return periodo;
+	}
 
-    public Horario(Integer idHorario) {
+
+	public void setPeriodo(String periodo) {
+		this.periodo = periodo;
+	}
+
+
+	public Horario(Integer idHorario) {
         this.idHorario = idHorario;
     }
 
