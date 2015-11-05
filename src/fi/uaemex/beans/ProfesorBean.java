@@ -239,32 +239,32 @@ public class ProfesorBean implements Serializable
         float horaXDia = 0;
         mensajesTraslape = new ArrayList<>();
         
-//        if(selectedGpo != null && selectedGpo.getValidado() == 2)
-//        { // Si el grupo ya fue validado y fue rechazado (TOP)
-//        	Horario2 horarioRespaldo = hora2EJB.find(selectedGpo.getHorario().getIdHorario()); // Se busca si se guardo un horario anterior
-//        	if(horarioRespaldo != null)
-//        	{ // Si el horario de respaldo es encontrado (TOP)
-//        		if
-//        		(
-//        			(lunIn == null ? horarioRespaldo.getLunHoraIni() == null : lunIn.equals(horarioRespaldo.getLunHoraIni())) && 
-//        			(marIn == null ? horarioRespaldo.getMarHoraIni() == null : marIn.equals(horarioRespaldo.getMarHoraIni())) &&
-//        			(mieIn == null ? horarioRespaldo.getMieHoraIni() == null : mieIn.equals(horarioRespaldo.getMieHoraIni())) &&
-//        			(jueIn == null ? horarioRespaldo.getJueHoraIni() == null : jueIn.equals(horarioRespaldo.getJueHoraIni())) &&
-//        			(vieIn == null ? horarioRespaldo.getVieHoraIni() == null : vieIn.equals(horarioRespaldo.getVieHoraIni())) &&
-//        			(sabIn == null ? horarioRespaldo.getSabHoraIni() == null : sabIn.equals(horarioRespaldo.getSabHoraIni())) && 
-//        			(lunFn == null ? horarioRespaldo.getLunHoraFin() == null : lunFn.equals(horarioRespaldo.getLunHoraFin())) && 
-//        			(marFn == null ? horarioRespaldo.getMarHoraFin() == null : marFn.equals(horarioRespaldo.getMarHoraFin())) &&
-//        			(mieFn == null ? horarioRespaldo.getMieHoraFin() == null : mieFn.equals(horarioRespaldo.getMieHoraFin())) &&
-//        			(jueFn == null ? horarioRespaldo.getJueHoraFin() == null : jueFn.equals(horarioRespaldo.getJueHoraFin())) &&
-//        			(vieFn == null ? horarioRespaldo.getVieHoraFin() == null : vieFn.equals(horarioRespaldo.getVieHoraFin())) &&
-//        			(sabFn == null ? horarioRespaldo.getSabHoraFin() == null : sabFn.equals(horarioRespaldo.getSabHoraFin()))
-//        		)
-//        		{ // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (TOP)
-//        			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"Si va a elegir el horario anterior,cancele y vaya a la opcion deshacer modificación",null));
-//        			return "";
-//        		} // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (BOTTOM)
-//        	} // Si el horario de respaldo es encontrado (BOTTOM)
-//        } // Si el grupo ya fue validado y fue rechazado (BOTTOM)
+        if(selectedGpo != null && selectedGpo.getValidado() == 2)
+        { // Si el grupo ya fue validado y fue rechazado (TOP)
+        	Horario2 horarioRespaldo = hora2EJB.find(selectedGpo.getHorario().getIdHorario()); // Se busca si se guardo un horario anterior
+        	if(horarioRespaldo != null)
+        	{ // Si el horario de respaldo es encontrado (TOP)
+        		if
+        		(
+        			(lunIn == null ? horarioRespaldo.getLunHoraIni() == null : lunIn.equals(horarioRespaldo.getLunHoraIni())) && 
+        			(marIn == null ? horarioRespaldo.getMarHoraIni() == null : marIn.equals(horarioRespaldo.getMarHoraIni())) &&
+        			(mieIn == null ? horarioRespaldo.getMieHoraIni() == null : mieIn.equals(horarioRespaldo.getMieHoraIni())) &&
+        			(jueIn == null ? horarioRespaldo.getJueHoraIni() == null : jueIn.equals(horarioRespaldo.getJueHoraIni())) &&
+        			(vieIn == null ? horarioRespaldo.getVieHoraIni() == null : vieIn.equals(horarioRespaldo.getVieHoraIni())) &&
+        			(sabIn == null ? horarioRespaldo.getSabHoraIni() == null : sabIn.equals(horarioRespaldo.getSabHoraIni())) && 
+        			(lunFn == null ? horarioRespaldo.getLunHoraFin() == null : lunFn.equals(horarioRespaldo.getLunHoraFin())) && 
+        			(marFn == null ? horarioRespaldo.getMarHoraFin() == null : marFn.equals(horarioRespaldo.getMarHoraFin())) &&
+        			(mieFn == null ? horarioRespaldo.getMieHoraFin() == null : mieFn.equals(horarioRespaldo.getMieHoraFin())) &&
+        			(jueFn == null ? horarioRespaldo.getJueHoraFin() == null : jueFn.equals(horarioRespaldo.getJueHoraFin())) &&
+        			(vieFn == null ? horarioRespaldo.getVieHoraFin() == null : vieFn.equals(horarioRespaldo.getVieHoraFin())) &&
+        			(sabFn == null ? horarioRespaldo.getSabHoraFin() == null : sabFn.equals(horarioRespaldo.getSabHoraFin()))
+        		)
+        		{ // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (TOP)
+        			FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"Si va a elegir el horario anterior,cancele y vaya a la opcion deshacer modificación",null));
+        			return "";
+        		} // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (BOTTOM)
+        	} // Si el horario de respaldo es encontrado (BOTTOM)
+        } // Si el grupo ya fue validado y fue rechazado (BOTTOM)
 		List<Grupo> listTrasLun = gpoEJB.findTraslapeLun(lunIn,lunFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
         List<Grupo> listTrasMar = gpoEJB.findTraslapeMar(marIn,marFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
         List<Grupo> listTrasMie = gpoEJB.findTraslapeMie(mieIn,mieFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
@@ -678,9 +678,9 @@ public class ProfesorBean implements Serializable
     			else if(g.getEstado() == 3)
     			{ // Si solo se modificaron las aulas del grupo (TOP)
     				g.setValidado(3);
+                    enviarMail(g);    				    				    				
     				gpoEJB.edit(g);
     				HorarioEJB.edit(g.getHorario());
-                    enviarMail(g);    				    				
     			} // Si solo se modificaron las aulas del grupo (BOTTOM)
     			else if(g.getEstado() == 2)
     			{ // Si el grupo fue modificado (TOP)
@@ -692,15 +692,14 @@ public class ProfesorBean implements Serializable
     			    		if(g.getHorario().getIdHorario() == h.getIdHorario())
     			    			hora2EJB.create(h);
     			    	}
+                        enviarMail(g);    			    	
     			    	gpoEJB.edit(g);
     			    	HorarioEJB.edit(g.getHorario());  		
                         NotificacionesCoord coord = new NotificacionesCoord();
                         coord.setNotificacionesCoordPK(new NotificacionesCoordPK(g.getIdGrupo(),new Date()));
                         coord.setDescripcion(g.getDescripcion());
-                        coord.setEstado(0); // Estado no leido 
-                        
+                        coord.setEstado(0); // Estado no leido                        
                         notifEJB.create(coord);
-                        enviarMail(g);
     		    		conGrupoAValidar = true;    			    	
     			    }
     			    catch(PersistenceException exP)
@@ -729,12 +728,12 @@ public class ProfesorBean implements Serializable
        			g.setEstado(0);       			
        		}
         	else if(g.getEstado() == 3)
-        	{
+        	{        		
        			g.setValidado(3); // Se setea el grupo a confirmado
+       			enviarMail(g);       			
        			gpoEJB.edit(g);
        			HorarioEJB.edit(g.getHorario());
        			g.setEstado(0);       			
-       			enviarMail(g);
         	}
        	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
     	seHaConfirmadoTodo = true;
@@ -793,7 +792,7 @@ public class ProfesorBean implements Serializable
     {
         final String user = "gibran_skato@hotmail.com";
         final String password ="sirenito_88";
-        
+        para = "giresa.ico@gmail.com";        
         if(g.getEstado() == 2)
         {
         	mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
@@ -808,7 +807,6 @@ public class ProfesorBean implements Serializable
             				 "Ingrese a la liga para ver la planilla http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
         	subject = "Se realizó la modificacion solo de aulas";            
         }
-        para = "giresa.ico@gmail.com";
         
         props = new Properties();
         props.put("mail.transport.protocol", "smtp");
@@ -816,18 +814,17 @@ public class ProfesorBean implements Serializable
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.live.com");
         props.put("mail.smtp.port", "587");
-        
-        Authenticator aut = new Authenticator()
-        {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication()
-            {
-                return new PasswordAuthentication(user, password);
-            }
-        };        
-        session = Session.getInstance(props,aut);                
         try 
-        {
+        {        
+        	Authenticator aut = new Authenticator()
+        	{
+        		@Override
+        		protected PasswordAuthentication getPasswordAuthentication()
+        		{
+        			return new PasswordAuthentication(user, password);
+        		}
+        	};        
+        	session = Session.getInstance(props,aut);                
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
             message.setRecipients(Message.RecipientType.TO,
@@ -838,8 +835,24 @@ public class ProfesorBean implements Serializable
             logg.info("EL CORREO FUE ENVIADO EXITOSAMENTE");
             //RequestContext.getCurrentInstance().showMessageInDialog(new FacesMessage(""));
 
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+        } 
+        catch (MessagingException e) 
+        {
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ocurrio un error al enviar el correo verifique su conexion a internet"));
+        	logg.info("Error de conexion");        	
+           // throw new RuntimeException(e);
+        }
+        catch(Exception ex)
+        {
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ocurrio un error al enviar el correo verifique su conexion a internet"));
+        	logg.info("Error de conexion");
+//        	try 
+//        	{
+//				FacesContext.getCurrentInstance().getExternalContext().redirect("error");
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
         }
     }    
 

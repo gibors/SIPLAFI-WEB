@@ -41,7 +41,7 @@ public class ProfesoUDBean implements Serializable{
     private String gradoProfesor;																	// Grado de estudios del profesor
     private String emailProfesor;																	// Correo electronico del profesor
     private Matcher matcher;																		// Valida o hace match si el correo es valido
-        
+    private Double apreciacion;																		// Guarda la calificacion obtenida en la apreciacion estudiantil    
     private Profesor profeSelected;																	// Profesor que se selecciona para ser modificado o eliminado    
     private List<Profesor> filteredProfesor;														// Filtrado para busqueda del profesor 
     private List<Profesor> listaProfs;																// Lista de todos los profesores en la base de datos    
@@ -243,6 +243,13 @@ public class ProfesoUDBean implements Serializable{
 	public void setEmailProfesor(String emailProfesor) {
 		this.emailProfesor = emailProfesor;
 	}
-    
-    
+
+	public double getApreciacion() {
+		return apreciacion;
+	}
+
+	public void setApreciacion(double apreciacion) {
+		this.apreciacion = apreciacion;
+	}
+		       
 }

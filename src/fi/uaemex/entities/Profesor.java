@@ -77,7 +77,7 @@ public class Profesor implements Serializable {
     @OneToMany(mappedBy = "rfcProfesor")
     private List<Grupo> grupoList;
     @Column(name = "APRECIACION")
-    private double apreciacion;
+    private Double apreciacion;
     
     public Profesor() {
     }
@@ -167,11 +167,11 @@ public class Profesor implements Serializable {
         this.grupoList = grupoList;
     }
     
-    public double getApreciacion() {
+    public Double getApreciacion() {
 		return apreciacion;
 	}
 
-	public void setApreciacion(double apreciacion) {
+	public void setApreciacion(Double apreciacion) {
 		this.apreciacion = apreciacion;
 	}
 

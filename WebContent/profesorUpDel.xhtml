@@ -12,7 +12,7 @@
                 //<![CDATA[
                 function validaTexto()
                 {
-                    if ((event.keyCode > 47 && event.keyCode < 58))
+                    if ((event.keyCode > 47 && event.keyCode < 58) || event.keyCode == 46)
                         event.returnValue = true;
                     else
                         event.returnValue = false;
@@ -73,6 +73,8 @@
                             	<p:inputText value="#{profesoUDBean.apellidoPaterno}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa el apellido paterno" maxlength="35" size="36"/>
                             	<h:outputText value="Apellido Materno " />
                             	<p:inputText value="#{profesoUDBean.apellidoMaterno}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa apellido materno" maxlength="35" size="36"/>
+                        		<h:outputText value="Apreciacion: " />
+                        		<p:inputText value="#{profesoUDBean.apreciacion}" onkeypress="javascript:validaTexto()"/>                                                         	
                         		<h:outputText value="Email del Profesor: " />                             
      							<p:inputText value="#{profesoUDBean.emailProfesor}" maxlength="50" >
                             		<p:ajax event="keyup"  listener="#{profesoUDBean.validateEmail}" update="msg" />
@@ -99,6 +101,12 @@
                             	<p:inputText value="#{profesoUDBean.profeSelected.apePatProfe}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa el apellido paterno" maxlength="35"/>
                             	<h:outputText value="Apellido Materno " />
                             	<p:inputText value="#{profesoUDBean.profeSelected.apeMatProfe}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa apellido materno" maxlength="35"/>
+                        		<h:outputText value="Apreciacion: " />
+                        		<p:inputText value="#{profesoUDBean.profeSelected.apreciacion}" onkeypress="javascript:validaTexto()"/>                            	
+                        		<h:outputText value="Email del Profesor: " />                             
+     							<p:inputText value="#{profesoUDBean.profeSelected.emailProfe}" maxlength="50" >
+                            		<p:ajax event="keyup"  listener="#{profesoUDBean.validateEmail}" update="msg" />
+								</p:inputText>     							                            	
                          		<p:column colspan="2" style="alignment-adjust: central">
                                 	<p:commandButton value="Actualizar" action="#{profesoUDBean.actualizaProfesor}" update="msg2" process="profDetail" />
                             	</p:column>
