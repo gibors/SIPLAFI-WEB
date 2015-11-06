@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Periodos.findAll", query = "SELECT p FROM Periodos p"),
     @NamedQuery(name = "Periodos.findByPeriodo", query = "SELECT p FROM Periodos p WHERE p.periodo = :periodo"),
+    @NamedQuery(name = "Periodos.findCurrent", query = "SELECT p FROM Periodos p WHERE p.actual = 1"),    
     @NamedQuery(name = "Periodos.findByDescripcion", query = "SELECT p FROM Periodos p WHERE p.descripcion = :descripcion")})
 public class Periodos implements Serializable {
     private static final long serialVersionUID = 1L;

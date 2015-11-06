@@ -11,13 +11,20 @@ import javax.persistence.*;
 public class ApreciacionPK implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;
-
+	
+	
 	@Column(name="RFC_PROFESOR")
 	private String rfcProfesor;
 
 	private String periodo;
 
 	public ApreciacionPK() {
+		// TODO Auto-generated constructor stub
+	}
+	public ApreciacionPK(String rfc, String periodo) 
+	{
+		this.rfcProfesor = rfc;
+		this.periodo = periodo;
 	}
 	public String getRfcProfesor() {
 		return this.rfcProfesor;

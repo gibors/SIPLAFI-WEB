@@ -28,4 +28,8 @@ public class PeriodosFacade extends AbstractFacade<Periodos> {
         super(Periodos.class);
     }
     
+    public Periodos getPeriodoActual()
+    {
+    	return (Periodos) em.createNamedQuery("Periodos.findCurrent").getSingleResult();
+    }
 }

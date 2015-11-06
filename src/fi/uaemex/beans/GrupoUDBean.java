@@ -111,7 +111,6 @@ public class GrupoUDBean implements Serializable{
         group.setClaveMateria(materia);
         group.setRfcProfesor(profesor);
         group.setNombre(nombreGrupo.trim().toUpperCase());
-        group.setPeriodo(periodo);
         try
         {
             grupoEJB.create(group);

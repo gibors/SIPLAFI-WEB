@@ -16,9 +16,15 @@ public class Apreciacion implements Serializable {
 	@EmbeddedId
 	private ApreciacionPK id;
 
-	private double calificacion;
+	private Double calificacion;
 
 	public Apreciacion() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Apreciacion(ApreciacionPK pk) 
+	{
+		this.id = pk;
 	}
 
 	public ApreciacionPK getId() {
@@ -29,11 +35,11 @@ public class Apreciacion implements Serializable {
 		this.id = id;
 	}
 
-	public double getCalificacion() {
+	public Double getCalificacion() {
 		return this.calificacion;
 	}
 
-	public void setCalificacion(double calificacion) {
+	public void setCalificacion(Double calificacion) {
 		this.calificacion = calificacion;
 	}
 

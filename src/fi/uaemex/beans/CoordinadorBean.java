@@ -23,9 +23,11 @@ import org.slf4j.LoggerFactory;
 import fi.uaemex.ejbs.CoordinadorFacade;
 import fi.uaemex.ejbs.GrupoFacade;
 import fi.uaemex.ejbs.NotificacionesCoordFacade;
+import fi.uaemex.ejbs.PeriodosFacade;
 import fi.uaemex.entities.Coordinador;
 import fi.uaemex.entities.Grupo;
 import fi.uaemex.entities.NotificacionesCoord;
+import fi.uaemex.entities.Periodos;
 
 @ManagedBean(name="coord")
 @ViewScoped
@@ -41,15 +43,18 @@ public class CoordinadorBean implements Serializable
     private List<Grupo> listGposAValidar;							// Lista con todos los grupos con notificacoin para validacion.
     private List<Grupo> listGposSemester;							// Lista de grupos en el mismo semestre del grupo seleccionado para validación
     private DateFormat fmt = new SimpleDateFormat("HH:mm");			// Formato de fecha/hora para mostrar el horario
+    private Periodos periodo;										// Almacena el periodo actual
     @EJB private CoordinadorFacade coorFac;							// EJB para acceso a datos del coordinador 
     @EJB private NotificacionesCoordFacade notifCoordEJB;			// EJB para acceso a datos de las notificaciones para el coordinador
     @EJB private GrupoFacade gpoEJB;    							// EJB para acceso a datos del grupo   
+    @EJB private PeriodosFacade periodoEJB;							// EJB para acceso a datos de los periodos
     
     @PostConstruct
     public void init()
     {
         //coordinador = login.getCoord();
         coordinador = coorFac.findUser("QH5Q0S7NYHJTM40", "QH5Q0S7NYHJTM40");
+        periodo = periodoEJB.getPeriodoActual();
         listNotCoord = notifCoordEJB.findNewNotif();
         listGposAValidar = new ArrayList<>();
         for(NotificacionesCoord nt: listNotCoord)

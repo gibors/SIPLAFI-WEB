@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fi.uaemex.entities.Apreciacion;
 import fi.uaemex.entities.Profesor;
 
 @Stateless
@@ -70,4 +71,18 @@ public class ProfesorFacade extends AbstractFacade<Profesor>
         else 
             return null;
     } // Obtiene la lista de todos los profesores (BOTTOM)
+    
+    public List<Profesor> getAllProfesoresCurrent()
+    {
+    	List<Profesor> listaProf = getEntityManager().createNamedQuery("Profesor.findAllCurr").getResultList();
+    	//List<Apreciacion> listaApreciacion = getEntityManager().createQuery("SELECT a FROM Apreciacion WHERE a.actual = 1").getResultList();
+    	if(listaProf != null)
+    	{    		
+    		return listaProf;
+    	}
+    	else
+    		return null;
+    }
+    
+    
 } // EJB stateless para realizar operaciones an nivel de modelo para la entidad Profesor (TOP)
