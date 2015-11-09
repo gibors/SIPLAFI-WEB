@@ -47,9 +47,6 @@
                         <p:column headerText="Apellido Materno" filterBy="#{gpo.rfcProfesor.apeMatProfe}" filterMatchMode="contains">
                             <h:outputText value="#{gpo.rfcProfesor.apeMatProfe}" />
                         </p:column>                    
-                        <p:column headerText="Periodo">
-                            <h:outputText value="#{gpo.periodo}" />
-                        </p:column>
                         <f:facet name="footer">
                             <p:commandButton process="gpoTable" icon="ui-icon-plusthick" value="Agregar" oncomplete="PF('altaGpoDiag').show()"/>                        
                             <p:commandButton process="gpoTable" icon="ui-icon-pencil" value="Editar"  update=":forma:gpoDetail,:forma:msgs" action='#{grupoUDBean.validaSeleccion("update")}' />                        

@@ -41,6 +41,12 @@ public class Periodos implements Serializable {
     
     public Periodos() {
     }
+    
+    public Periodos(String periodo,String descripcion)
+    {
+    	this.periodo = periodo;
+    	this.descripcion = descripcion;
+    }
 
     public Periodos(String periodo) {
         this.periodo = periodo;
