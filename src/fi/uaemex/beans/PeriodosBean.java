@@ -1,12 +1,15 @@
 package fi.uaemex.beans;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 
+import fi.uaemex.ejbs.GrupoFacade;
 import fi.uaemex.ejbs.PeriodosFacade;
+import fi.uaemex.entities.Grupo;
 import fi.uaemex.entities.Periodos;
 
 @ManagedBean(name="periodBean")
@@ -19,11 +22,27 @@ public class PeriodosBean implements Serializable
 	private String periodo;
 	private String descripcionPeriodo;
 	private Periodos periodoActual;
-	@EJB PeriodosFacade periodoEJB; 
+	private List<Grupo> listGruposProxPeriod;
+	private boolean asignarNuevo;
+	@EJB private PeriodosFacade periodoEJB; 
+	@EJB private GrupoFacade grupoEJB;
 	
 	public PeriodosBean() 
 	{
 		// TODO Auto-generated constructor stub
+	}
+	
+	@PostConstruct
+	public void init()
+	{
+		periodoActual = periodoEJB.getPeriodoActual();
+		System.out.println(">>>periodo : " + periodoActual.getPeriodo());
+	}
+		
+	public void seleccionarGruposNuevoPeriodo()
+	{
+		listGruposProxPeriod = grupoEJB.findAll();
+		asignarNuevo = true;
 	}
 	
 	public String altaNuevoPeriodo()
@@ -33,15 +52,16 @@ public class PeriodosBean implements Serializable
 			periodoEJB.create(new Periodos(periodo,descripcionPeriodo));
 		}
 		return null;
+	}	
+			
+	public List<Grupo> getListGruposProxPeriod() {
+		return listGruposProxPeriod;
 	}
-	
-	@PostConstruct
-	public void init()
-	{
-		periodoActual = periodoEJB.getPeriodoActual();
-		System.out.println(">>>periodo : " + periodoActual.getPeriodo());
+
+	public void setListGruposProxPeriod(List<Grupo> listGruposProxPeriod) {
+		this.listGruposProxPeriod = listGruposProxPeriod;
 	}
-	
+
 	public String getPeriodo() {
 		return periodo;
 	}
@@ -65,7 +85,13 @@ public class PeriodosBean implements Serializable
 	public void setPeriodoActual(Periodos periodoActual) {
 		this.periodoActual = periodoActual;
 	}
-	
-	
+
+	public boolean isAsignarNuevo() {
+		return asignarNuevo;
+	}
+
+	public void setAsignarNuevo(boolean asignarNuevo) {
+		this.asignarNuevo = asignarNuevo;
+	}
 	
 }

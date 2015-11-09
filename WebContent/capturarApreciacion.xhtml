@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/layouts/mainTemplate.xhtml">
+		<ui:define name="title">capturar Apreciacion</ui:define>
+		<ui:define name="content">
+            <script type="text/javascript" language="javascript" >
+                //<![CDATA[
+                function validaTexto()
+                {
+                    if ((event.keyCode > 47 && event.keyCode < 58) || event.keyCode == 46)
+                        event.returnValue = true;
+                    else
+                        event.returnValue = false;
+                }
+                //]]>
+            </script>
+            <h:form id="forma" >
+	    		<p:menubar>
+	        		<p:menuitem id="backProfesor" value="Regresar" onclick="javascript:history.go(-1)" icon="ui-icon-arrowreturnthick-1-w"  />    	
+	      			<f:facet name="options">
+	            		<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink"  />
+	           		</f:facet>                    
+	     		</p:menubar>
+	     		<br/><br/>            
+                <h:panelGroup id="panelProfesor" >
+                    <p:dataTable style="font-size: 10pt;" id="profeTable" var="apreProf" value="#{aprecBean.listApreciacion}" editable="true" editMode="cell" 
+                        paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                        rowsPerPageTemplate="5,10,15" filteredValue="#{aprecBean.filteredListApr}">
+                        
+                        <p:column headerText="RFC Profesor" filterBy="#{apreProf.id.rfcProfesor}" filterMatchMode="contains">
+                            <h:outputText value="#{apreProf.id.rfcProfesor}"/>
+                        </p:column>
+                        <p:column headerText="Calificación">
+                            <h:outputText value="#{apreProf.calificacion}"/>
+                        </p:column>                                                
+     					<br/><br/>
+                        <f:facet name="footer">
+                        	<p:row>
+                        		<p:column colspan="3"><p:spacer height="50" /></p:column>
+                        	</p:row>
+                            <p:commandButton process="profeTable" icon="ui-icon-pencil" value="Editar"  update=":forma:profDetail,:forma:msgs" action="#{profesoUDBean.valida()}" />                            	
+                        </f:facet>
+                    </p:dataTable>
+                    <br></br>
+                    <p:messages id="msgs" />                       
+				</h:panelGroup>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

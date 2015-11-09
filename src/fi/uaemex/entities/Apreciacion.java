@@ -3,19 +3,14 @@ package fi.uaemex.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 
-
-/**
- * The persistent class for the apreciacion database table.
- * 
- */
 @Entity
-@NamedQuery(name="Apreciacion.findAll", query="SELECT a FROM Apreciacion a")
+@NamedQuery(name="Apreciacion.findAll", query="SELECT a FROM Apreciacion a, Periodos p  WHERE a.id.periodo = p.periodo AND p.actual = 1 ")
 public class Apreciacion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
 	private ApreciacionPK id;
-
+	private Profesor profesor;
 	private Double calificacion;
 
 	public Apreciacion() {

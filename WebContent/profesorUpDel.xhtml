@@ -68,7 +68,7 @@
                             <p:panelGrid  columns="2" columnClasses="label,value" >
                             	<h:outputText value="RFC: " />
                             	<p:inputText value="#{profesoUDBean.rfcProfesor}" required="true" requiredMessage="Ingrese el rfc" maxlength="15" onblur="javascript:this.value = this.value.toUpperCase();" size="16" />
-							<h:outputText value="Grado" />
+								<h:outputText value="Grado" />
                              	<p:inputText value="#{profesoUDBean.gradoProfesor}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingrese el grado" maxlength="15" size="16"/>                            	                                
                             	<h:outputText value="Nombre: " />
                             	<p:inputText value="#{profesoUDBean.nombre}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa nombre" maxlength="35" size="36"/>
@@ -76,10 +76,6 @@
                             	<p:inputText value="#{profesoUDBean.apellidoPaterno}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa el apellido paterno" maxlength="35" size="36"/>
                             	<h:outputText value="Apellido Materno " />
                             	<p:inputText value="#{profesoUDBean.apellidoMaterno}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa apellido materno" maxlength="35" size="36"/>
-                        		<h:outputText value="Apreciacion: " />
-                        		<p:inputText id="apr" value="#{profesoUDBean.apreciacion}" onkeypress="javascript:validaTexto()" size="6" maxlength="4" validatorMessage="Ingrese un valor valido para la apreciación">
-									<f:validateDoubleRange for="apr" minimum="1.0" maximum="10.00" />
-                        		</p:inputText>                                                         	
                         		<h:outputText value="Email del Profesor: " />                             
      							<p:inputText value="#{profesoUDBean.emailProfesor}" maxlength="50" >
                             		<p:ajax event="keyup"  listener="#{profesoUDBean.validateEmail}" update="msg" />
@@ -106,10 +102,6 @@
                             	<p:inputText value="#{profesoUDBean.profeSelected.apePatProfe}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa el apellido paterno" maxlength="35"/>
                             	<h:outputText value="Apellido Materno " />
                             	<p:inputText value="#{profesoUDBean.profeSelected.apeMatProfe}" onblur="javascript:this.value = this.value.toUpperCase()" required="true" requiredMessage="ingresa apellido materno" maxlength="35"/>
-                        		<h:outputText value="Apreciacion: " />
-                        		<p:inputText id="apre" value="#{profesoUDBean.apreciacionProfSelected.calificacion}" onkeypress="javascript:validaTexto()" size="6" maxlength="4" validatorMessage="Ingrese un valor valido para la apreciación">
-									<f:validateDoubleRange for="apre" minimum="1.0" maximum="10.00" />                        		
-                        		</p:inputText>                            	
                         		<h:outputText value="Email del Profesor: " />                             
      							<p:inputText value="#{profesoUDBean.profeSelected.emailProfe}" maxlength="50" >
                             		<p:ajax event="keyup"  listener="#{profesoUDBean.validateEmail}" update="msg" />

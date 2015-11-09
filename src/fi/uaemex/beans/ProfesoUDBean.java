@@ -47,23 +47,16 @@ public class ProfesoUDBean implements Serializable{
     private String gradoProfesor;																	// Grado de estudios del profesor
     private String emailProfesor;																	// Correo electronico del profesor
     private Matcher matcher;																		// Valida o hace match si el correo es valido
-    private Double apreciacion;																		// Guarda la calificacion obtenida en la apreciacion estudiantil    
     private Profesor profeSelected;																	// Profesor que se selecciona para ser modificado o eliminado
-    private Periodos periodo;
 	private List<Profesor> filteredProfesor;														// Filtrado para busqueda del profesor 
     private List<Profesor> listaProfs;																// Lista de todos los profesores en la base de datos
-    private Apreciacion apreciacionProfSelected;
     @EJB private ProfesorFacade profEJB;															// EJB para acceso a datos del profesor    
-    @EJB private ApreciacionFacade apreciacionEJB;
-    @EJB private PeriodosFacade periodoEJB;
     
     @PostConstruct
     public void init()
     {
         listaProfs = new ArrayList<>();
-        //listaProfs = profEJB.getAllProfesores();
-        periodo = periodoEJB.getPeriodoActual();
-        listaProfs =profEJB.getAllProfesoresCurrent();
+        listaProfs =profEJB.getAllProfesores();
        // for(Profesor p: listaProfs)
         //log.log(Level.INFO,p.getNombreProfe() + " " + p.getApePatProfe() );
     }
@@ -88,26 +81,26 @@ public class ProfesoUDBean implements Serializable{
         profe.setEmailProfe(emailProfesor.trim());
         profe.setPasswordProfe(rfcProfesor.trim().toUpperCase());
                 
-        Apreciacion apr = new Apreciacion();
-        ApreciacionPK apk = new ApreciacionPK();
-        apk.setRfcProfesor(rfcProfesor.trim().toUpperCase());
-        apk.setPeriodo(periodo.getPeriodo());
-        apr.setId(apk);
-        
-        if(apreciacion != null && (apreciacion >= 0 && apreciacion <= 10.0))
-        {
-        	apr.setCalificacion(apreciacion);
-        }
-        else if(apreciacion != null && (apreciacion < 0 || apreciacion > 10))
-        {
-        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("El valor que ingreso en la apreciación no es valido"));
-        	return "";
-        }
+//        Apreciacion apr = new Apreciacion();
+//        ApreciacionPK apk = new ApreciacionPK();
+//        apk.setRfcProfesor(rfcProfesor.trim().toUpperCase());
+//        apk.setPeriodo(periodo.getPeriodo());
+//        apr.setId(apk);
+//        
+//        if(apreciacion != null && (apreciacion >= 0 && apreciacion <= 10.0))
+//        {
+//        	apr.setCalificacion(apreciacion);
+//        }
+//        else if(apreciacion != null && (apreciacion < 0 || apreciacion > 10))
+//        {
+//        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("El valor que ingreso en la apreciación no es valido"));
+//        	return "";
+//        }
                         
         try
         {
         	profEJB.create(profe);
-        	apreciacionEJB.create(apr);
+        	//apreciacionEJB.create(apr);
         }
         catch(PersistenceException persistenceEx)
         {
@@ -146,7 +139,7 @@ public class ProfesoUDBean implements Serializable{
         else
         {
             profEJB.edit(profeSelected);
-            apreciacionEJB.edit(apreciacionProfSelected);
+           // apreciacionEJB.edit(apreciacionProfSelected);
             return "profesorUpDel?faces-redirect=true";
         }
        
@@ -154,7 +147,7 @@ public class ProfesoUDBean implements Serializable{
     
     public String deleteProfesor()
     {    	
-        apreciacionEJB.remove(new Apreciacion(new ApreciacionPK(profeSelected.getRfcProfesor(),periodo.getPeriodo())));
+       // apreciacionEJB.remove(new Apreciacion(new ApreciacionPK(profeSelected.getRfcProfesor(),periodo.getPeriodo())));
         profEJB.remove(profeSelected);        
         return "profesorUpDel?faces-redirect=true";
     }
@@ -179,7 +172,7 @@ public class ProfesoUDBean implements Serializable{
         }
         else
         {
-        	apreciacionProfSelected =apreciacionEJB.find(new ApreciacionPK(profeSelected.getRfcProfesor(),periodo.getPeriodo()));
+        	//apreciacionProfSelected =apreciacionEJB.find(new ApreciacionPK(profeSelected.getRfcProfesor(),periodo.getPeriodo()));
             RequestContext.getCurrentInstance().execute("PF('profDiag').show()");
         }
     }
@@ -275,30 +268,5 @@ public class ProfesoUDBean implements Serializable{
 	public void setEmailProfesor(String emailProfesor) {
 		this.emailProfesor = emailProfesor;
 	}
-
-	public Double getApreciacion() {
-		return apreciacion;
-	}
-
-	public void setApreciacion(Double apreciacion) {
-		this.apreciacion = apreciacion;
-	}
-
-    public Periodos getPeriodo() {
-		return periodo;
-	}
-
-	public void setPeriodo(Periodos periodo) {
-		this.periodo = periodo;
-	}
-
-	public Apreciacion getApreciacionProfSelected() {
-		return apreciacionProfSelected;
-	}
-
-	public void setApreciacionProfSelected(Apreciacion apreciacionProfSelected) {
-		this.apreciacionProfSelected = apreciacionProfSelected;
-	}
-	
 	
 }

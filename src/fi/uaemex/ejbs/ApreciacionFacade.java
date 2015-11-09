@@ -21,4 +21,5 @@ public class ApreciacionFacade extends AbstractFacade<Apreciacion> {
         super(Apreciacion.class);
     }
     
+    
 }

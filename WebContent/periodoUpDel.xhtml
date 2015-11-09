@@ -28,14 +28,19 @@
 	     		</p:menubar>
 	     		<br /><br />		
                 <h:panelGroup id="periodoPanel">
-             	
+                    <p:messages id="msgs" />                        
+                    <br/><br/>                             	
              		<p:outputLabel value="Periodo Actual: " />
+             		<p:spacer width="5" />
              		<p:outputLabel value="#{periodBean.periodoActual.periodo}" />
+             		<p:spacer width="5" />             		
              		<p:outputLabel value="#{periodBean.periodoActual.descripcion}" />
                     <br></br>
-                    <p:messages id="msgs" />                        
-					<p:commandButton value="NUEVO PERIODO"/>
                 </h:panelGroup>
+                
+				<h:panelGroup id="nuevoPeriodo" rendered="#{periodBean.as}">
+					<h:outputText value="Selecciona los grupos para el proximo periodo" />
+				</h:panelGroup>                
 			</h:form>
 		</ui:define>
 	</ui:composition>
