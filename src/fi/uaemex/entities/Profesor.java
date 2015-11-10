@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Profesor.findAll", query = "SELECT p FROM Profesor p ORDER BY p.apePatProfe"),
-    @NamedQuery(name = "Profesor.findAllCurr", query = "SELECT p FROM Profesor p,Apreciacion a,Periodos pe WHERE p.rfcProfesor = a.id.rfcProfesor AND a.id.periodo = pe.periodo AND pe.actual = 1 ORDER BY p.apePatProfe"),    
+    @NamedQuery(name = "Profesor.findAllCurr", query = "SELECT p FROM Profesor p,Apreciacion a,Periodos pe WHERE p.rfcProfesor = a.apreciacionPK.rfcProfesor AND a.apreciacionPK.periodo = pe.periodo AND pe.actual = 1 ORDER BY p.apePatProfe"),    
     @NamedQuery(name = "Profesor.findByRfcProfesor", query = "SELECT p FROM Profesor p WHERE p.rfcProfesor = :rfcProfesor"),
     @NamedQuery(name = "Profesor.findByGradoProfe", query = "SELECT p FROM Profesor p WHERE p.gradoProfe = :gradoProfe"),
     @NamedQuery(name = "Profesor.findByNombreProfe", query = "SELECT p FROM Profesor p WHERE p.nombreProfe = :nombreProfe"),
@@ -80,7 +81,6 @@ public class Profesor implements Serializable {
     private List<Grupo> grupoList;
     @Transient
     private Double apreciacion;
-    
     public Profesor() {
     }
 
@@ -177,7 +177,7 @@ public class Profesor implements Serializable {
 	public void setApreciacion(Double apreciacion) {
 		this.apreciacion = apreciacion;
 	}
-
+	
 	@Override
     public int hashCode() {
         int hash = 0;

@@ -32,18 +32,20 @@
                         paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                         rowsPerPageTemplate="5,10,15" filteredValue="#{aprecBean.filteredListApr}">
                         
-                        <p:column headerText="RFC Profesor" filterBy="#{apreProf.id.rfcProfesor}" filterMatchMode="contains">
-                            <h:outputText value="#{apreProf.id.rfcProfesor}"/>
+                        <p:column headerText="RFC Profesor" filterBy="#{apreProf.apreciacionPK.rfcProfesor}" filterMatchMode="contains">
+                            <h:outputText value="#{apreProf.apreciacionPK.rfcProfesor}"/>
                         </p:column>
                         <p:column headerText="Calificación">
+                        <p:cellEditor>
                             <h:outputText value="#{apreProf.calificacion}"/>
+						</p:cellEditor>                            
                         </p:column>                                                
      					<br/><br/>
                         <f:facet name="footer">
                         	<p:row>
                         		<p:column colspan="3"><p:spacer height="50" /></p:column>
                         	</p:row>
-                            <p:commandButton process="profeTable" icon="ui-icon-pencil" value="Editar"  update=":forma:profDetail,:forma:msgs" action="#{profesoUDBean.valida()}" />                            	
+                            <p:commandButton process="profeTable" icon="ui-icon-pencil" value="Editar"   />                            	
                         </f:facet>
                     </p:dataTable>
                     <br></br>

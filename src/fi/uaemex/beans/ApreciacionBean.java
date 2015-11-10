@@ -29,7 +29,7 @@ public class ApreciacionBean implements Serializable
 	public void init()
 	{
 		//listProfPeriodActual = profeEJB.getAllProfesoresCurrent();
-		listApreciacion = apreciacionEJB.findAll();
+		listApreciacion = apreciacionEJB.findAll();		
 	}
 	
 	public String guardarApreciacion()

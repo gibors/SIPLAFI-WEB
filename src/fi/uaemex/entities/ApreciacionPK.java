@@ -1,63 +1,85 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package fi.uaemex.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
- * The primary key class for the apreciacion database table.
- * 
+ *
+ * @author IEEM
  */
 @Embeddable
 public class ApreciacionPK implements Serializable {
-	//default serial version id, required for serializable classes.
-	private static final long serialVersionUID = 1L;
-	
-	
-	@Column(name="RFC_PROFESOR")
-	private String rfcProfesor;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 15)
+    @Column(name = "RFC_PROFESOR")
+    private String rfcProfesor;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 6)
+    @Column(name = "PERIODO")
+    private String periodo;
 
-	private String periodo;
+    public ApreciacionPK() {
+    }
 
-	public ApreciacionPK() {
-		// TODO Auto-generated constructor stub
-	}
-	public ApreciacionPK(String rfc, String periodo) 
-	{
-		this.rfcProfesor = rfc;
-		this.periodo = periodo;
-	}
-	public String getRfcProfesor() {
-		return this.rfcProfesor;
-	}
-	public void setRfcProfesor(String rfcProfesor) {
-		this.rfcProfesor = rfcProfesor;
-	}
-	public String getPeriodo() {
-		return this.periodo;
-	}
-	public void setPeriodo(String periodo) {
-		this.periodo = periodo;
-	}
+    public ApreciacionPK(String rfcProfesor, String periodo) {
+        this.rfcProfesor = rfcProfesor;
+        this.periodo = periodo;
+    }
 
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof ApreciacionPK)) {
-			return false;
-		}
-		ApreciacionPK castOther = (ApreciacionPK)other;
-		return 
-			this.rfcProfesor.equals(castOther.rfcProfesor)
-			&& this.periodo.equals(castOther.periodo);
-	}
+    public String getRfcProfesor() {
+        return rfcProfesor;
+    }
 
-	public int hashCode() {
-		final int prime = 31;
-		int hash = 17;
-		hash = hash * prime + this.rfcProfesor.hashCode();
-		hash = hash * prime + this.periodo.hashCode();
-		
-		return hash;
-	}
+    public void setRfcProfesor(String rfcProfesor) {
+        this.rfcProfesor = rfcProfesor;
+    }
+
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (rfcProfesor != null ? rfcProfesor.hashCode() : 0);
+        hash += (periodo != null ? periodo.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ApreciacionPK)) {
+            return false;
+        }
+        ApreciacionPK other = (ApreciacionPK) object;
+        if ((this.rfcProfesor == null && other.rfcProfesor != null) || (this.rfcProfesor != null && !this.rfcProfesor.equals(other.rfcProfesor))) {
+            return false;
+        }
+        if ((this.periodo == null && other.periodo != null) || (this.periodo != null && !this.periodo.equals(other.periodo))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entities.ApreciacionPK[ rfcProfesor=" + rfcProfesor + ", periodo=" + periodo + " ]";
+    }
+    
 }
