@@ -61,7 +61,14 @@ public class Periodos implements Serializable {
         this.periodo = periodo;
     }
 
-    public String getPeriodo() {
+    public Periodos(String periodo2, String descripcionPeriodo,String act) {
+		// TODO Auto-generated constructor stub
+    	this.periodo = periodo2;
+    	this.descripcion = descripcionPeriodo;
+    	this.actual = act;
+	}
+
+	public String getPeriodo() {
         return periodo;
     }
 

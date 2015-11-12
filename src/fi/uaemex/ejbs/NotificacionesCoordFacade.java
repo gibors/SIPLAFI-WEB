@@ -32,7 +32,7 @@ public class NotificacionesCoordFacade extends AbstractFacade<NotificacionesCoor
     
     public List<NotificacionesCoord> findNewNotif()
     {
-        String query = "SELECT n FROM NotificacionesCoord n WHERE n.fechaHoraValidacion IS NULL ORDER BY n.fechaHoraValidacion";
+        String query = "SELECT n FROM NotificacionesCoord n WHERE n.fechaHoraValida IS NULL ORDER BY n.notificacionesCoordPK.fechaHoraNotif";
         
         Query q = getEntityManager().createQuery(query);
         

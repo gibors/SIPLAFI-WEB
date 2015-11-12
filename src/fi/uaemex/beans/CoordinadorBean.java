@@ -57,9 +57,10 @@ public class CoordinadorBean implements Serializable
         periodo = periodoEJB.getPeriodoActual();
         listNotCoord = notifCoordEJB.findNewNotif();
         listGposAValidar = new ArrayList<>();
+        
         for(NotificacionesCoord nt: listNotCoord)
         { // Por cada notificacion se agrega a la lista de grupo con notificaciones (TOP)           
-           Grupo g = gpoEJB.find(nt.getNotificacionesCoordPK());
+           Grupo g = gpoEJB.find(nt.getGrupo().getGrupoPK());
            g.setDescripcion(nt.getDescripcion());
            listGposAValidar.add(g);
         }  // Por cada notificacion se agrega a la lista de grupo con notificaciones (BOTTOM)
@@ -72,13 +73,14 @@ public class CoordinadorBean implements Serializable
     
     public void validarGrupo()
     {
-        logg.info("SELECTED GRUPO " + selecteGpo.getNombre());
+        logg.info("SELECTED GRUPO " + selecteGpo.getGrupoPK().getNombre());
         listGposSemester = new ArrayList<>();
-        listGposSemester = gpoEJB.findGrupoSemestre(selecteGpo.getClaveMateria().getSemestre(),selecteGpo.getIdGrupo());
+        listGposSemester = gpoEJB.findGrupoSemestre(selecteGpo.getMateria().getSemestre(),selecteGpo.getGrupoPK());
         logg.info(">>> GRUPOS EN EL MISMO SEMESTRE : " + listGposSemester.size());
-        for(NotificacionesCoord nt:listNotCoord)
+        
+        for(NotificacionesCoord nt:selecteGpo.getNotificacionesCoordList())
         { // Buscamos la seleccion de notificacion (TOP)
-            if(selecteGpo.getIdGrupo() == nt.getNotificacionesCoordPK().getIdGrupo())
+            if(selecteGpo.getGrupoPK().equals(nt.getGrupo().getGrupoPK()))
             {
                 notifSelected = nt;
                 logg.info("notificacion encontrada.. " + notifSelected.getDescripcion());
@@ -90,10 +92,10 @@ public class CoordinadorBean implements Serializable
     
     public String aceptarHorario()
     {
-    	logg.info(">>> SELECTED GPO TO VALIDATE " + (selecteGpo == null ? "nulo" : selecteGpo.getNombre()));    	
+    	logg.info(">>> SELECTED GPO TO VALIDATE " + (selecteGpo == null ? "nulo" : selecteGpo.getGrupoPK().getNombre()));    	
     	selecteGpo.setValidado(1); // Aceptado
     	notifSelected.setEstado(1);
-    	notifSelected.setFechaHoraValidacion(new Date());
+    	notifSelected.setFechaHoraValida(new Date());
     	notifCoordEJB.edit(notifSelected);
     	gpoEJB.edit(selecteGpo);
     	logg.info(">>> HORARIO ACEPTADO");
@@ -105,7 +107,7 @@ public class CoordinadorBean implements Serializable
     	selecteGpo.setValidado(2); // Rechazado
     	gpoEJB.edit(selecteGpo);
     	notifSelected.setEstado(2);
-    	notifSelected.setFechaHoraValidacion(new Date());
+    	notifSelected.setFechaHoraValida(new Date());
     	notifCoordEJB.edit(notifSelected);
     	logg.info(">>>> GRUPO RECHAZADOO");
     	return "";

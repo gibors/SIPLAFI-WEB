@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class GrupoRespaldoFacade extends AbstractFacade<GrupoRespaldo> {
-    @PersistenceContext(unitName = "SIPLAFI-WEBPU")
+    @PersistenceContext(unitName = "SIPLAFI-WEB")
     private EntityManager em;
 
     @Override

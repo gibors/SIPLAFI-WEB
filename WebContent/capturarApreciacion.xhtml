@@ -33,10 +33,10 @@
                         paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                         rowsPerPageTemplate="5,10,15" filteredValue="#{aprecBean.filteredListApr}">
                         
-						<p:ajax event="cellEdit" listener="#{aprecBean.onCellEdit}" update=":form:msgs" />
+						<p:ajax event="cellEdit" listener="#{aprecBean.onCellEdit}" update=":forma:msgs" />
 						                        
-                        <p:column headerText="RFC Profesor" filterBy="#{apreProf.id.rfcProfesor}" filterMatchMode="startsWith">
-                            <h:outputText value="#{apreProf.id.rfcProfesor}"/>
+                        <p:column headerText="RFC Profesor" filterBy="#{apreProf.profesor.rfcProfesor}" filterMatchMode="startsWith">
+                            <h:outputText value="#{apreProf.profesor.rfcProfesor}"/>
                         </p:column>
                         <p:column headerText="Nombre Profesor" filterBy="#{apreProf.profesor.nombreProfe}" filterMatchMode="startsWith" sortBy="#{apreProf.profesor.nombreProfe}">
                             <h:outputText value="#{apreProf.profesor.nombreProfe}"/>

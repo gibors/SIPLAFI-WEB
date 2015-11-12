@@ -23,6 +23,7 @@ import fi.uaemex.ejbs.MateriaFacade;
 import fi.uaemex.ejbs.PeriodosFacade;
 import fi.uaemex.ejbs.ProfesorFacade;
 import fi.uaemex.entities.Grupo;
+import fi.uaemex.entities.GrupoPK;
 import fi.uaemex.entities.Materia;
 import fi.uaemex.entities.Periodos;
 import fi.uaemex.entities.Profesor;
@@ -107,10 +108,11 @@ public class GrupoUDBean implements Serializable{
 
     public String registrarGrupo()
     {
-        Grupo group = new Grupo();        
-        group.setClaveMateria(materia);
-        group.setRfcProfesor(profesor);
-        group.setNombre(nombreGrupo.trim().toUpperCase());
+        Grupo group = new Grupo();
+        //group.setGrupoPK(new GrupoPK(materia.getClaveMateria(),profesor.getRfcProfesor(),"",));
+        //group.setClaveMateria(materia);
+        //group.setRfcProfesor(profesor);
+        //group.setNombre(nombreGrupo.trim().toUpperCase());
         try
         {
             grupoEJB.create(group);

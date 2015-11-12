@@ -47,7 +47,7 @@ public class MateriaUDBean implements Serializable
         try
         { // Obtiene todas las materias desde el EJB (TOP)
             matList =  matEJB.findAll();
-            academiaList = academyEJB.findAll();
+            academiaList = academyEJB.getAllAcademia();
         } // Obtiene todas las materias desde el EJB (BOTTOM)
         catch(EJBException exEJB)
         { // Si falla el EJB (TOP)
@@ -116,7 +116,8 @@ public class MateriaUDBean implements Serializable
     
     public List<Academia> getAcademy(String query)
     { // Obtiene la lista de los datos filtrados con el query (TOP)
-       Collections.sort(academiaList);
+       //Collections.sort(academiaList);
+       //Collections.so
         List<Academia> res = new ArrayList<>();
         for(Academia a : academiaList)
         {

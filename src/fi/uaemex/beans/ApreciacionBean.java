@@ -42,13 +42,19 @@ public class ApreciacionBean implements Serializable
 	
 	public String guardarApreciacion()
 	{
-        logg.info(">> guardaApreciacion hayModificado: " + hayModificado);		
-		Apreciacion aprec = apreciacionEJB.updateManyAprec(listApreciacion);
-		if(aprec == null)
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Los datos fueron actualizados con exito!!",null));
-		else
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocurrio un error al ingresar la apreciacion del profesor con RFC: " + aprec.getProfesor().getRfcProfesor(),null));
-			
+        logg.info(">> guardaApreciacion hayModificado: " + hayModificado);
+        if(hayModificado)
+        {
+        	Apreciacion aprec = apreciacionEJB.updateManyAprec(listApreciacion);
+        	if(aprec == null)
+        		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Los datos fueron actualizados con exito!",null));
+        	else
+        		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ocurrio un error al ingresar la apreciacion del profesor con RFC: " + aprec.getProfesor().getRfcProfesor(),null));
+        }
+        else
+        {
+    		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡No ha realizado ninguna modificación!",null));        	
+        }
 		return "";
 	}
 	

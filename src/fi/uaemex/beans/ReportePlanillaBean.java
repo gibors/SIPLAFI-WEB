@@ -2,8 +2,9 @@
 package fi.uaemex.beans;
 
 import java.util.logging.Logger;
-import fi.uaemex.ejbs.HorarioFacade;
-import fi.uaemex.entities.Horario;
+
+import fi.uaemex.ejbs.GrupoFacade;
+import fi.uaemex.entities.Grupo;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -21,10 +22,10 @@ public class ReportePlanillaBean implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logg = Logger.getLogger(ReportePlanillaBean.class.getName());
-    private List<Horario> listHorario;
+    private List<Grupo> listHorario;
     private DateFormat fmt = new SimpleDateFormat("HH:mm");
     @EJB
-    private HorarioFacade horarioEJB;
+    private GrupoFacade horarioEJB;
     
     @PostConstruct
     public void init()
@@ -43,12 +44,12 @@ public class ReportePlanillaBean implements Serializable
         
     }
 
-    public List<Horario> getListHorario() 
+    public List<Grupo> getListHorario() 
     {
         return listHorario;
     }
 
-    public void setListHorario(List<Horario> listHorario) 
+    public void setListHorario(List<Grupo> listHorario) 
     {
         this.listHorario = listHorario;
     }

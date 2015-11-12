@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "academia", catalog = "SIPLAFI_DB", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Academia.findAll", query = "SELECT a FROM Academia a"),
+    @NamedQuery(name = "Academia.findAll", query = "SELECT a FROM Academia a ORDER BY a.idAcademia"),
     @NamedQuery(name = "Academia.findByIdAcademia", query = "SELECT a FROM Academia a WHERE a.idAcademia = :idAcademia"),
     @NamedQuery(name = "Academia.findByNombre", query = "SELECT a FROM Academia a WHERE a.nombre = :nombre")})
 public class Academia implements Serializable {

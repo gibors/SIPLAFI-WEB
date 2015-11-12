@@ -49,7 +49,7 @@ public class PeriodosBean implements Serializable
 	{
 		if(periodoEJB.find(periodo) == null)
 		{
-			periodoEJB.create(new Periodos(periodo,descripcionPeriodo));
+			periodoEJB.create(new Periodos(periodo,descripcionPeriodo,"1"));
 		}
 		return null;
 	}	
