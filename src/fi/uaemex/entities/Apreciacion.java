@@ -21,10 +21,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author IEEM
  */
 @Entity
-@Table(name = "apreciacion")
+@Table(name = "apreciacion", catalog = "SIPLAFI_DB", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Apreciacion.findAll", query = "SELECT a FROM Apreciacion a, Periodos p WHERE a.apreciacionPK.periodo = p.periodo AND p.actual = 1 "),
+    @NamedQuery(name = "Apreciacion.findAll", query = "SELECT a FROM Apreciacion a"),
+    @NamedQuery(name = "Apreciacion.findAllCurrent", query = "SELECT a FROM Apreciacion a, Periodos p WHERE a.apreciacionPK.periodo = p.periodo AND p.actual = 1"),    
     @NamedQuery(name = "Apreciacion.findByRfcProfesor", query = "SELECT a FROM Apreciacion a WHERE a.apreciacionPK.rfcProfesor = :rfcProfesor"),
     @NamedQuery(name = "Apreciacion.findByPeriodo", query = "SELECT a FROM Apreciacion a WHERE a.apreciacionPK.periodo = :periodo"),
     @NamedQuery(name = "Apreciacion.findByCalificacion", query = "SELECT a FROM Apreciacion a WHERE a.calificacion = :calificacion")})

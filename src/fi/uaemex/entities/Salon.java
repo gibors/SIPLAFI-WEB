@@ -10,8 +10,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,79 +25,63 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author IEEM
  */
 @Entity
-@Table(name = "aula", catalog = "SIPLAFI_DB", schema = "")
+@Table(name = "salon", catalog = "SIPLAFI_DB", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Aula.findAll", query = "SELECT a FROM Aula a"),
-    @NamedQuery(name = "Aula.findByIdAula", query = "SELECT a FROM Aula a WHERE a.idAula = :idAula"),
-    @NamedQuery(name = "Aula.findByTipoAula", query = "SELECT a FROM Aula a WHERE a.tipoAula = :tipoAula"),
-    @NamedQuery(name = "Aula.findByNombre", query = "SELECT a FROM Aula a WHERE a.nombre = :nombre")})
-public class Aula implements Serializable {
+    @NamedQuery(name = "Salon.findAll", query = "SELECT s FROM Salon s"),
+    @NamedQuery(name = "Salon.findByIdSalon", query = "SELECT s FROM Salon s WHERE s.idSalon = :idSalon"),
+    @NamedQuery(name = "Salon.findByNombre", query = "SELECT s FROM Salon s WHERE s.nombre = :nombre"),
+    @NamedQuery(name = "Salon.findByCapacidad", query = "SELECT s FROM Salon s WHERE s.capacidad = :capacidad")})
+public class Salon implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID_AULA")
-    private Integer idAula;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "TIPO_AULA")
-    private String tipoAula;
-    @Size(max = 75)
+    @Column(name = "ID_SALON")
+    private Integer idSalon;
+    @Size(max = 20)
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(mappedBy = "aulaLun")
+    @Column(name = "CAPACIDAD")
+    private Integer capacidad;
+    @OneToMany(mappedBy = "idSalonMie")
     private List<Grupo> grupoList;
-    @OneToMany(mappedBy = "aulaJue")
+    @OneToMany(mappedBy = "idSalonSab")
     private List<Grupo> grupoList1;
-    @OneToMany(mappedBy = "aulaMar")
+    @OneToMany(mappedBy = "idSalonMar")
     private List<Grupo> grupoList2;
-    @OneToMany(mappedBy = "aulaMie")
+    @OneToMany(mappedBy = "idSalonJue")
     private List<Grupo> grupoList3;
-    @OneToMany(mappedBy = "aulaSab")
+    @OneToMany(mappedBy = "idSalonVie")
     private List<Grupo> grupoList4;
-    @OneToMany(mappedBy = "aulaVie")
+    @OneToMany(mappedBy = "idSalonLun")
     private List<Grupo> grupoList5;
-    @OneToMany(mappedBy = "aulaJue")
+    @OneToMany(mappedBy = "idSalonSab")
     private List<GrupoRespaldo> grupoRespaldoList;
-    @OneToMany(mappedBy = "aulaLun")
+    @OneToMany(mappedBy = "idSalonLun")
     private List<GrupoRespaldo> grupoRespaldoList1;
-    @OneToMany(mappedBy = "aulaMar")
+    @OneToMany(mappedBy = "idSalonMar")
     private List<GrupoRespaldo> grupoRespaldoList2;
-    @OneToMany(mappedBy = "aulaMie")
+    @OneToMany(mappedBy = "idSalonMie")
     private List<GrupoRespaldo> grupoRespaldoList3;
-    @OneToMany(mappedBy = "aulaSab")
+    @OneToMany(mappedBy = "idSalonVie")
     private List<GrupoRespaldo> grupoRespaldoList4;
-    @OneToMany(mappedBy = "aulaVie")
+    @OneToMany(mappedBy = "idSalonJue")
     private List<GrupoRespaldo> grupoRespaldoList5;
 
-    public Aula() {
+    public Salon() {
     }
 
-    public Aula(Integer idAula) {
-        this.idAula = idAula;
+    public Salon(Integer idSalon) {
+        this.idSalon = idSalon;
     }
 
-    public Aula(Integer idAula, String tipoAula) {
-        this.idAula = idAula;
-        this.tipoAula = tipoAula;
+    public Integer getIdSalon() {
+        return idSalon;
     }
 
-    public Integer getIdAula() {
-        return idAula;
-    }
-
-    public void setIdAula(Integer idAula) {
-        this.idAula = idAula;
-    }
-
-    public String getTipoAula() {
-        return tipoAula;
-    }
-
-    public void setTipoAula(String tipoAula) {
-        this.tipoAula = tipoAula;
+    public void setIdSalon(Integer idSalon) {
+        this.idSalon = idSalon;
     }
 
     public String getNombre() {
@@ -108,6 +90,14 @@ public class Aula implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(Integer capacidad) {
+        this.capacidad = capacidad;
     }
 
     @XmlTransient
@@ -221,18 +211,18 @@ public class Aula implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idAula != null ? idAula.hashCode() : 0);
+        hash += (idSalon != null ? idSalon.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Aula)) {
+        if (!(object instanceof Salon)) {
             return false;
         }
-        Aula other = (Aula) object;
-        if ((this.idAula == null && other.idAula != null) || (this.idAula != null && !this.idAula.equals(other.idAula))) {
+        Salon other = (Salon) object;
+        if ((this.idSalon == null && other.idSalon != null) || (this.idSalon != null && !this.idSalon.equals(other.idSalon))) {
             return false;
         }
         return true;
@@ -240,7 +230,7 @@ public class Aula implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Aula[ idAula=" + idAula + " ]";
+        return "entities.Salon[ idSalon=" + idSalon + " ]";
     }
     
 }

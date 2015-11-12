@@ -8,6 +8,7 @@ package fi.uaemex.entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,13 +25,13 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author gibors
+ * @author IEEM
  */
 @Entity
-@Table(name = "MATERIA")
+@Table(name = "materia", catalog = "SIPLAFI_DB", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Materia.findAll", query = "SELECT m FROM Materia m ORDER BY m.nombreMateria"),
+    @NamedQuery(name = "Materia.findAll", query = "SELECT m FROM Materia m"),
     @NamedQuery(name = "Materia.findByClaveMateria", query = "SELECT m FROM Materia m WHERE m.claveMateria = :claveMateria"),
     @NamedQuery(name = "Materia.findByNombreMateria", query = "SELECT m FROM Materia m WHERE m.nombreMateria = :nombreMateria"),
     @NamedQuery(name = "Materia.findByHoras", query = "SELECT m FROM Materia m WHERE m.horas = :horas"),
@@ -52,11 +53,13 @@ public class Materia implements Serializable {
     private Integer horas;
     @Column(name = "SEMESTRE")
     private Integer semestre;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "materia")
+    private List<Grupo> grupoList;
     @JoinColumn(name = "ID_ACADEMIA", referencedColumnName = "ID_ACADEMIA")
     @ManyToOne
     private Academia idAcademia;
-    @OneToMany(mappedBy = "claveMateria")
-    private List<Grupo> grupoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "materia")
+    private List<GrupoRespaldo> grupoRespaldoList;
 
     public Materia() {
     }
@@ -102,6 +105,15 @@ public class Materia implements Serializable {
         this.semestre = semestre;
     }
 
+    @XmlTransient
+    public List<Grupo> getGrupoList() {
+        return grupoList;
+    }
+
+    public void setGrupoList(List<Grupo> grupoList) {
+        this.grupoList = grupoList;
+    }
+
     public Academia getIdAcademia() {
         return idAcademia;
     }
@@ -111,12 +123,12 @@ public class Materia implements Serializable {
     }
 
     @XmlTransient
-    public List<Grupo> getGrupoList() {
-        return grupoList;
+    public List<GrupoRespaldo> getGrupoRespaldoList() {
+        return grupoRespaldoList;
     }
 
-    public void setGrupoList(List<Grupo> grupoList) {
-        this.grupoList = grupoList;
+    public void setGrupoRespaldoList(List<GrupoRespaldo> grupoRespaldoList) {
+        this.grupoRespaldoList = grupoRespaldoList;
     }
 
     @Override

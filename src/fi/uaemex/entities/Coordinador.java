@@ -22,11 +22,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author IEEM
  */
 @Entity
-@Table(name = "coordinador")
+@Table(name = "coordinador", catalog = "SIPLAFI_DB", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Coordinador.findAll", query = "SELECT c FROM Coordinador c"),
-    @NamedQuery(name = "findByRfcCoord", query = "SELECT c FROM Coordinador c WHERE c.rfcCoord = :rfcCoord and c.passwordCoord = :passwdCoord"),
+    @NamedQuery(name = "Coordinador.findByRfcCoord", query = "SELECT c FROM Coordinador c WHERE c.rfcCoord = :rfcCoord"),
     @NamedQuery(name = "Coordinador.findByGradoCoord", query = "SELECT c FROM Coordinador c WHERE c.gradoCoord = :gradoCoord"),
     @NamedQuery(name = "Coordinador.findByNombreCoord", query = "SELECT c FROM Coordinador c WHERE c.nombreCoord = :nombreCoord"),
     @NamedQuery(name = "Coordinador.findByApePatCoord", query = "SELECT c FROM Coordinador c WHERE c.apePatCoord = :apePatCoord"),

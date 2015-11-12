@@ -59,7 +59,7 @@ public class CoordinadorBean implements Serializable
         listGposAValidar = new ArrayList<>();
         for(NotificacionesCoord nt: listNotCoord)
         { // Por cada notificacion se agrega a la lista de grupo con notificaciones (TOP)           
-           Grupo g = gpoEJB.find(nt.getNotificacionesCoordPK().getIdGrupo());
+           Grupo g = gpoEJB.find(nt.getNotificacionesCoordPK());
            g.setDescripcion(nt.getDescripcion());
            listGposAValidar.add(g);
         }  // Por cada notificacion se agrega a la lista de grupo con notificaciones (BOTTOM)

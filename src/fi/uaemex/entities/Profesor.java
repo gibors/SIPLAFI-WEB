@@ -8,15 +8,14 @@ package fi.uaemex.entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,14 +23,13 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author gibors
+ * @author IEEM
  */
 @Entity
-@Table(name = "PROFESOR")
+@Table(name = "profesor", catalog = "SIPLAFI_DB", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Profesor.findAll", query = "SELECT p FROM Profesor p ORDER BY p.apePatProfe"),
-    @NamedQuery(name = "Profesor.findAllCurr", query = "SELECT p FROM Profesor p,Apreciacion a,Periodos pe WHERE p.rfcProfesor = a.apreciacionPK.rfcProfesor AND a.apreciacionPK.periodo = pe.periodo AND pe.actual = 1 ORDER BY p.apePatProfe"),    
+    @NamedQuery(name = "Profesor.findAll", query = "SELECT p FROM Profesor p"),
     @NamedQuery(name = "Profesor.findByRfcProfesor", query = "SELECT p FROM Profesor p WHERE p.rfcProfesor = :rfcProfesor"),
     @NamedQuery(name = "Profesor.findByGradoProfe", query = "SELECT p FROM Profesor p WHERE p.gradoProfe = :gradoProfe"),
     @NamedQuery(name = "Profesor.findByNombreProfe", query = "SELECT p FROM Profesor p WHERE p.nombreProfe = :nombreProfe"),
@@ -39,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Profesor.findByApeMatProfe", query = "SELECT p FROM Profesor p WHERE p.apeMatProfe = :apeMatProfe"),
     @NamedQuery(name = "Profesor.findByPasswordProfe", query = "SELECT p FROM Profesor p WHERE p.passwordProfe = :passwordProfe"),
     @NamedQuery(name = "Profesor.findByEmailProfe", query = "SELECT p FROM Profesor p WHERE p.emailProfe = :emailProfe"),
-    @NamedQuery(name = "findUser", query = "SELECT p FROM Profesor p WHERE p.rfcProfesor = :rfc AND p.passwordProfe = :pass")})
+    @NamedQuery(name = "Profesor.findByTelefono", query = "SELECT p FROM Profesor p WHERE p.telefono = :telefono")})
 public class Profesor implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -75,17 +73,19 @@ public class Profesor implements Serializable {
     @Column(name = "EMAIL_PROFE")
     private String emailProfe;
     @Size(max = 12)
-    @Column(name = "TELEFONO")
-    private String telefono;    
-    @OneToMany(mappedBy = "rfcProfesor")
+    @Column(name = "telefono")
+    private String telefono;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profesor")
     private List<Grupo> grupoList;
-    @Transient
-    private Double apreciacion;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profesor")
+    private List<Apreciacion> apreciacionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "profesor")
+    private List<GrupoRespaldo> grupoRespaldoList;
+
     public Profesor() {
     }
 
-    public Profesor(String rfcProfesor) 
-    {
+    public Profesor(String rfcProfesor) {
         this.rfcProfesor = rfcProfesor;
     }
 
@@ -152,16 +152,16 @@ public class Profesor implements Serializable {
     public void setEmailProfe(String emailProfe) {
         this.emailProfe = emailProfe;
     }
-        
+
     public String getTelefono() {
-		return telefono;
-	}
+        return telefono;
+    }
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
-	}
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
-	@XmlTransient
+    @XmlTransient
     public List<Grupo> getGrupoList() {
         return grupoList;
     }
@@ -169,16 +169,26 @@ public class Profesor implements Serializable {
     public void setGrupoList(List<Grupo> grupoList) {
         this.grupoList = grupoList;
     }
-    
-    public Double getApreciacion() {
-		return apreciacion;
-	}
 
-	public void setApreciacion(Double apreciacion) {
-		this.apreciacion = apreciacion;
-	}
-	
-	@Override
+    @XmlTransient
+    public List<Apreciacion> getApreciacionList() {
+        return apreciacionList;
+    }
+
+    public void setApreciacionList(List<Apreciacion> apreciacionList) {
+        this.apreciacionList = apreciacionList;
+    }
+
+    @XmlTransient
+    public List<GrupoRespaldo> getGrupoRespaldoList() {
+        return grupoRespaldoList;
+    }
+
+    public void setGrupoRespaldoList(List<GrupoRespaldo> grupoRespaldoList) {
+        this.grupoRespaldoList = grupoRespaldoList;
+    }
+
+    @Override
     public int hashCode() {
         int hash = 0;
         hash += (rfcProfesor != null ? rfcProfesor.hashCode() : 0);

@@ -26,30 +26,46 @@
 	            		<p:commandButton style="margin-right:10px" value="Cerrar Sesión" icon="ui-icon-extlink"  />
 	           		</f:facet>                    
 	     		</p:menubar>
-	     		<br/><br/>            
+	     		<br/><br/>        
+                <p:growl id="msgs" />                       	     		    
                 <h:panelGroup id="panelProfesor" >
                     <p:dataTable style="font-size: 10pt;" id="profeTable" var="apreProf" value="#{aprecBean.listApreciacion}" editable="true" editMode="cell" 
                         paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                         rowsPerPageTemplate="5,10,15" filteredValue="#{aprecBean.filteredListApr}">
                         
-                        <p:column headerText="RFC Profesor" filterBy="#{apreProf.apreciacionPK.rfcProfesor}" filterMatchMode="contains">
-                            <h:outputText value="#{apreProf.apreciacionPK.rfcProfesor}"/>
+						<p:ajax event="cellEdit" listener="#{aprecBean.onCellEdit}" update=":form:msgs" />
+						                        
+                        <p:column headerText="RFC Profesor" filterBy="#{apreProf.id.rfcProfesor}" filterMatchMode="startsWith">
+                            <h:outputText value="#{apreProf.id.rfcProfesor}"/>
                         </p:column>
-                        <p:column headerText="Calificación">
-                        <p:cellEditor>
-                            <h:outputText value="#{apreProf.calificacion}"/>
-						</p:cellEditor>                            
+                        <p:column headerText="Nombre Profesor" filterBy="#{apreProf.profesor.nombreProfe}" filterMatchMode="startsWith" sortBy="#{apreProf.profesor.nombreProfe}">
+                            <h:outputText value="#{apreProf.profesor.nombreProfe}"/>
+                        </p:column>      
+                        <p:column headerText="Apellido Paterno" filterBy="#{apreProf.profesor.apePatProfe}" filterMatchMode="startsWith" sortBy="#{apreProf.profesor.apePatProfe}">
+                            <h:outputText value="#{apreProf.profesor.apePatProfe}"/>
+                        </p:column> 
+                        <p:column headerText="Apellido Materno" filterBy="#{apreProf.profesor.apeMatProfe}" filterMatchMode="startsWith" sortBy="#{apreProf.profesor.apeMatProfe}">
+                            <h:outputText value="#{apreProf.profesor.apeMatProfe}"/>
+                        </p:column>                                                                         
+                        <p:column headerText="Calificación" width="50">
+                        	<p:cellEditor >                        	
+                            	<f:facet name="output"><h:outputText value="#{apreProf.calificacion}"/></f:facet>
+                            	<f:facet name="input">
+                            		<p:inputText value="#{apreProf.calificacion}" onkeypress="validaTexto()" maxlength="5" requiredMessage="Ingrese un valor valido para la apreciación">
+                            			<f:validateDoubleRange minimum="0.0" maximum="10.0" />
+                            		</p:inputText>
+                            	</f:facet>                            	
+							</p:cellEditor>                            
                         </p:column>                                                
      					<br/><br/>
                         <f:facet name="footer">
                         	<p:row>
                         		<p:column colspan="3"><p:spacer height="50" /></p:column>
                         	</p:row>
-                            <p:commandButton process="profeTable" icon="ui-icon-pencil" value="Editar"   />                            	
+                            <p:commandButton process=":forma:profeTable" icon="ui-icon-pencil" value="Editar"  update=":forma:msgs" action="#{aprecBean.guardarApreciacion()}" />                            	
                         </f:facet>
                     </p:dataTable>
                     <br></br>
-                    <p:messages id="msgs" />                       
 				</h:panelGroup>
 			</h:form>
 		</ui:define>

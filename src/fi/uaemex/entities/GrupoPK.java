@@ -6,12 +6,9 @@
 package fi.uaemex.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -20,7 +17,7 @@ import javax.validation.constraints.Size;
  * @author IEEM
  */
 @Embeddable
-public class NotificacionesCoordPK implements Serializable {
+public class GrupoPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 8)
@@ -41,21 +38,15 @@ public class NotificacionesCoordPK implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "FECHA_HORA_NOTIF")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHoraNotif;
 
-    public NotificacionesCoordPK() {
+    public GrupoPK() {
     }
 
-    public NotificacionesCoordPK(String claveMateria, String rfcProfesor, String periodo, String nombre, Date fechaHoraNotif) {
+    public GrupoPK(String claveMateria, String rfcProfesor, String periodo, String nombre) {
         this.claveMateria = claveMateria;
         this.rfcProfesor = rfcProfesor;
         this.periodo = periodo;
         this.nombre = nombre;
-        this.fechaHoraNotif = fechaHoraNotif;
     }
 
     public String getClaveMateria() {
@@ -90,14 +81,6 @@ public class NotificacionesCoordPK implements Serializable {
         this.nombre = nombre;
     }
 
-    public Date getFechaHoraNotif() {
-        return fechaHoraNotif;
-    }
-
-    public void setFechaHoraNotif(Date fechaHoraNotif) {
-        this.fechaHoraNotif = fechaHoraNotif;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -105,17 +88,16 @@ public class NotificacionesCoordPK implements Serializable {
         hash += (rfcProfesor != null ? rfcProfesor.hashCode() : 0);
         hash += (periodo != null ? periodo.hashCode() : 0);
         hash += (nombre != null ? nombre.hashCode() : 0);
-        hash += (fechaHoraNotif != null ? fechaHoraNotif.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof NotificacionesCoordPK)) {
+        if (!(object instanceof GrupoPK)) {
             return false;
         }
-        NotificacionesCoordPK other = (NotificacionesCoordPK) object;
+        GrupoPK other = (GrupoPK) object;
         if ((this.claveMateria == null && other.claveMateria != null) || (this.claveMateria != null && !this.claveMateria.equals(other.claveMateria))) {
             return false;
         }
@@ -128,15 +110,12 @@ public class NotificacionesCoordPK implements Serializable {
         if ((this.nombre == null && other.nombre != null) || (this.nombre != null && !this.nombre.equals(other.nombre))) {
             return false;
         }
-        if ((this.fechaHoraNotif == null && other.fechaHoraNotif != null) || (this.fechaHoraNotif != null && !this.fechaHoraNotif.equals(other.fechaHoraNotif))) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "entities.NotificacionesCoordPK[ claveMateria=" + claveMateria + ", rfcProfesor=" + rfcProfesor + ", periodo=" + periodo + ", nombre=" + nombre + ", fechaHoraNotif=" + fechaHoraNotif + " ]";
+        return "entities.GrupoPK[ claveMateria=" + claveMateria + ", rfcProfesor=" + rfcProfesor + ", periodo=" + periodo + ", nombre=" + nombre + " ]";
     }
     
 }

@@ -5,7 +5,6 @@
  */
 package fi.uaemex.entities;
 
-import java.util.Collections;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -25,17 +24,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author gibors
+ * @author IEEM
  */
 @Entity
-@Table(name = "ACADEMIA")
+@Table(name = "academia", catalog = "SIPLAFI_DB", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Academia.findAll", query = "SELECT a FROM Academia a ORDER BY a.nombre"),
+    @NamedQuery(name = "Academia.findAll", query = "SELECT a FROM Academia a"),
     @NamedQuery(name = "Academia.findByIdAcademia", query = "SELECT a FROM Academia a WHERE a.idAcademia = :idAcademia"),
     @NamedQuery(name = "Academia.findByNombre", query = "SELECT a FROM Academia a WHERE a.nombre = :nombre")})
-public class Academia implements Comparable<Academia>,Serializable
-{
+public class Academia implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,23 +48,19 @@ public class Academia implements Comparable<Academia>,Serializable
     @OneToMany(mappedBy = "idAcademia")
     private List<Materia> materiaList;
 
-    public Academia() 
-    {
-        
+    public Academia() {
     }
 
     public Academia(Integer idAcademia) {
         this.idAcademia = idAcademia;
     }
 
-    public Academia(Integer idAcademia, String nombre) 
-    {
+    public Academia(Integer idAcademia, String nombre) {
         this.idAcademia = idAcademia;
         this.nombre = nombre;
     }
 
-    public Integer getIdAcademia() 
-    {
+    public Integer getIdAcademia() {
         return idAcademia;
     }
 
@@ -114,12 +108,6 @@ public class Academia implements Comparable<Academia>,Serializable
     @Override
     public String toString() {
         return "entities.Academia[ idAcademia=" + idAcademia + " ]";
-    }
-
-    @Override
-    public int compareTo(Academia o) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        return nombre.compareTo(o.nombre);
     }
     
 }

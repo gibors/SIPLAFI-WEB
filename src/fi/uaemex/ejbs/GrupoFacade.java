@@ -2,6 +2,8 @@
 package  fi.uaemex.ejbs;
 
 import  fi.uaemex.entities.Grupo;
+import fi.uaemex.entities.GrupoPK;
+
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -23,12 +25,12 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         super(Grupo.class);
     }
     
-    public List<Grupo> findTraslapeLun(Date lunIni, Date lunFin,Integer idGrupo,Integer semestre)
+    public List<Grupo> findTraslapeLun(Date lunIni, Date lunFin,GrupoPK gpoPk,Integer semestre)
     {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeLunes",Grupo.class)
-                    .setParameter("lunIni",lunIni).setParameter("lunFin", lunFin).setParameter("idGrupo", idGrupo).setParameter("semestre", semestre)
+                    .setParameter("lunIni",lunIni).setParameter("lunFin", lunFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -41,12 +43,12 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
             return null;   
         }
     }
-     public List<Grupo> findTraslapeMar(Date marIni, Date marFin,Integer idGrupo,Integer semestre)
+     public List<Grupo> findTraslapeMar(Date marIni, Date marFin,GrupoPK gpoPk,Integer semestre)
     {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeMartes",Grupo.class)
-                    .setParameter("marIni",marIni).setParameter("marFin", marFin).setParameter("idGrupo", idGrupo).setParameter("semestre", semestre)
+                    .setParameter("marIni",marIni).setParameter("marFin", marFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -59,12 +61,12 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
             return null;   
         }
     }
-    public List<Grupo> findTraslapeMie(Date mieIni, Date mieFin,Integer idGrupo,Integer semestre)
+    public List<Grupo> findTraslapeMie(Date mieIni, Date mieFin,GrupoPK gpoPk,Integer semestre)
     {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeMiercoles",Grupo.class)
-                    .setParameter("mieIni",mieIni).setParameter("mieFin", mieFin).setParameter("idGrupo", idGrupo).setParameter("semestre", semestre)
+                    .setParameter("mieIni",mieIni).setParameter("mieFin", mieFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -77,12 +79,12 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
             return null;   
         }
     }
-    public List<Grupo> findTraslapeJue(Date jueIni, Date jueFin,Integer idGrupo,Integer semestre)
+    public List<Grupo> findTraslapeJue(Date jueIni, Date jueFin,GrupoPK gpoPk,Integer semestre)
     {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeJueves",Grupo.class)
-                    .setParameter("jueIni",jueIni).setParameter("jueFin", jueFin).setParameter("idGrupo", idGrupo).setParameter("semestre", semestre)
+                    .setParameter("jueIni",jueIni).setParameter("jueFin", jueFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -95,12 +97,12 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
             return null;   
         }
     }
-    public List<Grupo> findTraslapeVie(Date vieIni, Date vieFin,Integer idGrupo,Integer semestre)
+    public List<Grupo> findTraslapeVie(Date vieIni, Date vieFin,GrupoPK gpoPk,Integer semestre)
     {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeViernes",Grupo.class)
-                    .setParameter("vieIni",vieIni).setParameter("vieFin", vieFin).setParameter("idGrupo", idGrupo).setParameter("semestre", semestre)
+                    .setParameter("vieIni",vieIni).setParameter("vieFin", vieFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -113,12 +115,12 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
             return null;   
         }
     }
-    public List<Grupo> findTraslapeSab(Date sabIni, Date sabFin,Integer idGrupo,Integer semestre)
+    public List<Grupo> findTraslapeSab(Date sabIni, Date sabFin,GrupoPK gpoPk,Integer semestre)
     {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeSabado",Grupo.class)
-                    .setParameter("sabIni",sabIni).setParameter("sabFin", sabFin).setParameter("idGrupo", idGrupo).setParameter("semestre", semestre)
+                    .setParameter("sabIni",sabIni).setParameter("sabFin", sabFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -132,12 +134,12 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         }
     }
     
-    public List<Grupo> findGrupoSemestre(Integer semester,Integer idGrupo)
+    public List<Grupo> findGrupoSemestre(Integer semester,GrupoPK gpoPk)
     {
         try
           {
-            return getEntityManager().createNamedQuery("Grupo.findGrupos",Grupo.class)
-                .setParameter("semestre", semester).setParameter("idGrupo", idGrupo)
+            return getEntityManager().createNamedQuery("Grupo.findGruposSemestre",Grupo.class)
+                .setParameter("semestre", semester).setParameter("gpoPk", gpoPk)
                     .getResultList();
           }
         catch(Exception ex)
@@ -156,7 +158,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
     
     public boolean hayGruposParaValidar(String rfc_prof)
     {
-        String query = "SELECT COUNT(g.idGrupo) FROM Grupo g WHERE g.rfcProfesor.rfcProfesor = :rfc_prof AND g.validado = 0";
+        String query = "SELECT COUNT(g) FROM Grupo g WHERE g.profesor.rfcProfesor = :rfc_prof AND g.validado = 0 AND g.periodos.actual = 1";
         
         Query q = getEntityManager().createQuery(query).setParameter("rfc_prof", rfc_prof);
         
@@ -168,7 +170,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
     
         public boolean todosAceptadosOConfirmados(String rfc_prof,int size)
     {
-        String query = "SELECT COUNT(g.idGrupo) FROM Grupo g WHERE (g.validado = 1 OR g.validado = 3) AND g.rfcProfesor.rfcProfesor = :rfc_prof";
+        String query = "SELECT COUNT(g) FROM Grupo g WHERE (g.validado = 1 OR g.validado = 3) AND g.profesor.rfcProfesor = :rfc_prof AND g.periodos.actual = 1";
         
         Query q = getEntityManager().createQuery(query).setParameter("rfc_prof", rfc_prof);
         

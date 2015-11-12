@@ -45,14 +45,12 @@ import org.primefaces.context.RequestContext;
 
 import fi.uaemex.ejbs.AulaFacade;
 import fi.uaemex.ejbs.GrupoFacade;
-import fi.uaemex.ejbs.Horario2Facade;
-import fi.uaemex.ejbs.HorarioFacade;
+import fi.uaemex.ejbs.GrupoRespaldoFacade;
 import fi.uaemex.ejbs.NotificacionesCoordFacade;
 import fi.uaemex.ejbs.ProfesorFacade;
 import fi.uaemex.entities.Aula;
 import fi.uaemex.entities.Grupo;
-import fi.uaemex.entities.Horario;
-import fi.uaemex.entities.Horario2;
+import fi.uaemex.entities.GrupoRespaldo;
 import fi.uaemex.entities.NotificacionesCoord;
 import fi.uaemex.entities.NotificacionesCoordPK;
 import fi.uaemex.entities.Profesor;
@@ -95,16 +93,15 @@ public class ProfesorBean implements Serializable
     private List<Grupo> gposProfe;                  					// obtiene la lista de los grupos del profesor
     private List<Grupo> listGposInSemester;								// Almacena los grupos de las materias en el mismo horario del grupo seleccionado para modificar
     private List<Aula> listAula; 										// Lista de las aulas requeridas para la clase
-    private List<Horario2> listaModificados;							// almacena todos los horaios modificados para guardarlos al enviar a validacion.. 
+    private List<GrupoRespaldo> listaModificados;						// almacena todos los horaios modificados para guardarlos al enviar a validacion.. 
     private Grupo selectedGpo;											// Almacena el grupo que es seleccionado para editar el horario
     private boolean todosConfirmadosOAceptados;							// Obtiene verdadero si todos los grupos del profesor estan confirmados o aceptados
     private boolean conGrupoAValidar;									// Obtiene verdadero si algun grupo necesita ser validado
     private boolean seHaConfirmadoTodo;									// Si todos los grupos estan confirmados o aceptados
     @EJB private ProfesorFacade profFacade;              				// EJB para acceso a datos del profesor
     @EJB private GrupoFacade gpoEJB;                     				// EJB para acceso a datos del grupo
+    @EJB private GrupoRespaldoFacade gpoRespEJB;						// EJB para acceso a datos del grupo de respaldo..
     @EJB private AulaFacade aulaEJB;									// EJB para acceso a datos de la entidad aula
-    @EJB private HorarioFacade HorarioEJB;								// EJB para acceso a datos del Horario modificado para validacion .. 
-    @EJB private Horario2Facade hora2EJB;								// EJB para accesos a datos de la entidad Horario2
     @EJB private NotificacionesCoordFacade notifEJB;					// EJB para acceso a datos de las notificaciones del coordinador 
     @ManagedProperty(value = "#{login}") private LoginBean login;   	// Propiedad para usar variables de session del bean de login
     private Properties props;											// Agrega las propiedades para la conexion al servidor de correo
@@ -124,7 +121,12 @@ public class ProfesorBean implements Serializable
 	   profe = login.getProfe();	
 	   //profe = profFacade.findUser("QH5Q0S7NYHJTM33", "QH5Q0S7NYHJTM33");
 	   gposProfe = new ArrayList<>();
-	   gposProfe = profe.getGrupoList();
+	   //gposProfe = profe.getGrupoList();
+	   for(Grupo g: profe.getGrupoList())
+	   {
+		   if(Integer.valueOf(g.getPeriodos().getActual()) == 1)
+			   gposProfe.add(g);
+	   }	   
        listAula = aulaEJB.findAll();
        todosConfirmadosOAceptados = gpoEJB.todosAceptadosOConfirmados(profe.getRfcProfesor(), gposProfe.size());
        if(todosConfirmadosOAceptados) seHaConfirmadoTodo = true;
@@ -137,28 +139,31 @@ public class ProfesorBean implements Serializable
    public void onGrupoSelected(Grupo gs)
    { // Al seleccionar grupo para modificar abre el dialog para modificarlo (TOP)
     	this.selectedGpo = gs;    	
-    	listGposInSemester = gpoEJB.findGrupoSemestre(selectedGpo.getClaveMateria().getSemestre(), selectedGpo.getIdGrupo()); // Se obtienen las materias o grupos en el mismo semestre
+    	listGposInSemester = gpoEJB.findGrupoSemestre(selectedGpo.getMateria().getSemestre(), selectedGpo.getGrupoPK()); // Se obtienen las materias o grupos en el mismo semestre
     	/****** Se utilizan variables auxiliares para el horario del grupo seleccionado porque maraca error en nulos, el componente pcalendar (TOP) ********/
-    	lunIn = selectedGpo.getHorario().getLunHoraIni();
-    	lunFn = selectedGpo.getHorario().getLunHoraFin();
-    	marIn = selectedGpo.getHorario().getMarHoraIni();
-    	marFn = selectedGpo.getHorario().getMarHoraFin();
-    	mieIn = selectedGpo.getHorario().getMieHoraIni();
-    	mieFn = selectedGpo.getHorario().getMieHoraFin();
-    	jueIn = selectedGpo.getHorario().getJueHoraIni();
-    	jueFn = selectedGpo.getHorario().getJueHoraFin();
-    	vieIn = selectedGpo.getHorario().getVieHoraIni();
-    	vieFn = selectedGpo.getHorario().getVieHoraFin();
-    	sabIn = selectedGpo.getHorario().getSabHoraIni();
-    	sabFn = selectedGpo.getHorario().getSabHoraFin();
-    	aulaLunes = selectedGpo.getHorario().getAulaLun();
-    	aulaMartes = selectedGpo.getHorario().getAulaMar();
+    	
+    	lunIn = selectedGpo.getLunHoraIni();
+    	lunFn = selectedGpo.getLunHoraFin();
+    	marIn = selectedGpo.getMarHoraIni();
+    	marFn = selectedGpo.getMarHoraFin();
+    	mieIn = selectedGpo.getMieHoraIni();
+    	mieFn = selectedGpo.getMieHoraFin();
+    	jueIn = selectedGpo.getJueHoraIni();
+    	jueFn = selectedGpo.getJueHoraFin();
+    	vieIn = selectedGpo.getVieHoraIni();
+    	vieFn = selectedGpo.getVieHoraFin();
+    	sabIn = selectedGpo.getSabHoraIni();
+    	sabFn = selectedGpo.getSabHoraFin();
+    	/*
+    	aulaLunes = selectedGpo.getAulaLun();
+    	aulaMartes = selectedGpo.getAulaMar();
     	aulaMiercoles = selectedGpo.getHorario().getAulaMie();
     	aulaJueves = selectedGpo.getHorario().getAulaJue();
     	aulaViernes = selectedGpo.getHorario().getAulaVie();
-    	aulaSabado = selectedGpo.getHorario().getAulaSab();    	
+    	aulaSabado = selectedGpo.getHorario().getAulaSab();
+    	*/
     	/****** Se utilizan variables auxiliares para el horario del grupo seleccionado porque maraca error en nulos, el componente pcalendar (TOP) ********/    	
-    	logg.info(">>> se selecciono un grupo ..." + selectedGpo.getNombre() + " oooo.... " + listGposInSemester.size());    	
+    	logg.info(">>> se selecciono un grupo ..." + selectedGpo.getGrupoPK().getNombre() + " oooo.... " + listGposInSemester.size());    	
     	logg.info("aula mar: " + aulaMartes + "-- aulaSab: " + aulaSabado);
     	RequestContext.getCurrentInstance().execute("PF('dlgModHora').show()");    	    	
     } // Al seleccionar grupo para modificar abre el dialog para modificarlo (BOTTOM)
@@ -171,27 +176,28 @@ public class ProfesorBean implements Serializable
         
         if(selectedGpo.getValidado() != null && selectedGpo.getValidado() == 2)
         { // Si el horario del grupo ya fue modificado y rechazado por la coordinación (TOP)
-        	Horario2 hora = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
+        	//Horario2 hora = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
+        	GrupoRespaldo hora = gpoRespEJB.find(selectedGpo.getGrupoPK());
         	if(hora != null)
         	{
-            	selectedGpo.getHorario().setLunHoraIni(hora.getLunHoraIni());
-            	selectedGpo.getHorario().setLunHoraFin(hora.getLunHoraFin());
-            	selectedGpo.getHorario().setMarHoraIni(hora.getMarHoraIni());
-            	selectedGpo.getHorario().setMarHoraFin(hora.getMarHoraFin());
-            	selectedGpo.getHorario().setMieHoraIni(hora.getMieHoraIni());
-            	selectedGpo.getHorario().setMieHoraFin(hora.getMieHoraFin());
-            	selectedGpo.getHorario().setJueHoraIni(hora.getJueHoraIni());
-            	selectedGpo.getHorario().setJueHoraFin(hora.getJueHoraFin());
-            	selectedGpo.getHorario().setVieHoraIni(hora.getVieHoraIni());
-            	selectedGpo.getHorario().setVieHoraFin(hora.getVieHoraFin());
-            	selectedGpo.getHorario().setSabHoraIni(hora.getSabHoraIni());
-            	selectedGpo.getHorario().setSabHoraFin(hora.getSabHoraFin());
-            	selectedGpo.getHorario().setAulaLun(hora.getAulaLun());
-            	selectedGpo.getHorario().setAulaMar(hora.getAulaMar());
-            	selectedGpo.getHorario().setAulaMie(hora.getAulaMie());
-            	selectedGpo.getHorario().setAulaJue(hora.getAulaJue());
-            	selectedGpo.getHorario().setAulaVie(hora.getAulaVie());
-            	selectedGpo.getHorario().setAulaSab(hora.getAulaSab());        
+            	selectedGpo.setLunHoraIni(hora.getLunHoraIni());
+            	selectedGpo.setLunHoraFin(hora.getLunHoraFin());
+            	selectedGpo.setMarHoraIni(hora.getMarHoraIni());
+            	selectedGpo.setMarHoraFin(hora.getMarHoraFin());
+            	selectedGpo.setMieHoraIni(hora.getMieHoraIni());
+            	selectedGpo.setMieHoraFin(hora.getMieHoraFin());
+            	selectedGpo.setJueHoraIni(hora.getJueHoraIni());
+            	selectedGpo.setJueHoraFin(hora.getJueHoraFin());
+            	selectedGpo.setVieHoraIni(hora.getVieHoraIni());
+            	selectedGpo.setVieHoraFin(hora.getVieHoraFin());
+            	selectedGpo.setSabHoraIni(hora.getSabHoraIni());
+            	selectedGpo.setSabHoraFin(hora.getSabHoraFin());
+            	selectedGpo.setAulaLun(hora.getAulaLun());
+            	selectedGpo.setAulaMar(hora.getAulaMar());
+            	selectedGpo.setAulaMie(hora.getAulaMie());
+            	selectedGpo.setAulaJue(hora.getAulaJue());
+            	selectedGpo.setAulaVie(hora.getAulaVie());
+            	selectedGpo.setAulaSab(hora.getAulaSab());        
             	//selectedGpo.setValidado(null);
         		//hora2EJB.remove(hora);
         	}
@@ -201,7 +207,7 @@ public class ProfesorBean implements Serializable
         	FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("El grupo ya ha sido modificado, si desea cambiarlo eliga la opción modificar "));
         else
         {
-        	selectedGpo.setEstado(1); // Estado Confirmado 
+        	selectedGpo.setEstado(1);; // Estado Confirmado 
         	for(Grupo g : gposProfe)
         	{ // For que valida si hay algun grupo modificado o no (TOP)
         		if(g.getEstado() == 2)
@@ -241,7 +247,8 @@ public class ProfesorBean implements Serializable
         
         if(selectedGpo != null && selectedGpo.getValidado() == 2)
         { // Si el grupo ya fue validado y fue rechazado (TOP)
-        	Horario2 horarioRespaldo = hora2EJB.find(selectedGpo.getHorario().getIdHorario()); // Se busca si se guardo un horario anterior
+        	GrupoRespaldo horarioRespaldo = gpoRespEJB.find(selectedGpo.getGrupoPK()); // Se busca si se guardo un horario anterior
+        	
         	if(horarioRespaldo != null)
         	{ // Si el horario de respaldo es encontrado (TOP)
         		if
@@ -265,12 +272,12 @@ public class ProfesorBean implements Serializable
         		} // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (BOTTOM)
         	} // Si el horario de respaldo es encontrado (BOTTOM)
         } // Si el grupo ya fue validado y fue rechazado (BOTTOM)
-		List<Grupo> listTrasLun = gpoEJB.findTraslapeLun(lunIn,lunFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
-        List<Grupo> listTrasMar = gpoEJB.findTraslapeMar(marIn,marFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
-        List<Grupo> listTrasMie = gpoEJB.findTraslapeMie(mieIn,mieFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
-        List<Grupo> listTrasJue = gpoEJB.findTraslapeJue(jueIn,jueFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
-        List<Grupo> listTrasVie = gpoEJB.findTraslapeVie(vieIn,vieFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
-        List<Grupo> listTrasSab = gpoEJB.findTraslapeSab(sabIn,sabFn,selectedGpo.getIdGrupo(),selectedGpo.getClaveMateria().getSemestre());
+		List<Grupo> listTrasLun = gpoEJB.findTraslapeLun(lunIn,lunFn,selectedGpo.getGrupoPK(),selectedGpo.getMateria().getSemestre());
+        List<Grupo> listTrasMar = gpoEJB.findTraslapeMar(marIn,marFn,selectedGpo.getGrupoPK(),selectedGpo.getMateria().getSemestre());
+        List<Grupo> listTrasMie = gpoEJB.findTraslapeMie(mieIn,mieFn,selectedGpo.getGrupoPK(),selectedGpo.getMateria().getSemestre());
+        List<Grupo> listTrasJue = gpoEJB.findTraslapeJue(jueIn,jueFn,selectedGpo.getGrupoPK(),selectedGpo.getMateria().getSemestre());
+        List<Grupo> listTrasVie = gpoEJB.findTraslapeVie(vieIn,vieFn,selectedGpo.getGrupoPK(),selectedGpo.getMateria().getSemestre());
+        List<Grupo> listTrasSab = gpoEJB.findTraslapeSab(sabIn,sabFn,selectedGpo.getGrupoPK(),selectedGpo.getMateria().getSemestre());
  // ************* valida que si selecciona ya sea hora de inicio o de fin tiene que seleccionar hora de fin o de inicio (TOP) ***********************
         if(lunIn!= null && lunFn== null )
         {
@@ -467,31 +474,31 @@ public class ProfesorBean implements Serializable
             }
         } // Si se ingresa hora de inicio y hora final en sabado (BOTTOM)
         horas = horas + minutos;
-        if(horas != (float)selectedGpo.getClaveMateria().getHoras())
+        if(horas != (float)selectedGpo.getMateria().getHoras())
         {
-            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR," el total de horas de la materia debe ser " + selectedGpo.getClaveMateria().getHoras() + " la suma actual es : " + horas,null));
+            FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR," el total de horas de la materia debe ser " + selectedGpo.getMateria().getHoras() + " la suma actual es : " + horas,null));
             return "";    
         }
 // ******  valida que la suma de horas corresponda a las horas de la materia y el horario de lunes a jueves no puede ser mayor a 2.5 horas (BOTTOM) 
         if (
-        		(lunIn == null ? selectedGpo.getHorario().getLunHoraIni() == null : lunIn.equals(selectedGpo.getHorario().getLunHoraIni())) && 
-        		(marIn == null ? selectedGpo.getHorario().getMarHoraIni() == null : marIn.equals(selectedGpo.getHorario().getMarHoraIni())) &&
-        		(mieIn == null ? selectedGpo.getHorario().getMieHoraIni() == null : mieIn.equals(selectedGpo.getHorario().getMieHoraIni())) &&
-        		(jueIn == null ? selectedGpo.getHorario().getJueHoraIni() == null : jueIn.equals(selectedGpo.getHorario().getJueHoraIni())) &&
-        		(vieIn == null ? selectedGpo.getHorario().getVieHoraIni() == null : vieIn.equals(selectedGpo.getHorario().getVieHoraIni())) &&
-        		(sabIn == null ? selectedGpo.getHorario().getSabHoraIni() == null : sabIn.equals(selectedGpo.getHorario().getSabHoraIni())) && 
-        		(lunFn == null ? selectedGpo.getHorario().getLunHoraFin() == null : lunFn.equals(selectedGpo.getHorario().getLunHoraFin())) && 
-        		(marFn == null ? selectedGpo.getHorario().getMarHoraFin() == null : marFn.equals(selectedGpo.getHorario().getMarHoraFin())) &&
-        		(mieFn == null ? selectedGpo.getHorario().getMieHoraFin() == null : mieFn.equals(selectedGpo.getHorario().getMieHoraFin())) &&
-        		(jueFn == null ? selectedGpo.getHorario().getJueHoraFin() == null : jueFn.equals(selectedGpo.getHorario().getJueHoraFin())) &&
-        		(vieFn == null ? selectedGpo.getHorario().getVieHoraFin() == null : vieFn.equals(selectedGpo.getHorario().getVieHoraFin())) &&
-        		(sabFn == null ? selectedGpo.getHorario().getSabHoraFin() == null : sabFn.equals(selectedGpo.getHorario().getSabHoraFin())) &&
-        		(aulaLunes == null ? selectedGpo.getHorario().getAulaLun() == null : aulaLunes.equals(selectedGpo.getHorario().getAulaLun())) &&
-        		(aulaMartes == null ? selectedGpo.getHorario().getAulaMar() == null : aulaMartes.equals(selectedGpo.getHorario().getAulaMar())) &&
-        		(aulaMiercoles == null ? selectedGpo.getHorario().getAulaMie() == null : aulaMiercoles.equals(selectedGpo.getHorario().getAulaMie())) &&
-        		(aulaJueves == null ? selectedGpo.getHorario().getAulaJue() == null : aulaJueves.equals(selectedGpo.getHorario().getAulaJue())) &&
-        		(aulaViernes == null ? selectedGpo.getHorario().getAulaVie() == null : aulaViernes.equals(selectedGpo.getHorario().getAulaVie())) &&
-        		(aulaSabado == null ? selectedGpo.getHorario().getAulaSab() == null : aulaSabado.equals(selectedGpo.getHorario().getAulaSab()))        		
+        		(lunIn == null ? selectedGpo.getLunHoraIni() == null : lunIn.equals(selectedGpo.getLunHoraIni())) && 
+        		(marIn == null ? selectedGpo.getMarHoraIni() == null : marIn.equals(selectedGpo.getMarHoraIni())) &&
+        		(mieIn == null ? selectedGpo.getMieHoraIni() == null : mieIn.equals(selectedGpo.getMieHoraIni())) &&
+        		(jueIn == null ? selectedGpo.getJueHoraIni() == null : jueIn.equals(selectedGpo.getJueHoraIni())) &&
+        		(vieIn == null ? selectedGpo.getVieHoraIni() == null : vieIn.equals(selectedGpo.getVieHoraIni())) &&
+        		(sabIn == null ? selectedGpo.getSabHoraIni() == null : sabIn.equals(selectedGpo.getSabHoraIni())) && 
+        		(lunFn == null ? selectedGpo.getLunHoraFin() == null : lunFn.equals(selectedGpo.getLunHoraFin())) && 
+        		(marFn == null ? selectedGpo.getMarHoraFin() == null : marFn.equals(selectedGpo.getMarHoraFin())) &&
+        		(mieFn == null ? selectedGpo.getMieHoraFin() == null : mieFn.equals(selectedGpo.getMieHoraFin())) &&
+        		(jueFn == null ? selectedGpo.getJueHoraFin() == null : jueFn.equals(selectedGpo.getJueHoraFin())) &&
+        		(vieFn == null ? selectedGpo.getVieHoraFin() == null : vieFn.equals(selectedGpo.getVieHoraFin())) &&
+        		(sabFn == null ? selectedGpo.getSabHoraFin() == null : sabFn.equals(selectedGpo.getSabHoraFin())) &&
+        		(aulaLunes == null ? selectedGpo.getAulaLun() == null : aulaLunes.equals(selectedGpo.getAulaLun())) &&
+        		(aulaMartes == null ? selectedGpo.getAulaMar() == null : aulaMartes.equals(selectedGpo.getAulaMar())) &&
+        		(aulaMiercoles == null ? selectedGpo.getAulaMie() == null : aulaMiercoles.equals(selectedGpo.getAulaMie())) &&
+        		(aulaJueves == null ? selectedGpo.getAulaJue() == null : aulaJueves.equals(selectedGpo.getAulaJue())) &&
+        		(aulaViernes == null ? selectedGpo.getAulaVie() == null : aulaViernes.equals(selectedGpo.getAulaVie())) &&
+        		(aulaSabado == null ? selectedGpo.getAulaSab() == null : aulaSabado.equals(selectedGpo.getAulaSab()))        		
         	)
         { // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (TOP)
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"No realizaste ninguna modficación del horario",null));
@@ -499,24 +506,24 @@ public class ProfesorBean implements Serializable
         } // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (BOTTOM)
 
         if (	
-        		((lunIn == null ? selectedGpo.getHorario().getLunHoraIni() == null : lunIn.equals(selectedGpo.getHorario().getLunHoraIni())) && 
-        		(marIn == null ? selectedGpo.getHorario().getMarHoraIni() == null : marIn.equals(selectedGpo.getHorario().getMarHoraIni())) &&
-        		(mieIn == null ? selectedGpo.getHorario().getMieHoraIni() == null : mieIn.equals(selectedGpo.getHorario().getMieHoraIni())) &&
-        		(jueIn == null ? selectedGpo.getHorario().getJueHoraIni() == null : jueIn.equals(selectedGpo.getHorario().getJueHoraIni())) &&
-        		(vieIn == null ? selectedGpo.getHorario().getVieHoraIni() == null : vieIn.equals(selectedGpo.getHorario().getVieHoraIni())) &&
-        		(sabIn == null ? selectedGpo.getHorario().getSabHoraIni() == null : sabIn.equals(selectedGpo.getHorario().getSabHoraIni())) && 
-        		(lunFn == null ? selectedGpo.getHorario().getLunHoraFin() == null : lunFn.equals(selectedGpo.getHorario().getLunHoraFin())) && 
-        		(marFn == null ? selectedGpo.getHorario().getMarHoraFin() == null : marFn.equals(selectedGpo.getHorario().getMarHoraFin())) &&
-        		(mieFn == null ? selectedGpo.getHorario().getMieHoraFin() == null : mieFn.equals(selectedGpo.getHorario().getMieHoraFin())) &&
-        		(jueFn == null ? selectedGpo.getHorario().getJueHoraFin() == null : jueFn.equals(selectedGpo.getHorario().getJueHoraFin())) &&
-        		(vieFn == null ? selectedGpo.getHorario().getVieHoraFin() == null : vieFn.equals(selectedGpo.getHorario().getVieHoraFin())) &&
-        		(sabFn == null ? selectedGpo.getHorario().getSabHoraFin() == null : sabFn.equals(selectedGpo.getHorario().getSabHoraFin())))   &&
-        		((aulaLunes == null ? selectedGpo.getHorario().getAulaLun() != null : !aulaLunes.equals(selectedGpo.getHorario().getAulaLun())) ||
-        		(aulaMartes == null ? selectedGpo.getHorario().getAulaMar() != null : !aulaMartes.equals(selectedGpo.getHorario().getAulaMar())) ||
-        		(aulaMiercoles == null ? selectedGpo.getHorario().getAulaMie() != null : !aulaMiercoles.equals(selectedGpo.getHorario().getAulaMie())) ||     
-        		(aulaJueves == null ? selectedGpo.getHorario().getAulaJue() != null : !aulaJueves.equals(selectedGpo.getHorario().getAulaJue())) ||
-        		(aulaViernes == null ? selectedGpo.getHorario().getAulaVie() != null : !aulaViernes.equals(selectedGpo.getHorario().getAulaVie())) ||
-        		(aulaSabado == null ? selectedGpo.getHorario().getAulaSab() != null : !aulaSabado.equals(selectedGpo.getHorario().getAulaSab())))		        		
+        		((lunIn == null ? selectedGpo.getLunHoraIni() == null : lunIn.equals(selectedGpo.getLunHoraIni())) && 
+        		(marIn == null ? selectedGpo.getMarHoraIni() == null : marIn.equals(selectedGpo.getMarHoraIni())) &&
+        		(mieIn == null ? selectedGpo.getMieHoraIni() == null : mieIn.equals(selectedGpo.getMieHoraIni())) &&
+        		(jueIn == null ? selectedGpo.getJueHoraIni() == null : jueIn.equals(selectedGpo.getJueHoraIni())) &&
+        		(vieIn == null ? selectedGpo.getVieHoraIni() == null : vieIn.equals(selectedGpo.getVieHoraIni())) &&
+        		(sabIn == null ? selectedGpo.getSabHoraIni() == null : sabIn.equals(selectedGpo.getSabHoraIni())) && 
+        		(lunFn == null ? selectedGpo.getLunHoraFin() == null : lunFn.equals(selectedGpo.getLunHoraFin())) && 
+        		(marFn == null ? selectedGpo.getMarHoraFin() == null : marFn.equals(selectedGpo.getMarHoraFin())) &&
+        		(mieFn == null ? selectedGpo.getMieHoraFin() == null : mieFn.equals(selectedGpo.getMieHoraFin())) &&
+        		(jueFn == null ? selectedGpo.getJueHoraFin() == null : jueFn.equals(selectedGpo.getJueHoraFin())) &&
+        		(vieFn == null ? selectedGpo.getVieHoraFin() == null : vieFn.equals(selectedGpo.getVieHoraFin())) &&
+        		(sabFn == null ? selectedGpo.getSabHoraFin() == null : sabFn.equals(selectedGpo.getSabHoraFin())))   &&
+        		((aulaLunes == null ? selectedGpo.getAulaLun() != null : !aulaLunes.equals(selectedGpo.getAulaLun())) ||
+        		(aulaMartes == null ? selectedGpo.getAulaMar() != null : !aulaMartes.equals(selectedGpo.getAulaMar())) ||
+        		(aulaMiercoles == null ? selectedGpo.getAulaMie() != null : !aulaMiercoles.equals(selectedGpo.getAulaMie())) ||     
+        		(aulaJueves == null ? selectedGpo.getAulaJue() != null : !aulaJueves.equals(selectedGpo.getAulaJue())) ||
+        		(aulaViernes == null ? selectedGpo.getAulaVie() != null : !aulaViernes.equals(selectedGpo.getAulaVie())) ||
+        		(aulaSabado == null ? selectedGpo.getAulaSab() != null : !aulaSabado.equals(selectedGpo.getAulaSab())))		        		
         	)
         { // Si solo se modifica el aula que se usará para la materia (TOP)
             //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"No realizaste ninguna modficación del horario",null));
@@ -527,32 +534,32 @@ public class ProfesorBean implements Serializable
         if(!listTrasLun.isEmpty())
         { // Si hay traslape en lunes (TOP)
             for(Grupo g:listTrasLun)
-                mensajesTraslape.add(" Hay traslape el lunes con " + g.getClaveMateria().getNombreMateria());
+                mensajesTraslape.add(" Hay traslape el lunes con " + g.getMateria().getNombreMateria());
         } // Si hay traslape en lunes (BOTTOM)
         if(!listTrasMar.isEmpty())
         { // Si hay traslape en martes (TOP)
             for(Grupo g:listTrasMar)
-                mensajesTraslape.add(" Hay traslape el martes con " + g.getClaveMateria().getNombreMateria());
+                mensajesTraslape.add(" Hay traslape el martes con " + g.getMateria().getNombreMateria());
         }  // Si hay traslape en martes (BOTTOM)
         if(!listTrasMie.isEmpty())
         {  // Si hay traslape en miercoles (TOP)
             for(Grupo g:listTrasMie)
-                mensajesTraslape.add( " Hay traslape el miercoles con " + g.getClaveMateria().getNombreMateria());
+                mensajesTraslape.add( " Hay traslape el miercoles con " + g.getMateria().getNombreMateria());
         } // Si hay traslape en miercoles (BOTTOM)
         if(!listTrasJue.isEmpty())
         {  // Si hay traslape en jueves (TOP)
             for(Grupo g:listTrasJue)
-                mensajesTraslape.add( " Hay traslape jueves con " + g.getClaveMateria().getNombreMateria());
+                mensajesTraslape.add( " Hay traslape jueves con " + g.getMateria().getNombreMateria());
         } // Si hay traslape en jueves (BOTTOM)
         if(!listTrasVie.isEmpty())
         { // Si hay traslape en viernes (TOP)
             for(Grupo g:listTrasVie)
-                mensajesTraslape.add( " Hay traslape el viernes con " + g.getClaveMateria().getNombreMateria());
+                mensajesTraslape.add( " Hay traslape el viernes con " + g.getMateria().getNombreMateria());
         } // Si hay traslape en viernes (BOTTOM)
         if(!listTrasSab.isEmpty())
         { // Si hay traslape en sabado (TOP)
             for(Grupo g:listTrasSab)
-                mensajesTraslape.add( " Hay traslape el sabado con " + g.getClaveMateria().getNombreMateria());
+                mensajesTraslape.add( " Hay traslape el sabado con " + g.getMateria().getNombreMateria());
         } // Si hay traslape en sabado (BOTTOM)        
         if(mensajesTraslape.isEmpty())
         { // Si no hay traslapes (TOP)
@@ -568,49 +575,49 @@ public class ProfesorBean implements Serializable
     { // Acepta los cambios para posterior enviar el horario a validacion (TOP)
     	boolean hayModificado = false;
     	boolean faltan = false;
-    	Horario2 hora2 = new Horario2();
-    	hora2.setIdGrupo(selectedGpo);
-    	hora2.setIdHorario(selectedGpo.getHorario().getIdHorario());
-    	hora2.setLunHoraIni(selectedGpo.getHorario().getLunHoraIni());
-    	hora2.setLunHoraFin(selectedGpo.getHorario().getLunHoraFin());
-    	hora2.setMarHoraIni(selectedGpo.getHorario().getMarHoraIni());
-    	hora2.setMarHoraFin(selectedGpo.getHorario().getMarHoraFin());
-    	hora2.setMieHoraIni(selectedGpo.getHorario().getMieHoraIni());
-    	hora2.setMieHoraFin(selectedGpo.getHorario().getMieHoraFin());
-    	hora2.setJueHoraIni(selectedGpo.getHorario().getJueHoraIni());
-    	hora2.setJueHoraFin(selectedGpo.getHorario().getJueHoraFin());
-    	hora2.setVieHoraIni(selectedGpo.getHorario().getVieHoraIni());
-    	hora2.setVieHoraFin(selectedGpo.getHorario().getVieHoraFin());
-    	hora2.setSabHoraIni(selectedGpo.getHorario().getSabHoraIni());
-    	hora2.setSabHoraFin(selectedGpo.getHorario().getSabHoraFin());
-    	hora2.setAulaLun(selectedGpo.getHorario().getAulaLun());
-    	hora2.setAulaMar(selectedGpo.getHorario().getAulaMar());
-    	hora2.setAulaMie(selectedGpo.getHorario().getAulaMie());
-    	hora2.setAulaJue(selectedGpo.getHorario().getAulaJue());
-    	hora2.setAulaVie(selectedGpo.getHorario().getAulaVie());
-    	hora2.setAulaVie(selectedGpo.getHorario().getAulaSab());
+    	GrupoRespaldo hora2 = new GrupoRespaldo();
+    	hora2.setGrupoRespaldoPK(selectedGpo.getGrupoRespaldo().getGrupoRespaldoPK());
+    	hora2.setLunHoraIni(selectedGpo.getLunHoraIni());
+    	hora2.setLunHoraFin(selectedGpo.getLunHoraFin());
+    	hora2.setMarHoraIni(selectedGpo.getMarHoraIni());
+    	hora2.setMarHoraFin(selectedGpo.getMarHoraFin());
+    	hora2.setMieHoraIni(selectedGpo.getMieHoraIni());
+    	hora2.setMieHoraFin(selectedGpo.getMieHoraFin());
+    	hora2.setJueHoraIni(selectedGpo.getJueHoraIni());
+    	hora2.setJueHoraFin(selectedGpo.getJueHoraFin());
+    	hora2.setVieHoraIni(selectedGpo.getVieHoraIni());
+    	hora2.setVieHoraFin(selectedGpo.getVieHoraFin());
+    	hora2.setSabHoraIni(selectedGpo.getSabHoraIni());
+    	hora2.setSabHoraFin(selectedGpo.getSabHoraFin());
+    	hora2.setAulaLun(selectedGpo.getAulaLun());
+    	hora2.setAulaMar(selectedGpo.getAulaMar());
+    	hora2.setAulaMie(selectedGpo.getAulaMie());
+    	hora2.setAulaJue(selectedGpo.getAulaJue());
+    	hora2.setAulaVie(selectedGpo.getAulaVie());
+    	hora2.setAulaVie(selectedGpo.getAulaSab());
     	
     	listaModificados.add(hora2);
     	
-    	selectedGpo.getHorario().setLunHoraIni(lunIn);
-    	selectedGpo.getHorario().setLunHoraFin(lunFn);
-    	selectedGpo.getHorario().setMarHoraIni(marIn);
-    	selectedGpo.getHorario().setMarHoraFin(marFn);
-    	selectedGpo.getHorario().setMieHoraIni(mieIn);
-    	selectedGpo.getHorario().setMieHoraFin(mieFn);
-    	selectedGpo.getHorario().setJueHoraIni(jueIn);
-    	selectedGpo.getHorario().setJueHoraFin(jueFn);
-    	selectedGpo.getHorario().setVieHoraIni(vieIn);
-    	selectedGpo.getHorario().setVieHoraFin(vieFn);
-    	selectedGpo.getHorario().setSabHoraIni(sabIn);
-    	selectedGpo.getHorario().setSabHoraFin(sabFn);
-    	selectedGpo.getHorario().setAulaLun(aulaLunes);
-    	selectedGpo.getHorario().setAulaMar(aulaMartes);
-    	selectedGpo.getHorario().setAulaMie(aulaMiercoles);
-    	selectedGpo.getHorario().setAulaJue(aulaJueves);
-    	selectedGpo.getHorario().setAulaVie(aulaViernes);
-    	selectedGpo.getHorario().setAulaSab(aulaSabado);
-    	
+    	selectedGpo.setLunHoraIni(lunIn);
+    	selectedGpo.setLunHoraFin(lunFn);
+    	selectedGpo.setMarHoraIni(marIn);
+    	selectedGpo.setMarHoraFin(marFn);
+    	selectedGpo.setMieHoraIni(mieIn);
+    	selectedGpo.setMieHoraFin(mieFn);
+    	selectedGpo.setJueHoraIni(jueIn);
+    	selectedGpo.setJueHoraFin(jueFn);
+    	selectedGpo.setVieHoraIni(vieIn);
+    	selectedGpo.setVieHoraFin(vieFn);
+    	selectedGpo.setSabHoraIni(sabIn);
+    	selectedGpo.setSabHoraFin(sabFn);
+    	/*
+    	selectedGpo.setAulaLun(aulaLunes);
+    	selectedGpo.setAulaMar(aulaMartes);
+    	selectedGpo.setAulaMie(aulaMiercoles);
+    	selectedGpo.setAulaJue(aulaJueves);
+    	selectedGpo.setAulaVie(aulaViernes);
+    	selectedGpo.setAulaSab(aulaSabado);
+    	*/
     	StringBuilder strBuild = new StringBuilder("");
         for(int i=0; i < mensajesTraslape.size();i++)
         {
@@ -680,25 +687,25 @@ public class ProfesorBean implements Serializable
     				g.setValidado(3);
                     enviarMail(g);    				    				    				
     				gpoEJB.edit(g);
-    				HorarioEJB.edit(g.getHorario());
+    				//gpoEJB.edit(g);
     			} // Si solo se modificaron las aulas del grupo (BOTTOM)
     			else if(g.getEstado() == 2)
     			{ // Si el grupo fue modificado (TOP)
     				try
     			    {    					
     					g.setValidado(0); // Se marca como grupo para validación
-    			    	for(Horario2 h : listaModificados)
+    			    	for(GrupoRespaldo h : listaModificados)
     			    	{
-    			    		if(g.getHorario().getIdHorario() == h.getIdHorario())
-    			    			hora2EJB.create(h);
+    			    		if(g.getGrupoPK().equals(h.getGrupoRespaldoPK()))
+    			    			gpoRespEJB.create(h);
     			    	}
                         enviarMail(g);    			    	
     			    	gpoEJB.edit(g);
-    			    	HorarioEJB.edit(g.getHorario());  		
                         NotificacionesCoord coord = new NotificacionesCoord();
-                        coord.setNotificacionesCoordPK(new NotificacionesCoordPK(g.getIdGrupo(),new Date()));
+                        coord.setNotificacionesCoordPK(new NotificacionesCoordPK(selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre(),new Date()));
                         coord.setDescripcion(g.getDescripcion());
-                        coord.setEstado(0); // Estado no leido                        
+                        coord.setEstado(0); // Estado no leido
+                        
                         notifEJB.create(coord);
     		    		conGrupoAValidar = true;    			    	
     			    }
@@ -718,12 +725,12 @@ public class ProfesorBean implements Serializable
         { // For que valida si hay algun grupo modificado o no (TOP)
     		if(g.getValidado() != null && g.getValidado() == 2)
     		{
-    			hora2EJB.remove(hora2EJB.find(g.getHorario().getIdHorario()));
+    			gpoRespEJB.remove(gpoRespEJB.find(g.getGrupoRespaldo().getGrupoRespaldoPK()));
     		}
         	if(g.getEstado() == 1)
         	{
        			g.setValidado(3); // Se setea el grupo a confirmado
-       			HorarioEJB.edit(g.getHorario());       			
+       			//gpoEJB.edit(g.getHorario());       			
        			gpoEJB.edit(g);
        			g.setEstado(0);       			
        		}
@@ -732,7 +739,7 @@ public class ProfesorBean implements Serializable
        			g.setValidado(3); // Se setea el grupo a confirmado
        			enviarMail(g);       			
        			gpoEJB.edit(g);
-       			HorarioEJB.edit(g.getHorario());
+       			//HorarioEJB.edit(g.getHorario());
        			g.setEstado(0);       			
         	}
        	} // For que valida si hay algun grupo modificado o no (BOTTOM)    	    	
@@ -795,15 +802,15 @@ public class ProfesorBean implements Serializable
         para = "giresa.ico@gmail.com";        
         if(g.getEstado() == 2)
         {
-        	mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
-        		"</b> ha enviado el grupo <b>" + g.getNombre() +  "</b> de la materia <b>" + g.getClaveMateria().getNombreMateria() + "</b> para validacion \n " +
+        	mensaje = "El profesor <b>" + g.getProfesor().getNombreProfe() + " " + g.getProfesor().getApePatProfe() + " " + g.getProfesor().getApeMatProfe() + 
+        		"</b> ha enviado el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> para validacion \n " +
         				 "Ingrese a la liga para validar el (los) grupo(s)  http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
         	subject = "Nuevo grupo para validacion";
         }
         else if(g.getEstado() == 3)
         {
-            mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
-            		"</b> modifico solo el tipo de aula para el grupo <b>" + g.getNombre() +  "</b> de la materia <b>" + g.getClaveMateria().getNombreMateria() + "</b> \n " +
+            mensaje = "El profesor <b>" + g.getProfesor().getNombreProfe() + " " + g.getProfesor().getApePatProfe() + " " + g.getProfesor().getApeMatProfe() + 
+            		"</b> modifico solo el tipo de aula para el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> \n " +
             				 "Ingrese a la liga para ver la planilla http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
         	subject = "Se realizó la modificacion solo de aulas";            
         }

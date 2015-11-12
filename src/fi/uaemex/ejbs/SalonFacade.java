@@ -5,26 +5,27 @@
  */
 package fi.uaemex.ejbs;
 
-import  fi.uaemex.entities.Horario2;
+import fi.uaemex.entities.Salon;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+/**
+ *
+ * @author IEEM
+ */
 @Stateless
-public class Horario2Facade extends AbstractFacade<Horario2> 
-{
-    @PersistenceContext(unitName = "SIPLAFI-WEB")
+public class SalonFacade extends AbstractFacade<Salon> {
+    @PersistenceContext(unitName = "SIPLAFI-WEBPU")
     private EntityManager em;
 
     @Override
-    protected EntityManager getEntityManager() 
-    {
+    protected EntityManager getEntityManager() {
         return em;
     }
 
-    public Horario2Facade() 
-    {
-        super(Horario2.class);
+    public SalonFacade() {
+        super(Salon.class);
     }
     
 }

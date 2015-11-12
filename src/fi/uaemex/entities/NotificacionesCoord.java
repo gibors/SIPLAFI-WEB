@@ -10,6 +10,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -23,15 +26,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author IEEM
  */
 @Entity
-@Table(name = "notificaciones_coord")
+@Table(name = "notificaciones_coord", catalog = "SIPLAFI_DB", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "NotificacionesCoord.findAll", query = "SELECT n FROM NotificacionesCoord n ORDER BY n.fechaHoraValidacion"),
-    @NamedQuery(name = "NotificacionesCoord.findByIdGrupo", query = "SELECT n FROM NotificacionesCoord n WHERE n.notificacionesCoordPK.idGrupo = :idGrupo"),
-    @NamedQuery(name = "NotificacionesCoord.findByFechaHoraNotificacion", query = "SELECT n FROM NotificacionesCoord n WHERE n.notificacionesCoordPK.fechaHoraNotificacion = :fechaHoraNotificacion"),
+    @NamedQuery(name = "NotificacionesCoord.findAll", query = "SELECT n FROM NotificacionesCoord n"),
+    @NamedQuery(name = "NotificacionesCoord.findByClaveMateria", query = "SELECT n FROM NotificacionesCoord n WHERE n.notificacionesCoordPK.claveMateria = :claveMateria"),
+    @NamedQuery(name = "NotificacionesCoord.findByRfcProfesor", query = "SELECT n FROM NotificacionesCoord n WHERE n.notificacionesCoordPK.rfcProfesor = :rfcProfesor"),
+    @NamedQuery(name = "NotificacionesCoord.findByPeriodo", query = "SELECT n FROM NotificacionesCoord n WHERE n.notificacionesCoordPK.periodo = :periodo"),
+    @NamedQuery(name = "NotificacionesCoord.findByNombre", query = "SELECT n FROM NotificacionesCoord n WHERE n.notificacionesCoordPK.nombre = :nombre"),
+    @NamedQuery(name = "NotificacionesCoord.findByFechaHoraNotif", query = "SELECT n FROM NotificacionesCoord n WHERE n.notificacionesCoordPK.fechaHoraNotif = :fechaHoraNotif"),
     @NamedQuery(name = "NotificacionesCoord.findByEstado", query = "SELECT n FROM NotificacionesCoord n WHERE n.estado = :estado"),
     @NamedQuery(name = "NotificacionesCoord.findByDescripcion", query = "SELECT n FROM NotificacionesCoord n WHERE n.descripcion = :descripcion"),
-    @NamedQuery(name = "NotificacionesCoord.findByFechaHoraValidacion", query = "SELECT n FROM NotificacionesCoord n WHERE n.fechaHoraValidacion = :fechaHoraValidacion")})
+    @NamedQuery(name = "NotificacionesCoord.findByFechaHoraValida", query = "SELECT n FROM NotificacionesCoord n WHERE n.fechaHoraValida = :fechaHoraValida")})
 public class NotificacionesCoord implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -41,9 +47,16 @@ public class NotificacionesCoord implements Serializable {
     @Size(max = 256)
     @Column(name = "DESCRIPCION")
     private String descripcion;
-    @Column(name = "FECHA_HORA_VALIDACION")
+    @Column(name = "FECHA_HORA_VALIDA")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaHoraValidacion;
+    private Date fechaHoraValida;
+    @JoinColumns({
+        @JoinColumn(name = "CLAVE_MATERIA", referencedColumnName = "CLAVE_MATERIA", insertable = false, updatable = false),
+        @JoinColumn(name = "RFC_PROFESOR", referencedColumnName = "RFC_PROFESOR", insertable = false, updatable = false),
+        @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", insertable = false, updatable = false),
+        @JoinColumn(name = "NOMBRE", referencedColumnName = "NOMBRE", insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Grupo grupo;
 
     public NotificacionesCoord() {
     }
@@ -52,8 +65,8 @@ public class NotificacionesCoord implements Serializable {
         this.notificacionesCoordPK = notificacionesCoordPK;
     }
 
-    public NotificacionesCoord(int idGrupo, Date fechaHoraNotificacion) {
-        this.notificacionesCoordPK = new NotificacionesCoordPK(idGrupo, fechaHoraNotificacion);
+    public NotificacionesCoord(String claveMateria, String rfcProfesor, String periodo, String nombre, Date fechaHoraNotif) {
+        this.notificacionesCoordPK = new NotificacionesCoordPK(claveMateria, rfcProfesor, periodo, nombre, fechaHoraNotif);
     }
 
     public NotificacionesCoordPK getNotificacionesCoordPK() {
@@ -80,12 +93,20 @@ public class NotificacionesCoord implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Date getFechaHoraValidacion() {
-        return fechaHoraValidacion;
+    public Date getFechaHoraValida() {
+        return fechaHoraValida;
     }
 
-    public void setFechaHoraValidacion(Date fechaHoraValidacion) {
-        this.fechaHoraValidacion = fechaHoraValidacion;
+    public void setFechaHoraValida(Date fechaHoraValida) {
+        this.fechaHoraValida = fechaHoraValida;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
     @Override
