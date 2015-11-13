@@ -138,8 +138,9 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
     {
         try
           {
-            return getEntityManager().createNamedQuery("Grupo.findGruposSemestre",Grupo.class)
-                .setParameter("semestre", semester).setParameter("gpoPk", gpoPk)
+            return (List<Grupo>) getEntityManager().createNamedQuery("Grupo.findGruposSemestre",Grupo.class)
+                .setParameter("semestre", semester).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
           }
         catch(Exception ex)

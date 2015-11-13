@@ -50,7 +50,7 @@
 				<h:form id="formu" >  
                     <h:panelGroup layout="block" rendered="#{!profesorBean.conGrupoAValidar}"> 
 						<p:dataTable id="gposProfe" var="gpo" value="#{profesorBean.gposProfe}" styleClass="tablaProfe"
-	                                 rowKey="#{gpo.idGrupo}">
+	                                 rowKey="#{gpo.grupoPK}">
 	                    	<p:columnGroup type="header">
 		                        <p:row>
 		                            <p:column rowspan="2" headerText="SEM"  />
@@ -82,63 +82,63 @@
 		                        </p:row>
 		                    </p:columnGroup>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.claveMateria.semestre}" >
+		                        <h:outputText value="#{gpo.materia.semestre}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.claveMateria.nombreMateria}" >
+		                        <h:outputText value="#{gpo.materia.nombreMateria}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.claveMateria.horas}" >
+		                        <h:outputText value="#{gpo.materia.horas}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.lunHoraIni != null ? profesorBean.format.format(gpo.horario.lunHoraIni) : '-'}" >
+		                        <h:outputText value="#{gpo.lunHoraIni != null ? profesorBean.format.format(gpo.lunHoraIni) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.lunHoraFin != null ? profesorBean.format.format(gpo.horario.lunHoraFin): '-'}" >
+		                        <h:outputText value="#{gpo.lunHoraFin != null ? profesorBean.format.format(gpo.lunHoraFin): '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.marHoraIni != null ? profesorBean.format.format(gpo.horario.marHoraIni): '-'}" >
+		                        <h:outputText value="#{gpo.marHoraIni != null ? profesorBean.format.format(gpo.marHoraIni): '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.marHoraFin != null ? profesorBean.format.format(gpo.horario.marHoraFin): '-'}" >
+		                        <h:outputText value="#{gpo.marHoraFin != null ? profesorBean.format.format(gpo.marHoraFin): '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.mieHoraIni != null ? profesorBean.format.format(gpo.horario.mieHoraIni) : '-'}" >
+		                        <h:outputText value="#{gpo.mieHoraIni != null ? profesorBean.format.format(gpo.mieHoraIni) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.mieHoraFin != null ? profesorBean.format.format(gpo.horario.mieHoraFin) : '-'}" >
+		                        <h:outputText value="#{gpo.mieHoraFin != null ? profesorBean.format.format(gpo.mieHoraFin) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.jueHoraIni != null ? profesorBean.format.format(gpo.horario.jueHoraIni) : '-'}" >
+		                        <h:outputText value="#{gpo.jueHoraIni != null ? profesorBean.format.format(gpo.jueHoraIni) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.jueHoraFin != null ? profesorBean.format.format(gpo.horario.jueHoraFin) : '-'}" >
+		                        <h:outputText value="#{gpo.jueHoraFin != null ? profesorBean.format.format(gpo.jueHoraFin) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.vieHoraIni != null ? profesorBean.format.format(gpo.horario.vieHoraIni) : '-'}" >
+		                        <h:outputText value="#{gpo.vieHoraIni != null ? profesorBean.format.format(gpo.vieHoraIni) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.vieHoraFin != null ? profesorBean.format.format(gpo.horario.vieHoraFin) : '-'}" >
+		                        <h:outputText value="#{gpo.vieHoraFin != null ? profesorBean.format.format(gpo.vieHoraFin) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.sabHoraIni != null ? profesorBean.format.format(gpo.horario.sabHoraIni) : '-'}" >
+		                        <h:outputText value="#{gpo.sabHoraIni != null ? profesorBean.format.format(gpo.sabHoraIni) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column >
-		                        <h:outputText value="#{gpo.horario.sabHoraFin != null ? profesorBean.format.format(gpo.horario.sabHoraFin) : '-'}" >
+		                        <h:outputText value="#{gpo.sabHoraFin != null ? profesorBean.format.format(gpo.sabHoraFin) : '-'}" >
 		                        </h:outputText>
 		                    </p:column>
 		                    <p:column>
