@@ -58,7 +58,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperRunManager;
 
 @ManagedBean(name = "profesorBean",eager=true)
 @ViewScoped
@@ -154,14 +153,14 @@ public class ProfesorBean implements Serializable
     	vieFn = selectedGpo.getVieHoraFin();
     	sabIn = selectedGpo.getSabHoraIni();
     	sabFn = selectedGpo.getSabHoraFin();
-    	/*
-    	aulaLunes = selectedGpo.getAulaLun();
-    	aulaMartes = selectedGpo.getAulaMar();
-    	aulaMiercoles = selectedGpo.getHorario().getAulaMie();
-    	aulaJueves = selectedGpo.getHorario().getAulaJue();
-    	aulaViernes = selectedGpo.getHorario().getAulaVie();
-    	aulaSabado = selectedGpo.getHorario().getAulaSab();
-    	*/
+    	
+    	//aulaLunes = selectedGpo.getAulaLun().getTipoAula();
+    	//aulaMartes = selectedGpo.getAulaMar().getTipoAula();
+    	//aulaMiercoles = selectedGpo.getAulaMie().getTipoAula();
+    	//aulaJueves = selectedGpo.getAulaJue().getTipoAula();
+    	//aulaViernes = selectedGpo.getAulaVie().getTipoAula();
+    	//aulaSabado = selectedGpo.getAulaSab().getTipoAula();
+    	
     	/****** Se utilizan variables auxiliares para el horario del grupo seleccionado porque maraca error en nulos, el componente pcalendar (TOP) ********/    	
     	logg.info(">>> se selecciono un grupo ..." + selectedGpo.getGrupoPK().getNombre() + " oooo.... " + listGposInSemester.size());    	
     	logg.info("aula mar: " + aulaMartes + "-- aulaSab: " + aulaSabado);
@@ -241,7 +240,7 @@ public class ProfesorBean implements Serializable
    { // Modifica el horario para enviar a validación  (TOP)
         float min = 0;
         float minutos = 0;
-        float horas= 0;       
+        float horas= 0;
         float horaXDia = 0;
         mensajesTraslape = new ArrayList<>();
         
