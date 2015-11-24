@@ -191,12 +191,12 @@ public class ProfesorBean implements Serializable
             	selectedGpo.setVieHoraFin(hora.getVieHoraFin());
             	selectedGpo.setSabHoraIni(hora.getSabHoraIni());
             	selectedGpo.setSabHoraFin(hora.getSabHoraFin());
-            	selectedGpo.setAulaLun(hora.getAulaLun());
-            	selectedGpo.setAulaMar(hora.getAulaMar());
-            	selectedGpo.setAulaMie(hora.getAulaMie());
-            	selectedGpo.setAulaJue(hora.getAulaJue());
-            	selectedGpo.setAulaVie(hora.getAulaVie());
-            	selectedGpo.setAulaSab(hora.getAulaSab());        
+            	//selectedGpo.setAulaLun(hora.getAulaLun());
+            	//selectedGpo.setAulaMar(hora.getAulaMar());
+            	//selectedGpo.setAulaMie(hora.getAulaMie());
+            	//selectedGpo.setAulaJue(hora.getAulaJue());
+            	//selectedGpo.setAulaVie(hora.getAulaVie());
+            	//selectedGpo.setAulaSab(hora.getAulaSab());        
             	//selectedGpo.setValidado(null);
         		//hora2EJB.remove(hora);
         	}
@@ -491,13 +491,13 @@ public class ProfesorBean implements Serializable
         		(mieFn == null ? selectedGpo.getMieHoraFin() == null : mieFn.equals(selectedGpo.getMieHoraFin())) &&
         		(jueFn == null ? selectedGpo.getJueHoraFin() == null : jueFn.equals(selectedGpo.getJueHoraFin())) &&
         		(vieFn == null ? selectedGpo.getVieHoraFin() == null : vieFn.equals(selectedGpo.getVieHoraFin())) &&
-        		(sabFn == null ? selectedGpo.getSabHoraFin() == null : sabFn.equals(selectedGpo.getSabHoraFin())) &&
-        		(aulaLunes == null ? selectedGpo.getAulaLun() == null : aulaLunes.equals(selectedGpo.getAulaLun())) &&
-        		(aulaMartes == null ? selectedGpo.getAulaMar() == null : aulaMartes.equals(selectedGpo.getAulaMar())) &&
-        		(aulaMiercoles == null ? selectedGpo.getAulaMie() == null : aulaMiercoles.equals(selectedGpo.getAulaMie())) &&
-        		(aulaJueves == null ? selectedGpo.getAulaJue() == null : aulaJueves.equals(selectedGpo.getAulaJue())) &&
-        		(aulaViernes == null ? selectedGpo.getAulaVie() == null : aulaViernes.equals(selectedGpo.getAulaVie())) &&
-        		(aulaSabado == null ? selectedGpo.getAulaSab() == null : aulaSabado.equals(selectedGpo.getAulaSab()))        		
+        		(sabFn == null ? selectedGpo.getSabHoraFin() == null : sabFn.equals(selectedGpo.getSabHoraFin())) 
+        	//	(aulaLunes == null ? selectedGpo.getAulaLun() == null : aulaLunes.equals(selectedGpo.getAulaLun())) &&
+        	//	(aulaMartes == null ? selectedGpo.getAulaMar() == null : aulaMartes.equals(selectedGpo.getAulaMar())) &&
+        	//	(aulaMiercoles == null ? selectedGpo.getAulaMie() == null : aulaMiercoles.equals(selectedGpo.getAulaMie())) &&
+        	//	(aulaJueves == null ? selectedGpo.getAulaJue() == null : aulaJueves.equals(selectedGpo.getAulaJue())) &&
+        	//	(aulaViernes == null ? selectedGpo.getAulaVie() == null : aulaViernes.equals(selectedGpo.getAulaVie())) &&
+        	//	(aulaSabado == null ? selectedGpo.getAulaSab() == null : aulaSabado.equals(selectedGpo.getAulaSab()))        		
         	)
         { // Verifica que se haya realizado alguna modificación al horario si no muestra mensaje (TOP)
             FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"No realizaste ninguna modficación del horario",null));
@@ -516,13 +516,13 @@ public class ProfesorBean implements Serializable
         		(mieFn == null ? selectedGpo.getMieHoraFin() == null : mieFn.equals(selectedGpo.getMieHoraFin())) &&
         		(jueFn == null ? selectedGpo.getJueHoraFin() == null : jueFn.equals(selectedGpo.getJueHoraFin())) &&
         		(vieFn == null ? selectedGpo.getVieHoraFin() == null : vieFn.equals(selectedGpo.getVieHoraFin())) &&
-        		(sabFn == null ? selectedGpo.getSabHoraFin() == null : sabFn.equals(selectedGpo.getSabHoraFin())))   &&
-        		((aulaLunes == null ? selectedGpo.getAulaLun() != null : !aulaLunes.equals(selectedGpo.getAulaLun())) ||
-        		(aulaMartes == null ? selectedGpo.getAulaMar() != null : !aulaMartes.equals(selectedGpo.getAulaMar())) ||
-        		(aulaMiercoles == null ? selectedGpo.getAulaMie() != null : !aulaMiercoles.equals(selectedGpo.getAulaMie())) ||     
-        		(aulaJueves == null ? selectedGpo.getAulaJue() != null : !aulaJueves.equals(selectedGpo.getAulaJue())) ||
-        		(aulaViernes == null ? selectedGpo.getAulaVie() != null : !aulaViernes.equals(selectedGpo.getAulaVie())) ||
-        		(aulaSabado == null ? selectedGpo.getAulaSab() != null : !aulaSabado.equals(selectedGpo.getAulaSab())))		        		
+        		(sabFn == null ? selectedGpo.getSabHoraFin() == null : sabFn.equals(selectedGpo.getSabHoraFin())))   
+//        		((aulaLunes == null ? selectedGpo.getAulaLun() != null : !aulaLunes.equals(selectedGpo.getAulaLun())) ||
+//        		(aulaMartes == null ? selectedGpo.getAulaMar() != null : !aulaMartes.equals(selectedGpo.getAulaMar())) ||
+//        		(aulaMiercoles == null ? selectedGpo.getAulaMie() != null : !aulaMiercoles.equals(selectedGpo.getAulaMie())) ||     
+//        		(aulaJueves == null ? selectedGpo.getAulaJue() != null : !aulaJueves.equals(selectedGpo.getAulaJue())) ||
+//        		(aulaViernes == null ? selectedGpo.getAulaVie() != null : !aulaViernes.equals(selectedGpo.getAulaVie())) ||
+//        		(aulaSabado == null ? selectedGpo.getAulaSab() != null : !aulaSabado.equals(selectedGpo.getAulaSab())))		        		
         	)
         { // Si solo se modifica el aula que se usará para la materia (TOP)
             //FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_WARN,"No realizaste ninguna modficación del horario",null));
@@ -588,12 +588,12 @@ public class ProfesorBean implements Serializable
     	hora2.setVieHoraFin(selectedGpo.getVieHoraFin());
     	hora2.setSabHoraIni(selectedGpo.getSabHoraIni());
     	hora2.setSabHoraFin(selectedGpo.getSabHoraFin());
-    	hora2.setAulaLun(selectedGpo.getAulaLun());
-    	hora2.setAulaMar(selectedGpo.getAulaMar());
-    	hora2.setAulaMie(selectedGpo.getAulaMie());
-    	hora2.setAulaJue(selectedGpo.getAulaJue());
-    	hora2.setAulaVie(selectedGpo.getAulaVie());
-    	hora2.setAulaVie(selectedGpo.getAulaSab());
+//    	hora2.setAulaLun(selectedGpo.getAulaLun());
+//    	hora2.setAulaMar(selectedGpo.getAulaMar());
+//    	hora2.setAulaMie(selectedGpo.getAulaMie());
+//    	hora2.setAulaJue(selectedGpo.getAulaJue());
+//    	hora2.setAulaVie(selectedGpo.getAulaVie());
+//    	hora2.setAulaVie(selectedGpo.getAulaSab());
     	
     	listaModificados.add(hora2);
     	

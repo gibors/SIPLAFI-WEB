@@ -53,7 +53,15 @@ import javax.xml.bind.annotation.XmlTransient;
    @NamedQuery(name = "Grupo.findBySabHoraIni", query = "SELECT g FROM Grupo g WHERE g.sabHoraIni = :sabHoraIni"),
    @NamedQuery(name = "Grupo.findBySabHoraFin", query = "SELECT g FROM Grupo g WHERE g.sabHoraFin = :sabHoraFin"),
    @NamedQuery(name = "Grupo.findByValidado", query = "SELECT g FROM Grupo g WHERE g.validado = :validado"),
-   @NamedQuery(name = "Grupo.findByObservaciones", query = "SELECT g FROM Grupo g WHERE g.observaciones = :observaciones")})
+   @NamedQuery(name = "Grupo.findByObservaciones", query = "SELECT g FROM Grupo g WHERE g.observaciones = :observaciones"),
+   @NamedQuery(name="BuscaTraslapeLunes",query="  SELECT g FROM Grupo g  WHERE ((g.lunHoraIni > :lunIni AND g.lunHoraIni < :lunFin ) OR   (g.lunHoraFin >  :lunIni AND g.lunHoraFin < :lunFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeMartes",query="  SELECT g FROM Grupo g  WHERE ((g.marHoraIni > :marIni AND g.marHoraIni < :marFin ) OR   (g.marHoraFin > :marIni AND g.marHoraFin < :marFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeMiercoles",query="  SELECT g FROM Grupo g  WHERE ((g.mieHoraIni > :mieIni AND g.mieHoraIni < :mieFin ) OR   (g.mieHoraFin >  :mieIni AND g.mieHoraFin < :mieFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeJueves",query="  SELECT g FROM Grupo g  WHERE ((g.jueHoraIni > :jueIni AND g.jueHoraIni < :jueFin ) OR   (g.jueHoraFin > :jueIni AND g.jueHoraFin < :jueFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeViernes",query="  SELECT g FROM Grupo g  WHERE ((g.vieHoraIni > :vieIni AND g.vieHoraIni < :vieFin ) OR   (g.vieHoraFin >  :vieIni AND g.vieHoraFin < :viein ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeSabado",query="  SELECT g FROM Grupo g  WHERE ((g.sabHoraIni > :sabIni AND g.sabHoraIni < :sabFin ) OR   (g.sabHoraFin > :sabIni AND g.sabHoraFin < :sabFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
+     
+})
 public class Grupo implements Serializable {
    private static final long serialVersionUID = 1L;
    @EmbeddedId
@@ -114,6 +122,10 @@ public class Grupo implements Serializable {
    private List<AulaSalonDia> aulaSalonDiaList;
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupo")
    private List<NotificacionesCoord> notificacionesCoordList;
+   @Transient
+   private Integer estado=0;
+   @Transient
+   private String descripcion;  
 
    public Grupo() {
    }
@@ -277,7 +289,7 @@ public class Grupo implements Serializable {
    public void setGrupoRespaldo(GrupoRespaldo grupoRespaldo) {
        this.grupoRespaldo = grupoRespaldo;
    }
-
+     
    @XmlTransient
    public List<AulaSalonDia> getAulaSalonDiaList() {
        return aulaSalonDiaList;
@@ -295,15 +307,44 @@ public class Grupo implements Serializable {
    public void setNotificacionesCoordList(List<NotificacionesCoord> notificacionesCoordList) {
        this.notificacionesCoordList = notificacionesCoordList;
    }
+   
+   
+   public Integer getEstado() {
+	return estado;
+}
 
-   @Override
+   public Aula getAulaPordia(int day)
+   {
+	  for(AulaSalonDia al: aulaSalonDiaList )
+	  {
+		  if(al.getDia().getIdDia() == day)
+		  {
+			  return al.getIdAula();
+		  }
+	  }
+	  return null;
+   }
+public void setEstado(Integer estado) {
+	this.estado = estado;
+}
+
+public String getDescripcion() {
+	return descripcion;
+}
+
+public void setDescripcion(String descripcion) {
+	this.descripcion = descripcion;
+}
+
+@Override
    public int hashCode() {
        int hash = 0;
        hash += (grupoPK != null ? grupoPK.hashCode() : 0);
        return hash;
    }
 
-   @Override
+
+@Override
    public boolean equals(Object object) {
        // TODO: Warning - this method won't work in the case the id fields are not set
        if (!(object instanceof Grupo)) {
