@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
    @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g"),
-   @NamedQuery(name = "Grupo.findGruposSemestre", query = "SELECT g FROM Grupo g WHERE g.materia.semestre = :semestre AND g.grupoPK.claveMateria = :cveMat AND g.grupoPK.rfcProfesor = :rfcPro AND g.grupoPK.periodo = :period AND g.grupoPK.nombre = :name"),          
+   @NamedQuery(name = "Grupo.findGruposSemestre", query = "SELECT g FROM Grupo g WHERE g.materia.semestre = :semestre AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)"),          
    @NamedQuery(name = "Grupo.findByClaveMateria", query = "SELECT g FROM Grupo g WHERE g.grupoPK.claveMateria = :claveMateria"),
    @NamedQuery(name = "Grupo.findByRfcProfesor", query = "SELECT g FROM Grupo g WHERE g.grupoPK.rfcProfesor = :rfcProfesor"),
    @NamedQuery(name = "Grupo.findByPeriodo", query = "SELECT g FROM Grupo g WHERE g.grupoPK.periodo = :periodo"),
@@ -54,13 +54,12 @@ import javax.xml.bind.annotation.XmlTransient;
    @NamedQuery(name = "Grupo.findBySabHoraFin", query = "SELECT g FROM Grupo g WHERE g.sabHoraFin = :sabHoraFin"),
    @NamedQuery(name = "Grupo.findByValidado", query = "SELECT g FROM Grupo g WHERE g.validado = :validado"),
    @NamedQuery(name = "Grupo.findByObservaciones", query = "SELECT g FROM Grupo g WHERE g.observaciones = :observaciones"),
-   @NamedQuery(name="BuscaTraslapeLunes",query="  SELECT g FROM Grupo g  WHERE ((g.lunHoraIni > :lunIni AND g.lunHoraIni < :lunFin ) OR   (g.lunHoraFin >  :lunIni AND g.lunHoraFin < :lunFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
-   @NamedQuery(name="BuscaTraslapeMartes",query="  SELECT g FROM Grupo g  WHERE ((g.marHoraIni > :marIni AND g.marHoraIni < :marFin ) OR   (g.marHoraFin > :marIni AND g.marHoraFin < :marFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
-   @NamedQuery(name="BuscaTraslapeMiercoles",query="  SELECT g FROM Grupo g  WHERE ((g.mieHoraIni > :mieIni AND g.mieHoraIni < :mieFin ) OR   (g.mieHoraFin >  :mieIni AND g.mieHoraFin < :mieFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
-   @NamedQuery(name="BuscaTraslapeJueves",query="  SELECT g FROM Grupo g  WHERE ((g.jueHoraIni > :jueIni AND g.jueHoraIni < :jueFin ) OR   (g.jueHoraFin > :jueIni AND g.jueHoraFin < :jueFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
-   @NamedQuery(name="BuscaTraslapeViernes",query="  SELECT g FROM Grupo g  WHERE ((g.vieHoraIni > :vieIni AND g.vieHoraIni < :vieFin ) OR   (g.vieHoraFin >  :vieIni AND g.vieHoraFin < :viein ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
-   @NamedQuery(name="BuscaTraslapeSabado",query="  SELECT g FROM Grupo g  WHERE ((g.sabHoraIni > :sabIni AND g.sabHoraIni < :sabFin ) OR   (g.sabHoraFin > :sabIni AND g.sabHoraFin < :sabFin ))   AND g.grupoPK <> :gpoPk   AND g.materia.semestre = :semestre"),
-     
+   @NamedQuery(name="BuscaTraslapeLunes",query="  SELECT g FROM Grupo g  WHERE ((g.lunHoraIni > :lunIni AND g.lunHoraIni < :lunFin ) OR   (g.lunHoraFin >  :lunIni AND g.lunHoraFin < :lunFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name) AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeMartes",query="  SELECT g FROM Grupo g  WHERE ((g.marHoraIni > :marIni AND g.marHoraIni < :marFin ) OR   (g.marHoraFin > :marIni AND g.marHoraFin < :marFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeMiercoles",query="  SELECT g FROM Grupo g  WHERE ((g.mieHoraIni > :mieIni AND g.mieHoraIni < :mieFin ) OR   (g.mieHoraFin >  :mieIni AND g.mieHoraFin < :mieFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeJueves",query="  SELECT g FROM Grupo g  WHERE ((g.jueHoraIni > :jueIni AND g.jueHoraIni < :jueFin ) OR   (g.jueHoraFin > :jueIni AND g.jueHoraFin < :jueFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeViernes",query="  SELECT g FROM Grupo g  WHERE ((g.vieHoraIni > :vieIni AND g.vieHoraIni < :vieFin ) OR   (g.vieHoraFin >  :vieIni AND g.vieHoraFin < :viein ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeSabado",query="  SELECT g FROM Grupo g  WHERE ((g.sabHoraIni > :sabIni AND g.sabHoraIni < :sabFin ) OR   (g.sabHoraFin > :sabIni AND g.sabHoraFin < :sabFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),     
 })
 public class Grupo implements Serializable {
    private static final long serialVersionUID = 1L;

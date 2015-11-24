@@ -95,16 +95,16 @@
             <p:column >
                 <h:outputText value="#{gpo.sabHoraFin != null ? profesorBean.format.format(gpo.sabHoraFin) : '-'}" >
                 </h:outputText>
-            </p:column>        
+            </p:column>
 		</p:dataTable>
 <!-- ************************* MUESTRA EL HORARIO DE LOS GRUPOS EN EL MISMO SEMESTRE ************** (BOTTOM) -->				
 		<br/><br/>
-<!-- *************  MODIFICACION DEL GRUPO SELECCIONADO ****************** (TOP) -->		
+<!-- *************  MODIFICACION DEL GRUPO SELECCIONADO ****************** (TOP) -->
     	<B><h:outputText value=" GRUPO #{profesorBean.selectedGpo.grupoPK.nombre} " /> </B><BR/><BR/>
 		<p:panelGrid id="grid" style="width: 100%;font-size:8pt;text-align:center" >
 	        <f:facet name="header">
 	            <p:row>
-	                <p:column rowspan="2" >SEM </p:column>>
+	                <p:column rowspan="2" >SEM </p:column>
 	                <p:column rowspan="2" >MATERIA</p:column>
 	                <p:column rowspan="2" >HRS</p:column>
 	                <p:column colspan="2" >LUNES</p:column>
@@ -203,39 +203,34 @@
 	            </p:column>        
 	            <p:column  colspan="2">
 	                <h:panelGroup id="sel" layout="block">
-	                <p:selectOneMenu id="select1" value="#{profesorBean.aulaLunes}" disabled="#{profesorBean.lunFn == null}">
-	                    <f:selectItem itemLabel="Ninguna" itemValue="0"  />
-	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                <p:selectOneMenu id="select1" value="#{profesorBean.aulaLunes}" disabled="#{profesorBean.lunFn == null}" converter="aulaConverter">
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul}" />
 	                </p:selectOneMenu>
 	                </h:panelGroup>
 	            </p:column>
 	            <p:column colspan="2">
-	                <p:selectOneMenu id="select2"  value="#{profesorBean.aulaMartes}" disabled="#{profesorBean.marFn == null}">
-	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
-	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                <p:selectOneMenu id="select2"  value="#{profesorBean.aulaMartes}" disabled="#{profesorBean.marFn == null}" converter="aulaConverter">
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul}" />
 	                </p:selectOneMenu>
 	            </p:column>
 	            <p:column colspan="2">
-	                <p:selectOneMenu  id="select3"  value="#{profesorBean.aulaMiercoles}" disabled="#{profesorBean.mieFn == null}">
-	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
-	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                <p:selectOneMenu  id="select3"  value="#{profesorBean.aulaMiercoles}" disabled="#{profesorBean.mieFn == null}" converter="aulaConverter">
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul}" />
 	                </p:selectOneMenu>
 	            </p:column>
 	            <p:column colspan="2">
-	                <p:selectOneMenu id="select4"  value="#{profesorBean.aulaJueves}" disabled="#{profesorBean.jueFn == null}">
-	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
-	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                <p:selectOneMenu id="select4"  value="#{profesorBean.aulaJueves}" disabled="#{profesorBean.jueFn == null}" converter="aulaConverter">
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul}" />
 	                </p:selectOneMenu>
 	            </p:column>
 	            <p:column colspan="2">
-	                <p:selectOneMenu  id="select5"  value="#{profesorBean.aulaViernes}" disabled="#{profesorBean.vieFn == null}">
-	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
+	                <p:selectOneMenu  id="select5"  value="#{profesorBean.aulaViernes}" disabled="#{profesorBean.vieFn == null}" converter="aulaConverter">
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul}" />	                    
 	                </p:selectOneMenu>
 	            </p:column>
 	            <p:column colspan="2" >
-	                 <p:selectOneMenu id="select6"  value="#{profesorBean.aulaSabado}" disabled="#{profesorBean.sabFn == null}">
-	                    <f:selectItem itemLabel="Ninguna" itemValue="0" />
-	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul.tipoAula}" />
+	                 <p:selectOneMenu id="select6"  value="#{profesorBean.aulaSabado}" disabled="#{profesorBean.sabFn == null}" converter="aulaConverter">
+	                    <f:selectItems value="#{profesorBean.listAula}" var="aul" itemLabel="#{aul.tipoAula}" itemValue="#{aul}" />
 	                </p:selectOneMenu>
 	            </p:column>
 	        </p:row>

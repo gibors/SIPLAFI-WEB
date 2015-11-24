@@ -30,7 +30,8 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeLunes",Grupo.class)
-                    .setParameter("lunIni",lunIni).setParameter("lunFin", lunFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
+                    .setParameter("lunIni",lunIni).setParameter("lunFin", lunFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -48,7 +49,8 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeMartes",Grupo.class)
-                    .setParameter("marIni",marIni).setParameter("marFin", marFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
+                    .setParameter("marIni",marIni).setParameter("marFin", marFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -66,7 +68,8 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeMiercoles",Grupo.class)
-                    .setParameter("mieIni",mieIni).setParameter("mieFin", mieFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
+                    .setParameter("mieIni",mieIni).setParameter("mieFin", mieFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -84,7 +87,8 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeJueves",Grupo.class)
-                    .setParameter("jueIni",jueIni).setParameter("jueFin", jueFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
+                    .setParameter("jueIni",jueIni).setParameter("jueFin", jueFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -102,7 +106,8 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeViernes",Grupo.class)
-                    .setParameter("vieIni",vieIni).setParameter("vieFin", vieFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
+                    .setParameter("vieIni",vieIni).setParameter("vieFin", vieFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
                 return lista;
@@ -120,7 +125,8 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeSabado",Grupo.class)
-                    .setParameter("sabIni",sabIni).setParameter("sabFin", sabFin).setParameter("gpoPk",gpoPk).setParameter("semestre", semestre)
+                    .setParameter("sabIni",sabIni).setParameter("sabFin", sabFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
                 return lista;
