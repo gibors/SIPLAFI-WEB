@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.0.final using JasperReports Library version 6.0.0  -->
-<!-- 2015-11-04T12:02:29 -->
+<!-- 2015-11-23T11:56:50 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte1" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="68a01100-741a-4fee-a750-cf5ce6080f73">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gibrannAdapter"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -14,54 +14,54 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="rfc_profe" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[select 
-	P.GRADO_PROFE,
-	p.RFC_PROFESOR,
+		<![CDATA[
+select 
+	p.GRADO_PROFE,
+	p.RFC_PROFESOR,	
 	per.periodo,
 	per.descripcion,
 	p.NOMBRE_PROFE,
 	p.APE_PAT_PROFE,
 	p.APE_MAT_PROFE,
 	p.EMAIL_PROFE,
-	m.NOMBRE_MATERIA,	
+	m.CLAVE_MATERIA,
+	m.NOMBRE_MATERIA,		
+	g.NOMBRE,
 	m.SEMESTRE,
-	case when h.LUN_HORA_INI is not null then h.LUN_HORA_INI else '-' end lun_in,
-	case when h.LUN_HORA_FIN is not null then h.LUN_HORA_FIN else '-' end lun_fi,
-	case when h.MAR_HORA_INI is not null then h.MAR_HORA_INI else '-' end mar_in,
-	case when h.MAR_HORA_FIN is not null then h.MAR_HORA_FIN else '-' end mar_fi,
-	case when h.MIE_HORA_INI is not null then h.MIE_HORA_INI else '-' end mie_in,
-	case when h.MIE_HORA_FIN is not null then h.MIE_HORA_FIN else '-' end mie_fi,
-	case when h.JUE_HORA_INI is not null then h.JUE_HORA_INI else '-' end jue_in,
-	case when h.JUE_HORA_FIN is not null then h.JUE_HORA_FIN else '-' end jue_fi,
-	case when h.VIE_HORA_INI is not null then h.VIE_HORA_INI else '-' end vie_in,
-	case when h.VIE_HORA_FIN is not null then h.VIE_HORA_FIN else '-' end vie_fi,
-	case when h.SAB_HORA_INI is not null then h.SAB_HORA_INI else '-' end sab_in,
-	case when h.SAB_HORA_FIN is not null then h.SAB_HORA_FIN else '-' end sab_fi,
-	h.aula_lun,
-	h.aula_mar,
-	h.aula_mie,
-	h.aula_jue,
-	h.aula_vie,
-	h.aula_sab,		
+	case when g.LUN_HORA_INI is not null then g.LUN_HORA_INI else '-' end lun_in,
+	case when g.LUN_HORA_FIN is not null then g.LUN_HORA_FIN else '-' end lun_fi,
+	case when g.MAR_HORA_INI is not null then g.MAR_HORA_INI else '-' end mar_in,
+	case when g.MAR_HORA_FIN is not null then g.MAR_HORA_FIN else '-' end mar_fi,
+	case when g.MIE_HORA_INI is not null then g.MIE_HORA_INI else '-' end mie_in,
+	case when g.MIE_HORA_FIN is not null then g.MIE_HORA_FIN else '-' end mie_fi,
+	case when g.JUE_HORA_INI is not null then g.JUE_HORA_INI else '-' end jue_in,
+	case when g.JUE_HORA_FIN is not null then g.JUE_HORA_FIN else '-' end jue_fi,
+	case when g.VIE_HORA_INI is not null then g.VIE_HORA_INI else '-' end vie_in,
+	case when g.VIE_HORA_FIN is not null then g.VIE_HORA_FIN else '-' end vie_fi,
+	case when g.SAB_HORA_INI is not null then g.SAB_HORA_INI else '-' end sab_in,
+	case when g.SAB_HORA_FIN is not null then g.SAB_HORA_FIN else '-' end sab_fi,	
+	case when g.LUN_HORA_INI is not null and g.LUN_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 1 ) end aula_lun,
+	case when g.MAR_HORA_INI is not null and g.MAR_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 2 ) end aula_mar,
+	case when g.MIE_HORA_INI is not null and g.MIE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 3 ) end aula_mie,
+	case when g.JUE_HORA_INI is not null and g.JUE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 4 ) end aula_jue,
+	case when g.VIE_HORA_INI is not null and g.VIE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 5 ) end aula_vie,
+	case when g.SAB_HORA_INI is not null and g.SAB_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 6 ) end aula_sab,
 	g.VALIDADO
 from
 	grupo g,
 	profesor p,
 	materia m,
-	horario h,
 	periodos per
 where 
 	g.RFC_PROFESOR = p.RFC_PROFESOR
 and
 	g.CLAVE_MATERIA = m.CLAVE_MATERIA
 and
-	g.ID_GRUPO = h.ID_GRUPO
+	g.periodo = per.periodo	
+and 
+	per.actual = 1
 and
-	g.periodo = per.periodo
-and
-	g.RFC_PROFESOR = $P{rfc_profe}
-order by 
-	m.SEMESTRE]]>
+	g.RFC_PROFESOR = $P{rfc_profe}]]>
 	</queryString>
 	<field name="NOMBRE_MATERIA" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -113,21 +113,17 @@ order by
 	<field name="aula_lun" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="aula_mar" class="java.lang.String">
+	<field name="aula_mar" class="java.lang.String"/>
+	<field name="aula_mie" class="java.lang.String"/>
+	<field name="CLAVE_MATERIA" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="aula_mie" class="java.lang.String">
+	<field name="NOMBRE" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="aula_jue" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="aula_vie" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="aula_sab" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="aula_jue" class="java.lang.String"/>
+	<field name="aula_vie" class="java.lang.String"/>
+	<field name="aula_sab" class="java.lang.String"/>
 	<variable name="fecha" class="java.util.Date" calculation="System">
 		<initialValueExpression><![CDATA[new java.util.Date()]]></initialValueExpression>
 	</variable>
@@ -167,40 +163,40 @@ order by
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement markup="styled">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[M. EN I. MIREYA SALGADO GALLEGOS]]></text>
+				<text><![CDATA[<style isBold='true'>M. EN I. MIREYA SALGADO GALLEGOS</style>]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="85" width="293" height="15" uuid="99a6c04e-83ad-4454-80da-23b83c4a210e">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement markup="styled">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[COORDINADORA DE DOCENCIA DE LA LICENCIATURA EN]]></text>
+				<text><![CDATA[<style isBold='true'>COORDINADORA DE DOCENCIA DE LA LICENCIATURA EN</style>]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="100" width="460" height="15" uuid="055064bb-7614-4aa1-8d87-86446d5faa4d">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement markup="styled">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[INGENIERÍA EN COMPUTACIÓN DE LA FACULTAD DE INGENIERÍA DE LA UAEM]]></text>
+				<text><![CDATA[<style isBold='true'>INGENIERÍA EN COMPUTACIÓN DE LA FACULTAD DE INGENIERÍA DE LA UAEM</style>]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="120" width="293" height="15" uuid="89804b56-8216-4842-8895-b14da98645ac">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement markup="styled">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[P R E S E N T E]]></text>
+				<text><![CDATA[<style isBold='true'>P R E S E N T E</style>]]></text>
 			</staticText>
 			<textField>
 				<reportElement mode="Transparent" x="180" y="43" width="391" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="9d4660e9-30b6-4698-820f-01548248d9c0"/>
@@ -211,8 +207,8 @@ order by
 				</textElement>
 				<textFieldExpression><![CDATA["Ciudad Universitaria de Toluca, Mexico a ".concat($V{fmDay}.format($V{fecha})).concat(" de ").concat((java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 1 ? "Enero" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 2 ? "Febrero" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 3 ? "Marzo" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 4 ? "Abril" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 5 ? "Mayo" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 6 ? "Junio" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 7 ? "Julio" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 8 ? "Agosto" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 9 ? "Septiembre" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 10 ? "Octubre" : (java.lang.Integer.parseInt($V{fmMes}.format($V{fecha})) == 11 ? "Noviembre" : "Diciembre" )))))))))))).concat(" de ").concat($V{fmYear}.format($V{fecha}))]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement mode="Transparent" x="0" y="158" width="571" height="52" forecolor="#000000" backcolor="#FFFFFF" uuid="32f9040f-355b-471f-9b6d-4ed34361b454"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" mode="Opaque" x="0" y="158" width="571" height="52" forecolor="#000000" backcolor="#FFFFFF" uuid="32f9040f-355b-471f-9b6d-4ed34361b454"/>
 				<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="styled">
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
@@ -549,6 +545,7 @@ order by
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
+				<textElement markup="styled"/>
 				<textFieldExpression><![CDATA["Materia: " + $F{NOMBRE_MATERIA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
