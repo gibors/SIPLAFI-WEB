@@ -179,15 +179,15 @@
 		                    <p:commandButton value="SI"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{profesorBean.aceptarHorarioConTraslapes()}"  process="@form" update="@form" />
 		                    <p:commandButton value="NO"  styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('traslapesDlg').hide()" />
 		                </p:dialog>
-<!--  ********* DIALOG PARA MOSTRAR SI HAY TRASLAPES Y ACEPTAR EL CAMBIO (BOTTOM) ********* -->		                
+<!--  ********* DIALOG PARA MOSTRAR SI HAY TRASLAPES Y ACEPTAR EL CAMBIO (BOTTOM) ********* -->
 					</h:panelGroup>
 					<h:panelGroup rendered="#{profesorBean.conGrupoAValidar}">
                     <br/><br/>
                     <H2 style="color: darkolivegreen;font-style: italic;"> USTED ENVÍO GRUPO(S) PARA VALIDACIÓN</H2> 
-                    <br/><br/>						
+                    <br/><br/>				
 					</h:panelGroup>
               		<br/>
 				</h:form>
-            </ui:define>    
+            </ui:define>
         </ui:composition>
 </html>

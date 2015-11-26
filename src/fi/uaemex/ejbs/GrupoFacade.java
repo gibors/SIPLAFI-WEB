@@ -59,7 +59,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         }
         catch(Exception ex)
         {
-            System.out.println(" ocurrio un error en la consulta para obtener traslape de lunes " + ex.toString());
+            System.out.println(" ocurrio un error en la consulta para obtener traslape de martes " + ex.toString());
             return null;   
         }
     }
@@ -78,7 +78,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         }
         catch(Exception ex)
         {
-            System.out.println(" ocurrio un error en la consulta para obtener traslape de lunes " + ex.toString());
+            System.out.println(" ocurrio un error en la consulta para obtener traslape de miercoles " + ex.toString());
             return null;   
         }
     }
@@ -97,7 +97,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         }
         catch(Exception ex)
         {
-            System.out.println(" ocurrio un error en la consulta para obtener traslape de lunes " + ex.toString());
+            System.out.println(" ocurrio un error en la consulta para obtener traslape de jueves " + ex.toString());
             return null;   
         }
     }
@@ -116,7 +116,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         }
         catch(Exception ex)
         {
-            System.out.println(" ocurrio un error en la consulta para obtener traslape de lunes " + ex.toString());
+            System.out.println(" ocurrio un error en la consulta para obtener traslape de viernes " + ex.toString());
             return null;   
         }
     }
@@ -135,7 +135,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         }
         catch(Exception ex)
         {
-            System.out.println(" ocurrio un error en la consulta para obtener traslape de lunes " + ex.toString());
+            System.out.println(" ocurrio un error en la consulta para obtener traslape de sabado " + ex.toString());
             return null;   
         }
     }

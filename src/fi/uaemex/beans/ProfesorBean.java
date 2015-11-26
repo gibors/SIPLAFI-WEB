@@ -94,7 +94,8 @@ public class ProfesorBean implements Serializable
     private List<Grupo> gposProfe;                  					// obtiene la lista de los grupos del profesor
     private List<Grupo> listGposInSemester;								// Almacena los grupos de las materias en el mismo horario del grupo seleccionado para modificar
     private List<Aula> listAula; 										// Lista de las aulas requeridas para la clase
-    private List<GrupoRespaldo> listaModificados;						// almacena todos los horaios modificados para guardarlos al enviar a validacion.. 
+    private List<GrupoRespaldo> listaModificados;						// almacena todos los horaios modificados para guardarlos al enviar a validacion..
+    private List<AulaSalonDia> listAulasModificadas;					// Almacena las aulas que fueron modificadas para cambio		
     private Grupo selectedGpo;											// Almacena el grupo que es seleccionado para editar el horario
     private boolean todosConfirmadosOAceptados;							// Obtiene verdadero si todos los grupos del profesor estan confirmados o aceptados
     private boolean conGrupoAValidar;									// Obtiene verdadero si algun grupo necesita ser validado
@@ -193,14 +194,7 @@ public class ProfesorBean implements Serializable
             	selectedGpo.setVieHoraFin(hora.getVieHoraFin());
             	selectedGpo.setSabHoraIni(hora.getSabHoraIni());
             	selectedGpo.setSabHoraFin(hora.getSabHoraFin());
-            	//selectedGpo.setAulaLun(hora.getAulaLun());
-            	//selectedGpo.setAulaMar(hora.getAulaMar());
-            	//selectedGpo.setAulaMie(hora.getAulaMie());
-            	//selectedGpo.setAulaJue(hora.getAulaJue());
-            	//selectedGpo.setAulaVie(hora.getAulaVie());
-            	//selectedGpo.setAulaSab(hora.getAulaSab());        
-            	//selectedGpo.setValidado(null);
-        		//hora2EJB.remove(hora);
+
         	}
         } // Si el horario del grupo ya fue modificado y rechazado por la coordinación (BOTTOM)
         
@@ -513,7 +507,7 @@ public class ProfesorBean implements Serializable
         		(mieFn == null ? selectedGpo.getMieHoraFin() == null : mieFn.equals(selectedGpo.getMieHoraFin())) &&
         		(jueFn == null ? selectedGpo.getJueHoraFin() == null : jueFn.equals(selectedGpo.getJueHoraFin())) &&
         		(vieFn == null ? selectedGpo.getVieHoraFin() == null : vieFn.equals(selectedGpo.getVieHoraFin())) &&
-        		(sabFn == null ? selectedGpo.getSabHoraFin() == null : sabFn.equals(selectedGpo.getSabHoraFin()))) &&
+        		(sabFn == null ? selectedGpo.getSabHoraFin() == null : sabFn.equals(selectedGpo.getSabHoraFin()))) && 
         		(!mismasAulas())	        		
         	)
         { // Si solo se modifica el aula que se usará para la materia (TOP)
@@ -599,7 +593,7 @@ public class ProfesorBean implements Serializable
     	boolean hayModificado = false;
     	boolean faltan = false;
     	if(selectedGpo.getEstado() != 3)
-    	{
+    	{ // Si se modifico el horario (TOP)
     		GrupoRespaldo hora2 = new GrupoRespaldo();
     		hora2.setGrupoRespaldoPK(selectedGpo.getGrupoRespaldo().getGrupoRespaldoPK());
     		hora2.setLunHoraIni(selectedGpo.getLunHoraIni());
@@ -629,13 +623,13 @@ public class ProfesorBean implements Serializable
         	selectedGpo.setVieHoraFin(vieFn);
         	selectedGpo.setSabHoraIni(sabIn);
         	selectedGpo.setSabHoraFin(sabFn);    		
-    	}    	
+    	} // Si se modifico el horario (BOTTOM)   	
     	
     	if(!mismasAulas())
     	{ // Si se cambiaron las aulas (TOP)
         	List<AulaSalonDia> listaAulSal = new ArrayList<>();    		
 	    	if(aulaLunes != null)
-	    	{
+	    	{	    		
 	    		AulaSalonDia asd = new AulaSalonDia(1,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
 	    		asd.setIdAula(aulaLunes);
 	    		asd.setDia(new Dia(1));
@@ -675,17 +669,30 @@ public class ProfesorBean implements Serializable
 	    		asd.setIdAula(aulaSabado);
 	    		asd.setDia(new Dia(6));
 	    		listaAulSal.add(asd);
-	    	}       	    	    	
+	    	}
+	    	listAulasModificadas = new ArrayList<>();
+	    	for(AulaSalonDia al :selectedGpo.getAulaSalonDiaList())
+			{
+	    		if(al.getIdAula().equals(aulaLunes) || al.getIdAula().equals(aulaMartes) || al.getIdAula().equals(aulaMiercoles)
+	    				|| al.getIdAula().equals(aulaJueves) || al.getIdAula().equals(aulaViernes) || al.getIdAula().equals(aulaSabado))
+	    		{	    		    				    			
+	    		}	    	
+	    		else
+	    		{
+		    		AulaSalonDia asdl = new AulaSalonDia(al.getDia().getIdDia(),al.getGrupo().getGrupoPK().getClaveMateria(),al.getGrupo().getGrupoPK().getRfcProfesor(),al.getGrupo().getGrupoPK().getPeriodo(),al.getGrupo().getGrupoPK().getNombre());
+	    			listAulasModificadas.add(asdl);
+	    		}
+	    		logg.info("aula : " + al.getDia().getNombre() + " -- " + al.getIdAula().getNombre());
+			}
 	    	selectedGpo.setAulaSalonDiaList(listaAulSal);
     	}  // Si se cambiaron las aulas (BOTTOM)
-    	
-       	
+    	       	
     	StringBuilder strBuild = new StringBuilder("");
         for(int i=0; i < mensajesTraslape.size();i++)
         {
     		String s = mensajesTraslape.get(i);
-        	if(i < mensajesTraslape.size() -1)        	
-        		strBuild.append(s + ",");        	
+        	if(i < mensajesTraslape.size() -1)
+        		strBuild.append(s + ",");   	
         	else
         		strBuild.append(s + ".");        	        		
         }
@@ -722,7 +729,7 @@ public class ProfesorBean implements Serializable
     
     public String enviarAvalidacion() throws NamingException, SQLException
     { // Envia el cambio de horario del grupo seleccionado a validacion (TOP)
-    	boolean faltan = false; 
+    	boolean faltan = false;
     	for(Grupo g : gposProfe)
     	{ // For que valida si hay algun grupo modificado o no (TOP)
     		if((g.getEstado() == 0 && g.getValidado() != null && g.getValidado() != 1 && g.getValidado() != 3) || (g.getEstado() == 0 && g.getValidado() == null))
@@ -764,7 +771,7 @@ public class ProfesorBean implements Serializable
                         enviarMail(g);    			    	
     			    	gpoEJB.edit(g);
                         NotificacionesCoord coord = new NotificacionesCoord();
-                        coord.setNotificacionesCoordPK(new NotificacionesCoordPK(selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre(),new Date()));
+                        coord.setNotificacionesCoordPK(new NotificacionesCoordPK(g.getGrupoPK().getClaveMateria(),g.getGrupoPK().getRfcProfesor(),g.getGrupoPK().getPeriodo(),g.getGrupoPK().getNombre(),new Date()));
                         coord.setDescripcion(g.getDescripcion());
                         coord.setEstado(0); // Estado no leido
                         
@@ -871,10 +878,16 @@ public class ProfesorBean implements Serializable
         }
         else if(g.getEstado() == 3)
         {
+        	String mens = "";
+        	for(AulaSalonDia as : listAulasModificadas)
+        	{
+        		if(as.getGrupo().getGrupoPK().equals(g.getGrupoPK()))
+        			mens = mens + "para el día " + as.getDia().getNombre() + "requeriere " + as.getIdAula().getNombre() + ",";
+        	}
             mensaje = "El profesor <b>" + g.getProfesor().getNombreProfe() + " " + g.getProfesor().getApePatProfe() + " " + g.getProfesor().getApeMatProfe() + 
-            		"</b> modifico solo el tipo de aula para el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> \n " +
-            				 "Ingrese a la liga para ver la planilla http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
-        	subject = "Se realizó la modificacion solo de aulas";            
+            		"</b> solicito cambio de aula para el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> \n " +
+            		mens + " Ingrese a la liga para ver la planilla http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
+        	subject = "Se realizó la modificacion del tipo de aulas";            
         }
         
         props = new Properties();
@@ -915,13 +928,6 @@ public class ProfesorBean implements Serializable
         {
         	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ocurrio un error al enviar el correo verifique su conexion a internet"));
         	logg.info("Error de conexion");
-//        	try 
-//        	{
-//				FacesContext.getCurrentInstance().getExternalContext().redirect("error");
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
         }
     }    
 

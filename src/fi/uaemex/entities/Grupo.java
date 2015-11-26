@@ -58,7 +58,7 @@ import javax.xml.bind.annotation.XmlTransient;
    @NamedQuery(name="BuscaTraslapeMartes",query="  SELECT g FROM Grupo g  WHERE ((g.marHoraIni > :marIni AND g.marHoraIni < :marFin ) OR   (g.marHoraFin > :marIni AND g.marHoraFin < :marFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
    @NamedQuery(name="BuscaTraslapeMiercoles",query="  SELECT g FROM Grupo g  WHERE ((g.mieHoraIni > :mieIni AND g.mieHoraIni < :mieFin ) OR   (g.mieHoraFin >  :mieIni AND g.mieHoraFin < :mieFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
    @NamedQuery(name="BuscaTraslapeJueves",query="  SELECT g FROM Grupo g  WHERE ((g.jueHoraIni > :jueIni AND g.jueHoraIni < :jueFin ) OR   (g.jueHoraFin > :jueIni AND g.jueHoraFin < :jueFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
-   @NamedQuery(name="BuscaTraslapeViernes",query="  SELECT g FROM Grupo g  WHERE ((g.vieHoraIni > :vieIni AND g.vieHoraIni < :vieFin ) OR   (g.vieHoraFin >  :vieIni AND g.vieHoraFin < :viein ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
+   @NamedQuery(name="BuscaTraslapeViernes",query="  SELECT g FROM Grupo g  WHERE ((g.vieHoraIni > :vieIni AND g.vieHoraIni < :vieFin ) OR   (g.vieHoraFin >  :vieIni AND g.vieHoraFin < :vieFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),
    @NamedQuery(name="BuscaTraslapeSabado",query="  SELECT g FROM Grupo g  WHERE ((g.sabHoraIni > :sabIni AND g.sabHoraIni < :sabFin ) OR   (g.sabHoraFin > :sabIni AND g.sabHoraFin < :sabFin ))   AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)   AND g.materia.semestre = :semestre"),     
 })
 public class Grupo implements Serializable {
@@ -124,8 +124,8 @@ public class Grupo implements Serializable {
    @Transient
    private Integer estado=0;
    @Transient
-   private String descripcion;  
-
+   private String descripcion;
+      
    public Grupo() {
    }
 
