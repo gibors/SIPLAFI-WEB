@@ -37,8 +37,8 @@
                        		<br /><br />
                             <p:dataTable id="notifsCoordTable" var="gpoNot" value="#{coord.listGposAValidar}" styleClass="tablaProfe" selection="#{coord.selecteGpo}" rowKey="#{gpoNot.idGrupo}" rendered="#{coord.listGposAValidar.size() > 0}">
                                 <p:column headerText="Notificaciones">
-                                    <p:outputLabel value="El grupo  #{gpoNot.nombre} del profesor #{gpoNot.rfcProfesor.nombreProfe.concat(' ').concat(gpoNot.rfcProfesor.apePatProfe)} necesita ser validado" rendered="#{gpoNot.validado == 0}"/>
-                                    <p:outputLabel value="El grupo  #{gpoNot.nombre} del profesor #{gpoNot.rfcProfesor.nombreProfe.concat(' ').concat(gpoNot.rfcProfesor.apePatProfe)} fue validado con exito" rendered="#{gpoNot.validado != 0}"/>
+                                    <p:outputLabel value="El grupo  #{gpoNot.grupoPK.nombre} del profesor #{gpoNot.profesor.nombreProfe.concat(' ').concat(gpoNot.profesor.apePatProfe)} necesita ser validado" rendered="#{gpoNot.validado == 0}"/>
+                                    <p:outputLabel value="El grupo  #{gpoNot.grupoPK.nombre} del profesor #{gpoNot.profesor.nombreProfe.concat(' ').concat(gpoNot.profesor.apePatProfe)} fue validado con exito" rendered="#{gpoNot.validado != 0}"/>
                                 </p:column>
                                 <p:column style="width: 90px;text-align: center" disabledSelection="#{gpoNot.validado != 0}">
                                     <p:commandButton value="Validar" action="#{coord.validarGrupo()}" icon="ui-icon-circle-check" title="Abrir" disabled="#{gpoNot.validado != 0}" update="@form">
@@ -62,9 +62,9 @@
 									</p:row>
 								</f:facet>
 								<p:row>							
-    								<p:column ><p:outputLabel value="#{coord.selecteGpo.nombre}" /></p:column>
-					            	<p:column ><p:outputLabel value="#{coord.selecteGpo.claveMateria.claveMateria}" /></p:column>
-					            	<p:column ><p:outputLabel value="#{coord.selecteGpo.claveMateria.nombreMateria}" /></p:column>
+    								<p:column ><p:outputLabel value="#{coord.selecteGpo.grupoPK.nombre}" /></p:column>
+					            	<p:column ><p:outputLabel value="#{coord.selecteGpo.materia.claveMateria}" /></p:column>
+					            	<p:column ><p:outputLabel value="#{coord.selecteGpo.materia.nombreMateria}" /></p:column>
 					       		</p:row>
 					       	</p:panelGrid>					       	
 						</p:outputPanel>
@@ -99,40 +99,40 @@
 	                    </f:facet> 
 	                   	<p:row>  
 		                	<p:column >
-		                   		<h:outputText  value="#{coord.selecteGpo.horario.lunHoraIni != null ? coord.fmt.format(coord.selecteGpo.horario.lunHoraIni) : '-'}"/>
+		                   		<h:outputText  value="#{coord.selecteGpo.lunHoraIni != null ? coord.fmt.format(coord.selecteGpo.lunHoraIni) : '-'}"/>
 		                 	</p:column>
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.lunHoraFin != null ? coord.fmt.format(coord.selecteGpo.horario.lunHoraFin) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.lunHoraFin != null ? coord.fmt.format(coord.selecteGpo.lunHoraFin) : '-'}"/>
 	                        </p:column>
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.marHoraIni != null ? coord.fmt.format(coord.selecteGpo.horario.marHoraIni) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.marHoraIni != null ? coord.fmt.format(coord.selecteGpo.marHoraIni) : '-'}"/>
 	                        </p:column>                                                                   
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.marHoraFin != null ? coord.fmt.format(coord.selecteGpo.horario.marHoraFin) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.marHoraFin != null ? coord.fmt.format(coord.selecteGpo.marHoraFin) : '-'}"/>
 	                        </p:column>
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.mieHoraIni != null ? coord.fmt.format(coord.selecteGpo.horario.mieHoraIni) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.mieHoraIni != null ? coord.fmt.format(coord.selecteGpo.mieHoraIni) : '-'}"/>
 	                        </p:column>
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.mieHoraFin != null ? coord.fmt.format(coord.selecteGpo.horario.mieHoraFin) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.mieHoraFin != null ? coord.fmt.format(coord.selecteGpo.mieHoraFin) : '-'}"/>
 	                        </p:column>                                
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.jueHoraIni != null ? coord.fmt.format(coord.selecteGpo.horario.jueHoraIni) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.jueHoraIni != null ? coord.fmt.format(coord.selecteGpo.jueHoraIni) : '-'}"/>
 	                        </p:column>
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.jueHoraFin != null ? coord.fmt.format(coord.selecteGpo.horario.jueHoraFin) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.jueHoraFin != null ? coord.fmt.format(coord.selecteGpo.jueHoraFin) : '-'}"/>
 	                        </p:column>
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.vieHoraIni != null ? coord.fmt.format(coord.selecteGpo.horario.vieHoraIni) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.vieHoraIni != null ? coord.fmt.format(coord.selecteGpo.vieHoraIni) : '-'}"/>
 	                        </p:column>                                                                   
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.vieHoraFin != null ? coord.fmt.format(coord.selecteGpo.horario.vieHoraFin) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.vieHoraFin != null ? coord.fmt.format(coord.selecteGpo.vieHoraFin) : '-'}"/>
 	                        </p:column>
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.sabHoraIni != null ? coord.fmt.format(coord.selecteGpo.horario.sabHoraIni) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.sabHoraIni != null ? coord.fmt.format(coord.selecteGpo.sabHoraIni) : '-'}"/>
 	                        </p:column>
 	                        <p:column >
-	                            <h:outputText  value="#{coord.selecteGpo.horario.sabHoraFin != null ? coord.fmt.format(coord.selecteGpo.horario.sabHoraFin) : '-'}"/>
+	                            <h:outputText  value="#{coord.selecteGpo.sabHoraFin != null ? coord.fmt.format(coord.selecteGpo.sabHoraFin) : '-'}"/>
 	                        </p:column>
 		               	</p:row>	                          
 	                   	<p:row>
@@ -183,63 +183,63 @@
                             </p:row>
                         </p:columnGroup>
                         <p:column >
-                            <h:outputText value="#{gpo.claveMateria.semestre}" >
+                            <h:outputText value="#{gpo.materia.semestre}" >
                             </h:outputText>
                         </p:column>
                         <p:column width="150">
-                            <h:outputText value="#{gpo.claveMateria.nombreMateria}" >
+                            <h:outputText value="#{gpo.materia.nombreMateria}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.claveMateria.horas}" >
+                            <h:outputText value="#{gpo.materia.horas}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.lunHoraIni != null ? coord.fmt.format(gpo.horario.lunHoraIni) : '-'}" >
+                            <h:outputText value="#{gpo.lunHoraIni != null ? coord.fmt.format(gpo.lunHoraIni) : '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.lunHoraFin != null ? coord.fmt.format(gpo.horario.lunHoraFin): '-'}" >
+                            <h:outputText value="#{gpo.lunHoraFin != null ? coord.fmt.format(gpo.lunHoraFin): '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.marHoraIni != null ? coord.fmt.format(gpo.horario.marHoraIni): '-'}" >
+                            <h:outputText value="#{gpo.marHoraIni != null ? coord.fmt.format(gpo.marHoraIni): '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.marHoraFin != null ? coord.fmt.format(gpo.horario.marHoraFin): '-'}" >
+                            <h:outputText value="#{gpo.marHoraFin != null ? coord.fmt.format(gpo.marHoraFin): '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.mieHoraIni != null ? coord.fmt.format(gpo.horario.mieHoraIni) : '-'}" >
+                            <h:outputText value="#{gpo.mieHoraIni != null ? coord.fmt.format(gpo.mieHoraIni) : '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.mieHoraFin != null ? coord.fmt.format(gpo.horario.mieHoraFin) : '-'}" >
+                            <h:outputText value="#{gpo.mieHoraFin != null ? coord.fmt.format(gpo.mieHoraFin) : '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.jueHoraIni != null ? coord.fmt.format(gpo.horario.jueHoraIni) : '-'}" >
+                            <h:outputText value="#{gpo.jueHoraIni != null ? coord.fmt.format(gpo.jueHoraIni) : '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.jueHoraFin != null ? coord.fmt.format(gpo.horario.jueHoraFin) : '-'}" >
+                            <h:outputText value="#{gpo.jueHoraFin != null ? coord.fmt.format(gpo.jueHoraFin) : '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.vieHoraIni != null ? coord.fmt.format(gpo.horario.vieHoraIni) : '-'}" >
+                            <h:outputText value="#{gpo.vieHoraIni != null ? coord.fmt.format(gpo.vieHoraIni) : '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.vieHoraFin != null ? coord.fmt.format(gpo.horario.vieHoraFin) : '-'}" >
+                            <h:outputText value="#{gpo.vieHoraFin != null ? coord.fmt.format(gpo.vieHoraFin) : '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.sabHoraIni != null ? coord.fmt.format(gpo.horario.sabHoraIni) : '-'}" >
+                            <h:outputText value="#{gpo.sabHoraIni != null ? coord.fmt.format(gpo.sabHoraIni) : '-'}" >
                             </h:outputText>
                         </p:column>
                         <p:column >
-                            <h:outputText value="#{gpo.horario.sabHoraFin != null ? coord.fmt.format(gpo.horario.sabHoraFin) : '-'}" >
+                            <h:outputText value="#{gpo.sabHoraFin != null ? coord.fmt.format(gpo.sabHoraFin) : '-'}" >
                             </h:outputText>
                         </p:column>
                     </p:dataTable>	                	

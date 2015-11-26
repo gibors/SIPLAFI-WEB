@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
    @NamedQuery(name = "Periodos.findAll", query = "SELECT p FROM Periodos p"),
    @NamedQuery(name = "Periodos.findByPeriodo", query = "SELECT p FROM Periodos p WHERE p.periodo = :periodo"),
    @NamedQuery(name = "Periodos.findByDescripcion", query = "SELECT p FROM Periodos p WHERE p.descripcion = :descripcion"),
-   @NamedQuery(name = "Periodos.findByActual", query = "SELECT p FROM Periodos p WHERE p.actual = :actual")})
+   @NamedQuery(name = "Periodos.findByActual", query = "SELECT p FROM Periodos p WHERE p.actual = 1")})
 public class Periodos implements Serializable {
    private static final long serialVersionUID = 1L;
    @Id
