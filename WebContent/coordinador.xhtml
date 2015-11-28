@@ -35,7 +35,7 @@
                         		<h2>BIENVENIDO AL SISTEMA CORDINADOR(A) </h2> <p:outputLabel value="#{coord.coordinador.nombreCoord.concat(' ').concat(coord.coordinador.apePatCoord).concat(' ').concat(coord.coordinador.apeMatCoord)}" />
                        		</h:panelGroup>
                        		<br /><br />
-                            <p:dataTable id="notifsCoordTable" var="gpoNot" value="#{coord.listGposAValidar}" styleClass="tablaProfe" selection="#{coord.selecteGpo}" rowKey="#{gpoNot.idGrupo}" rendered="#{coord.listGposAValidar.size() > 0}">
+                            <p:dataTable id="notifsCoordTable" var="gpoNot" value="#{coord.listGposAValidar}" styleClass="tablaProfe" selection="#{coord.selecteGpo}" rowKey="#{gpoNot.grupoPK}" rendered="#{coord.listGposAValidar.size() > 0}">
                                 <p:column headerText="Notificaciones">
                                     <p:outputLabel value="El grupo  #{gpoNot.grupoPK.nombre} del profesor #{gpoNot.profesor.nombreProfe.concat(' ').concat(gpoNot.profesor.apePatProfe)} necesita ser validado" rendered="#{gpoNot.validado == 0}"/>
                                     <p:outputLabel value="El grupo  #{gpoNot.grupoPK.nombre} del profesor #{gpoNot.profesor.nombreProfe.concat(' ').concat(gpoNot.profesor.apePatProfe)} fue validado con exito" rendered="#{gpoNot.validado != 0}"/>
