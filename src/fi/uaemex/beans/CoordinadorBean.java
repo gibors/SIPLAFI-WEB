@@ -37,6 +37,7 @@ public class CoordinadorBean implements Serializable
 	private static final Logger logg = LoggerFactory.getLogger(CoordinadorBean.class);
 	//@ManagedProperty(value = "#{login}") private LoginBean login;	// Propiedad para usar el bean de session login  
     private List<NotificacionesCoord> listNotCoord;					// Lista que guarda las notificaciones para los diversos grupos que necesiten ser validados
+    private List<NotificacionesCoord> listHistorialNotif;			// Lista que almacena el historial de las notificaciones   
     private NotificacionesCoord notifSelected;						// Entidad para las  notificaciones para el coordinador 
     private Grupo selecteGpo;										// Grupo que se selecciona para validacion 
     private Coordinador coordinador;								// Entidad para el coordinador
@@ -49,13 +50,14 @@ public class CoordinadorBean implements Serializable
     @EJB private GrupoFacade gpoEJB;    							// EJB para acceso a datos del grupo   
     @EJB private PeriodosFacade periodoEJB;							// EJB para acceso a datos de los periodos
     
-    @PostConstruct
+    @PostConstruct	
     public void init()
     {
         //coordinador = login.getCoord();
         coordinador = coorFac.findUser("QH5Q0S7NYHJTM40", "QH5Q0S7NYHJTM40");
         periodo = periodoEJB.getPeriodoActual();
         listNotCoord = notifCoordEJB.findNewNotif();
+        listHistorialNotif = notifCoordEJB.getHistorialNotificaciones();
         listGposAValidar = new ArrayList<>();
         
         for(NotificacionesCoord nt: listNotCoord)
@@ -67,7 +69,15 @@ public class CoordinadorBean implements Serializable
       //  logg.info(">>> Grupos a validar : " + listGposAValidar.size() + " -- " + listGposAValidar.get(0).toString());
     }
     
-    public CoordinadorBean() 
+    public List<NotificacionesCoord> getListHistorialNotif() {
+		return listHistorialNotif;
+	}
+
+	public void setListHistorialNotif(List<NotificacionesCoord> listHistorialNotif) {
+		this.listHistorialNotif = listHistorialNotif;
+	}
+
+	public CoordinadorBean() 
     {
     }
     
@@ -105,10 +115,10 @@ public class CoordinadorBean implements Serializable
     public String rechazarHorario()
     {
     	selecteGpo.setValidado(2); // Rechazado
-    	gpoEJB.edit(selecteGpo);
     	notifSelected.setEstado(2);
     	notifSelected.setFechaHoraValida(new Date());
     	notifCoordEJB.edit(notifSelected);
+    	gpoEJB.edit(selecteGpo);    	
     	logg.info(">>>> GRUPO RECHAZADOO");
     	return "";
     }

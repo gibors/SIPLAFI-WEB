@@ -182,7 +182,9 @@ public class ProfesorBean implements Serializable
         if(selectedGpo.getValidado() != null && selectedGpo.getValidado() == 2)
         { // Si el horario del grupo ya fue modificado y rechazado por la coordinación (TOP)
         	//Horario2 hora = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
+        	logg.info(">> SI ENTRO AQIU ENTONCES FALLO LA CONSULTA ... ");
         	GrupoRespaldo hora = gpoRespEJB.find(selectedGpo.getGrupoRespaldo().getGrupoRespaldoPK());
+        	logg.info(">>>> horario respaldo.... >> " + hora.getValidado());
         	if(hora != null)
         	{
             	selectedGpo.setLunHoraIni(hora.getLunHoraIni());
@@ -197,7 +199,7 @@ public class ProfesorBean implements Serializable
             	selectedGpo.setVieHoraFin(hora.getVieHoraFin());
             	selectedGpo.setSabHoraIni(hora.getSabHoraIni());
             	selectedGpo.setSabHoraFin(hora.getSabHoraFin());
-
+            	logg.info("Entro aqui>>> para regresar al horario anterior.");
         	}
         } // Si el horario del grupo ya fue modificado y rechazado por la coordinación (BOTTOM)
         
@@ -785,7 +787,7 @@ public class ProfesorBean implements Serializable
                         coord.setEstado(0); // Estado no leido
                         
                         notifEJB.create(coord);
-    		    		conGrupoAValidar = true;    			    	
+    		    		conGrupoAValidar = true;	    	
     			    }
     			    catch(PersistenceException exP)
     			    {

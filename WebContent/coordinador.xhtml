@@ -38,7 +38,7 @@
                             <p:dataTable id="notifsCoordTable" var="gpoNot" value="#{coord.listGposAValidar}" styleClass="tablaProfe" selection="#{coord.selecteGpo}" rowKey="#{gpoNot.grupoPK}" rendered="#{coord.listGposAValidar.size() > 0}">
                                 <p:column headerText="Notificaciones">
                                     <p:outputLabel value="El grupo  #{gpoNot.grupoPK.nombre} del profesor #{gpoNot.profesor.nombreProfe.concat(' ').concat(gpoNot.profesor.apePatProfe)} necesita ser validado" rendered="#{gpoNot.validado == 0}"/>
-                                    <p:outputLabel value="El grupo  #{gpoNot.grupoPK.nombre} del profesor #{gpoNot.profesor.nombreProfe.concat(' ').concat(gpoNot.profesor.apePatProfe)} fue validado con exito" rendered="#{gpoNot.validado != 0}"/>
+                                    <p:outputLabel value="El grupo  #{gpoNot.grupoPK.nombre} del profesor #{gpoNot.profesor.nombreProfe.concat(' ').concat(gpoNot.profesor.apePatProfe)} fue validado y fue #{gpoNot.validado == 1 ? 'aceptado' : 'rechazado'} con exito" rendered="#{gpoNot.validado != 0}"/>
                                 </p:column>
                                 <p:column style="width: 90px;text-align: center" disabledSelection="#{gpoNot.validado != 0}">
                                     <p:commandButton value="Validar" action="#{coord.validarGrupo()}" icon="ui-icon-circle-check" title="Abrir" disabled="#{gpoNot.validado != 0}" update="@form">
@@ -49,9 +49,29 @@
                             <br/><br/>
                             <strong><h:outputText value="NO EXITEN NOTIFICACIONES" rendered="#{coord.listGposAValidar.size() == 0}"/></strong>
                   		</p:layoutUnit>
+                  		<p:layoutUnit position="south">
+                  			<p:scrollPanel style="height">
+              					<p:dataTable id="notifHistTabla" var="notif" value="#{coord.listHistorialNotif}" styleClass="tablaProfe" rowKey="#{gpoNot.grupoPK}" rendered="#{coord.listHistorialNotif.size() > 0}">
+                                	<p:column headerText="Grupo">
+                                    	<p:outputLabel value="#{notif.grupo.grupoPK.nombre}"/>
+                                	</p:column>
+                              		<p:column headerText="Materia">
+                                    	<p:outputLabel value="#{notif.grupo.materia.nombreMateria}"/>
+                                	</p:column> 
+                              		<p:column headerText="Profesor">
+                                    	<p:outputLabel value="#{notif.grupo.profesor.nombreProfe.concat(' ').concat(notif.grupo.profesor.apePatProfe)}"/>
+                                	</p:column>                                 	                               	
+                              		<p:column headerText="Fecha Validación">
+                                    	<p:outputLabel value="#{coord.fmt.format(notif.fechaHoraValida)}"/>
+                                	</p:column>                                 	
+                            	</p:dataTable>
+                     			<strong><h:outputText value="NO SE ENCONTRARON REGISTROS" rendered="#{coord.listHistorialNotif.size() == 0}"/></strong>                            	                 				
+                  			</p:scrollPanel>
+                  		</p:layoutUnit>
                     </p:layout>
 					<p:dialog id="validaDlg" widgetVar="dlgValida" closeOnEscape="true" modal="true" width="95%" height="600" resizable="false" draggable="false" header="Validación del grupo">
-					<p:scrollPanel style="height">      	                            
+					<p:scrollPanel style="height">
+					     <h3> Historial de Notificaciones</h3><br/><br/>
 						<p:outputPanel id="panelValida">
 							<p:panelGrid style="font-size:8pt;">
 								<f:facet name="header">

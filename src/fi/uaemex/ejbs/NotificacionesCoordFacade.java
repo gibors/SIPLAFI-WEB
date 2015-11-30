@@ -40,4 +40,11 @@ public class NotificacionesCoordFacade extends AbstractFacade<NotificacionesCoor
         
     }
     
+    public List<NotificacionesCoord> getHistorialNotificaciones()
+    {
+        String query = "SELECT n FROM NotificacionesCoord n WHERE n.fechaHoraValida IS NOT NULL ORDER BY n.notificacionesCoordPK.fechaHoraNotif";
+    	Query q = getEntityManager().createQuery(query);
+    	return  q.getResultList();
+    }
+    
 }
