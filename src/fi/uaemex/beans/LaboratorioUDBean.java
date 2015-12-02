@@ -14,13 +14,14 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.PersistenceException;
 
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class LaboratorioUDBean {
     
     private static final Logger logg = Logger.getLogger(LaboratorioUDBean.class.getName());
@@ -51,6 +52,7 @@ public class LaboratorioUDBean {
         }
         else
         {
+        	logg.info("Selected aula >>>>> " + selectedAula.getNombre());
             if(opcion.equals("update"))
                 RequestContext.getCurrentInstance().execute("PF('labDiag').show()");
             else
@@ -78,10 +80,11 @@ public class LaboratorioUDBean {
     public String editarLab()
     {    	
     	try
-    	{    		    	
-    		//Aula aula = aulaEJB.find(selectedAula.getIdAula());
-    		System.out.println("");
+    	{    		  
+    		logg.info(">>> aqui entro bien.. ");
     		aulaEJB.edit(selectedAula);
+    		logg.info(">>> termino proceso.. ");
+    		
             return "laboratoriosUpDel?faces-redirect=true";    		
     	}
     	catch(PersistenceException exP)
@@ -94,7 +97,7 @@ public class LaboratorioUDBean {
     public String deleteLab()
     {
     	try
-    	{    		    	
+    	{
         	aulaEJB.remove(selectedAula);
             return "laboratoriosUpDel?faces-redirect=true";    		
     	}
@@ -136,18 +139,19 @@ public class LaboratorioUDBean {
 		return selectedAula;
 	}
 
-	public void setSelectedAula(Aula selectedAula) {
+	public void setSelectedAula(Aula selectedAula) 
+	{
 		this.selectedAula = selectedAula;
 	}
 
-	public List<Aula> getAulaFilteredList() {
+	public List<Aula> getAulaFilteredList() 
+	{
 		return aulaFilteredList;
 	}
 
-	public void setAulaFilteredList(List<Aula> aulaFilteredList) {
+	public void setAulaFilteredList(List<Aula> aulaFilteredList) 
+	{
 		this.aulaFilteredList = aulaFilteredList;
 	}        
-	
-	
-        
+		        
 }

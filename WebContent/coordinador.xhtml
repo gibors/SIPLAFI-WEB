@@ -16,7 +16,7 @@
                   	</p:menubar>		        
                   	<br/>                           		
                     <p:layout style="height: 500px; width: 100%" >
-                        <p:layoutUnit position="west" resizable="false" size="250">
+                        <p:layoutUnit position="west" resizable="false" size="200">
                             <p:menu>
                                 <p:submenu label="Administrar">
                                     <p:menuitem value="Profesor" action="profesorUpDel?faces-redirect=true" />
@@ -24,13 +24,14 @@
                                     <p:menuitem value="Grupos" action="grupoUpDel?faces-redirect=true"/>
                                     <p:menuitem value="Laboratorios" action="laboratoriosUpDel?faces-redirect=true"/>
                                     <p:menuitem value="Periodos" action="periodoUpDel?faces-redirect=true"/>
+                                    <p:menuitem value="capturar Apreciación" action="capturarApreciacion?faces-redirect=true" />                                    
                                 </p:submenu>
                                 <p:submenu label="Plantilla">
                                 	<p:menuitem value="Generar plantilla" action="planillaFI-ICO?faces-redirect=true" />
                                 </p:submenu>
                             </p:menu>
                         </p:layoutUnit>
-                        <p:layoutUnit position="center" >
+                        <p:layoutUnit position="center" header="Notificaciones">
                         	<h:panelGroup layout="block" style="color:gray;text-align:center">
                         		<h2>BIENVENIDO AL SISTEMA CORDINADOR(A) </h2> <p:outputLabel value="#{coord.coordinador.nombreCoord.concat(' ').concat(coord.coordinador.apePatCoord).concat(' ').concat(coord.coordinador.apeMatCoord)}" />
                        		</h:panelGroup>
@@ -49,7 +50,7 @@
                             <br/><br/>
                             <strong><h:outputText value="NO EXITEN NOTIFICACIONES" rendered="#{coord.listGposAValidar.size() == 0}"/></strong>
                   		</p:layoutUnit>
-                  		<p:layoutUnit position="south">
+                  		<p:layoutUnit position="south" header="Historial de notificaciones" size="150">
                   			<p:scrollPanel style="height">
               					<p:dataTable id="notifHistTabla" var="notif" value="#{coord.listHistorialNotif}" styleClass="tablaProfe" rowKey="#{gpoNot.grupoPK}" rendered="#{coord.listHistorialNotif.size() > 0}">
                                 	<p:column headerText="Grupo">
@@ -71,8 +72,8 @@
                     </p:layout>
 					<p:dialog id="validaDlg" widgetVar="dlgValida" closeOnEscape="true" modal="true" width="95%" height="600" resizable="false" draggable="false" header="Validación del grupo">
 					<p:scrollPanel style="height">
-					     <h3> Historial de Notificaciones</h3><br/><br/>
 						<p:outputPanel id="panelValida">
+							<br/>
 							<p:panelGrid style="font-size:8pt;">
 								<f:facet name="header">
 									<p:row>

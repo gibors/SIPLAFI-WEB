@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
    @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g"),
    @NamedQuery(name = "Grupo.findGruposSemestre", query = "SELECT g FROM Grupo g WHERE g.materia.semestre = :semestre AND (g.grupoPK.claveMateria <> :cveMat OR g.grupoPK.rfcProfesor <> :rfcPro OR g.grupoPK.periodo <> :period OR g.grupoPK.nombre <> :name)"),          
-   @NamedQuery(name = "Grupo.findByClaveMateria", query = "SELECT g FROM Grupo g WHERE g.grupoPK.claveMateria = :claveMateria"),
+   @NamedQuery(name = "Grupo.findByClaveMateria", query = "SELECT g FROM Grupo g WHERE g.grupoPK.claveMateria = :claveMateria AND g.periodos.actual = 1 ORDER BY g.grupoPK.nombre "),
    @NamedQuery(name = "Grupo.findByRfcProfesor", query = "SELECT g FROM Grupo g WHERE g.grupoPK.rfcProfesor = :rfcProfesor"),
    @NamedQuery(name = "Grupo.findByPeriodo", query = "SELECT g FROM Grupo g WHERE g.grupoPK.periodo = :periodo"),
    @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.grupoPK.nombre = :nombre"),

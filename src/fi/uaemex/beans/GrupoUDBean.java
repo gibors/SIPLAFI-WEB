@@ -62,6 +62,7 @@ public class GrupoUDBean implements Serializable{
             mateList = mateEJB.getAllMaterias();
             grupoList = grupoEJB.findAll();
             periodList = periodoEJB.findAll();
+            periodo = periodoEJB.getPeriodoActual().getPeriodo();
         }
         catch(EJBException exEJB)
         {
@@ -109,10 +110,9 @@ public class GrupoUDBean implements Serializable{
     public String registrarGrupo()
     {
         Grupo group = new Grupo();
-        //group.setGrupoPK(new GrupoPK(materia.getClaveMateria(),profesor.getRfcProfesor(),"",));
-        //group.setClaveMateria(materia);
-        //group.setRfcProfesor(profesor);
-        //group.setNombre(nombreGrupo.trim().toUpperCase());
+        nombreGrupo = grupoEJB.getNombreDelNuevoGrupo(materia.getClaveMateria());       
+        group.setGrupoPK(new GrupoPK(materia.getClaveMateria(),profesor.getRfcProfesor(),periodo,nombreGrupo));
+        
         try
         {
             grupoEJB.create(group);
@@ -128,6 +128,7 @@ public class GrupoUDBean implements Serializable{
     {
         try
         {
+        	grupoSelected.getGrupoPK().setRfcProfesor(grupoSelected.getProfesor().getRfcProfesor());
             grupoEJB.edit(grupoSelected);
         }
         catch(PersistenceException exJPA)
@@ -142,6 +143,7 @@ public class GrupoUDBean implements Serializable{
         try
         {
             grupoEJB.remove(grupoSelected);
+            
         }
         catch(PersistenceException exJPA)
         {

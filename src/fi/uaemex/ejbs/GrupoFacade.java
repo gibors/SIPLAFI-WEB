@@ -3,6 +3,7 @@ package  fi.uaemex.ejbs;
 
 import  fi.uaemex.entities.Grupo;
 import fi.uaemex.entities.GrupoPK;
+import fi.uaemex.entities.Materia;
 
 import java.util.Date;
 import java.util.List;
@@ -188,4 +189,66 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
             return false; // todos confirmados y/0 aceptados :)
         
     }
+        public String getNombreDelNuevoGrupo(String cveMateria)
+        {
+        	List<Grupo> listGpo = getEntityManager().createNamedQuery("Grupo.findByClaveMateria").setParameter("claveMateria",cveMateria).getResultList();
+        	String nuevoNombre = "CO01";
+        	if(!listGpo.isEmpty())
+        	{ // Si la lista de grupos de la misma materia no esta vacia (TOP)
+        		if(listGpo.size() == 1)
+        		{ // Si solo se encuentra un grupo en la lista de elementos (TOP)
+        			String nombre = listGpo.get(0).getGrupoPK().getNombre().trim();
+        			if(nombre.length() == 4)
+        			{ // Si la longitud es igual a 4 (TOP)
+            			int val = Integer.parseInt(nombre.substring(2,4));        				
+        				if(val == 1)
+        					nuevoNombre = "CO02";
+        				else 
+        					nuevoNombre = "CO01";
+        			} // Si la longitud es igual a 4 (BOTTOM)
+        			else
+        			{
+            			int val = Integer.parseInt(nombre.substring(1,2));        				
+        				if(val == 1)
+        					nuevoNombre = "O2";
+        				else 
+        					nuevoNombre = "O1";
+        			}
+        		} // Si solo se encuentra un grupo en la lista de elementos (BOTTOM) 
+        		else
+        		{ // Si la lista contiene mas de un grupo (TOP) 
+        			for(int i=1; i< listGpo.size();i++)
+        			{
+        				String nombre = listGpo.get(i).getGrupoPK().getNombre().trim();
+        				String nombreAnt = listGpo.get(i-1).getGrupoPK().getNombre().trim(); 
+        				if(nombre.length() == 4)
+        				{ // Si la longitud es igual a 4 (TOP)        					
+        					int val = Integer.parseInt(nombre.substring(2,4));
+        					int valAnt = Integer.parseInt(nombreAnt.substring(2,4));
+        					if(val != (valAnt + 1))
+        						return ((valAnt + 1) < 10 ? "CO0" : "C0") + valAnt +1;
+        				} // Si la longitud es igual a 4 (BOTTOM)
+        				else
+        				{
+        					int val = Integer.parseInt(nombre.substring(1,2));
+        					int valAnt = Integer.parseInt(nombreAnt.substring(1,2));
+        					if(val != (valAnt + 1))
+        						return "O" + (valAnt + 1);        					        					
+        				}
+        			}
+        			String nombre = listGpo.get(listGpo.size()-1).getGrupoPK().getNombre().trim();
+        			if(nombre.length() == 4)
+        			{
+        				int val = Integer.parseInt(nombre.substring(2, 4));
+        				nuevoNombre = ((val + 1) < 10 ? "CO0" : "CO") + (val + 1);
+        			}
+        			else
+        			{
+        				int val = Integer.parseInt(nombre.substring(1, 2));
+        				nuevoNombre = ((val + 1) < 10 ? "CO0" : "CO") + (val + 1);
+        			}
+        		}// Si la lista contiene mas de un grupo (BOTTOM)         	
+        	} // Si la lista de grupos de la misma materia no esta vacia (BOTTOM)	
+        	return nuevoNombre;        	
+        }
 }
