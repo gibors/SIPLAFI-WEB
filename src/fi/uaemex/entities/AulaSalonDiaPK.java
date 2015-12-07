@@ -20,36 +20,30 @@ import javax.validation.constraints.Size;
 public class AulaSalonDiaPK implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID_DIA")
+    @Column(name = "ID_DIA", nullable = false)
     private int idDia;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 8)
-    @Column(name = "CLAVE_MATERIA")
+    @Column(name = "CLAVE_MATERIA", nullable = false, length = 8)
     private String claveMateria;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 15)
-    @Column(name = "RFC_PROFESOR")
-    private String rfcProfesor;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 6)
-    @Column(name = "PERIODO")
+    @Column(nullable = false, length = 6)
     private String periodo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
-    @Column(name = "NOMBRE_GPO")
+    @Column(name = "NOMBRE_GPO", nullable = false, length = 10)
     private String nombreGpo;
 
     public AulaSalonDiaPK() {
     }
 
-    public AulaSalonDiaPK(int idDia, String claveMateria, String rfcProfesor, String periodo, String nombreGpo) {
+    public AulaSalonDiaPK(int idDia, String claveMateria, String periodo, String nombreGpo) {
         this.idDia = idDia;
         this.claveMateria = claveMateria;
-        this.rfcProfesor = rfcProfesor;
         this.periodo = periodo;
         this.nombreGpo = nombreGpo;
     }
@@ -68,14 +62,6 @@ public class AulaSalonDiaPK implements Serializable {
 
     public void setClaveMateria(String claveMateria) {
         this.claveMateria = claveMateria;
-    }
-
-    public String getRfcProfesor() {
-        return rfcProfesor;
-    }
-
-    public void setRfcProfesor(String rfcProfesor) {
-        this.rfcProfesor = rfcProfesor;
     }
 
     public String getPeriodo() {
@@ -99,7 +85,6 @@ public class AulaSalonDiaPK implements Serializable {
         int hash = 0;
         hash += (int) idDia;
         hash += (claveMateria != null ? claveMateria.hashCode() : 0);
-        hash += (rfcProfesor != null ? rfcProfesor.hashCode() : 0);
         hash += (periodo != null ? periodo.hashCode() : 0);
         hash += (nombreGpo != null ? nombreGpo.hashCode() : 0);
         return hash;
@@ -118,9 +103,6 @@ public class AulaSalonDiaPK implements Serializable {
         if ((this.claveMateria == null && other.claveMateria != null) || (this.claveMateria != null && !this.claveMateria.equals(other.claveMateria))) {
             return false;
         }
-        if ((this.rfcProfesor == null && other.rfcProfesor != null) || (this.rfcProfesor != null && !this.rfcProfesor.equals(other.rfcProfesor))) {
-            return false;
-        }
         if ((this.periodo == null && other.periodo != null) || (this.periodo != null && !this.periodo.equals(other.periodo))) {
             return false;
         }
@@ -132,7 +114,7 @@ public class AulaSalonDiaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.AulaSalonDiaPK[ idDia=" + idDia + ", claveMateria=" + claveMateria + ", rfcProfesor=" + rfcProfesor + ", periodo=" + periodo + ", nombreGpo=" + nombreGpo + " ]";
+        return "entities.AulaSalonDiaPK[ idDia=" + idDia + ", claveMateria=" + claveMateria + ", periodo=" + periodo + ", nombreGpo=" + nombreGpo + " ]";
     }
     
 }

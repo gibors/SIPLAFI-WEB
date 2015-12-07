@@ -129,7 +129,7 @@ public class ProfesorBean implements Serializable
 	   //gposProfe = profe.getGrupoList();
 	   for(Grupo g: profe.getGrupoList())
 	   {
-		   if(Integer.valueOf(g.getPeriodos().getActual()) == 1)
+		   if(Integer.parseInt(g.getPeriodos().getActual()) == 1)
 			   gposProfe.add(g);
 	   }	   
        listAula = aulaEJB.findAll();
@@ -184,7 +184,7 @@ public class ProfesorBean implements Serializable
         	//Horario2 hora = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
         	logg.info(">> SI ENTRO AQIU ENTONCES FALLO LA CONSULTA ... ");
         	GrupoRespaldo hora = gpoRespEJB.find(selectedGpo.getGrupoRespaldo().getGrupoRespaldoPK());
-        	logg.info(">>>> horario respaldo.... >> " + hora.getValidado());
+        	logg.info(">>>> horario respaldo.... >> " + hora);
         	if(hora != null)
         	{
             	selectedGpo.setLunHoraIni(hora.getLunHoraIni());
@@ -600,7 +600,7 @@ public class ProfesorBean implements Serializable
     	if(selectedGpo.getEstado() != 3)
     	{ // Si se modifico el horario (TOP)
     		GrupoRespaldo hora2 = new GrupoRespaldo();
-    		hora2.setGrupoRespaldoPK(new GrupoRespaldoPK(selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre()));    	
+    		hora2.setGrupoRespaldoPK(new GrupoRespaldoPK(selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre()));    	
     		hora2.setLunHoraIni(selectedGpo.getLunHoraIni());
     		hora2.setLunHoraFin(selectedGpo.getLunHoraFin());
     		hora2.setMarHoraIni(selectedGpo.getMarHoraIni());
@@ -635,42 +635,42 @@ public class ProfesorBean implements Serializable
         	List<AulaSalonDia> listaAulSal = new ArrayList<>();    		
 	    	if(aulaLunes != null)
 	    	{	    		
-	    		AulaSalonDia asd = new AulaSalonDia(1,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
+	    		AulaSalonDia asd = new AulaSalonDia(1,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
 	    		asd.setIdAula(aulaLunes);
 	    		asd.setDia(new Dia(1));
 	    		listaAulSal.add(asd);
 	    	}
 	    	if(aulaMartes != null)
 	    	{
-	    		AulaSalonDia asd = new AulaSalonDia(2,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
+	    		AulaSalonDia asd = new AulaSalonDia(2,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
 	    		asd.setIdAula(aulaMartes);
 	    		asd.setDia(new Dia(2));
 	    		listaAulSal.add(asd);
 	    	}   
 	    	if(aulaMiercoles != null)
 	    	{
-	    		AulaSalonDia asd = new AulaSalonDia(3,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
+	    		AulaSalonDia asd = new AulaSalonDia(3,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
 	    		asd.setIdAula(aulaMiercoles);
 	    		asd.setDia(new Dia(3));
 	    		listaAulSal.add(asd);
 	    	}   
 	    	if(aulaJueves != null)
 	    	{
-	    		AulaSalonDia asd = new AulaSalonDia(4,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
+	    		AulaSalonDia asd = new AulaSalonDia(4,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
 	    		asd.setIdAula(aulaJueves);
 	    		asd.setDia(new Dia(4));
 	    		listaAulSal.add(asd);
 	    	}   
 	    	if(aulaViernes != null)
 	    	{
-	    		AulaSalonDia asd = new AulaSalonDia(5,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
+	    		AulaSalonDia asd = new AulaSalonDia(5,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
 	    		asd.setIdAula(aulaViernes);
 	    		asd.setDia(new Dia(5));
 	    		listaAulSal.add(asd);
 	    	}   
 	    	if(aulaSabado != null)
 	    	{
-	    		AulaSalonDia asd = new AulaSalonDia(6,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getRfcProfesor(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
+	    		AulaSalonDia asd = new AulaSalonDia(6,selectedGpo.getGrupoPK().getClaveMateria(),selectedGpo.getGrupoPK().getPeriodo(),selectedGpo.getGrupoPK().getNombre());
 	    		asd.setIdAula(aulaSabado);
 	    		asd.setDia(new Dia(6));
 	    		listaAulSal.add(asd);
@@ -774,7 +774,6 @@ public class ProfesorBean implements Serializable
     			    	for(GrupoRespaldo h : listaModificados)
     			    	{
     			    		if((g.getGrupoPK().getClaveMateria().trim()).equals(h.getGrupoRespaldoPK().getClaveMateria().trim()) &&
-    			    				(g.getGrupoPK().getRfcProfesor().trim()).equals(h.getGrupoRespaldoPK().getRfcProfesor().trim()) &&
     			    				(g.getGrupoPK().getPeriodo().trim()).equals(h.getGrupoRespaldoPK().getPeriodo().trim()) &&
     			    				(g.getGrupoPK().getNombre().trim()).equals(h.getGrupoRespaldoPK().getNombre().trim()))
     			    		{
@@ -782,7 +781,7 @@ public class ProfesorBean implements Serializable
     			    		}
     			    	}    			    	
                         NotificacionesCoord coord = new NotificacionesCoord();
-                        coord.setNotificacionesCoordPK(new NotificacionesCoordPK(g.getGrupoPK().getClaveMateria(),g.getGrupoPK().getRfcProfesor(),g.getGrupoPK().getPeriodo(),g.getGrupoPK().getNombre(),new Date()));
+                        coord.setNotificacionesCoordPK(new NotificacionesCoordPK(g.getGrupoPK().getClaveMateria(),g.getGrupoPK().getPeriodo(),g.getGrupoPK().getNombre(),new Date()));
                         coord.setDescripcion(g.getDescripcion());
                         coord.setEstado(0); // Estado no leido
                         
@@ -880,7 +879,7 @@ public class ProfesorBean implements Serializable
         para = "giresa.ico@gmail.com";        
         if(g.getEstado() == 2)
         {
-        	mensaje = "El profesor <b>" + g.getProfesor().getNombreProfe() + " " + g.getProfesor().getApePatProfe() + " " + g.getProfesor().getApeMatProfe() + 
+        	mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
         		"</b> ha enviado el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> para validacion \n " +
         				 "Ingrese a la liga para validar el (los) grupo(s)  http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
         	subject = "Nuevo grupo para validacion";
@@ -897,7 +896,7 @@ public class ProfesorBean implements Serializable
 //        			mens = mens + "para el día " + as.getDia().getNombre() + " requiere " + as.getIdAula().getNombre() + ", ";        			
 //        		}        	
 //        	}
-            mensaje = "El profesor <b>" + g.getProfesor().getNombreProfe() + " " + g.getProfesor().getApePatProfe() + " " + g.getProfesor().getApeMatProfe() + 
+            mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
             		"</b> solicito cambio de aula para el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> \n " +
             		" Ingrese a la liga para ver la planilla http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
         	subject = "Se realizó la modificacion del tipo de aulas";

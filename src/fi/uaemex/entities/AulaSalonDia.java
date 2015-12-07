@@ -21,32 +21,36 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author IEEM
  */
 @Entity
-@Table(name = "aula_salon_dia", catalog = "SIPLAFI_DB", schema = "")
+@Table(name = "aula_salon_dia")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AulaSalonDia.findAll", query = "SELECT a FROM AulaSalonDia a"),
     @NamedQuery(name = "AulaSalonDia.findByIdDia", query = "SELECT a FROM AulaSalonDia a WHERE a.aulaSalonDiaPK.idDia = :idDia"),
     @NamedQuery(name = "AulaSalonDia.findByClaveMateria", query = "SELECT a FROM AulaSalonDia a WHERE a.aulaSalonDiaPK.claveMateria = :claveMateria"),
-    @NamedQuery(name = "AulaSalonDia.findByRfcProfesor", query = "SELECT a FROM AulaSalonDia a WHERE a.aulaSalonDiaPK.rfcProfesor = :rfcProfesor"),
     @NamedQuery(name = "AulaSalonDia.findByPeriodo", query = "SELECT a FROM AulaSalonDia a WHERE a.aulaSalonDiaPK.periodo = :periodo"),
     @NamedQuery(name = "AulaSalonDia.findByNombreGpo", query = "SELECT a FROM AulaSalonDia a WHERE a.aulaSalonDiaPK.nombreGpo = :nombreGpo")})
 public class AulaSalonDia implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected AulaSalonDiaPK aulaSalonDiaPK;
-    @JoinColumns({
-        @JoinColumn(name = "CLAVE_MATERIA", referencedColumnName = "CLAVE_MATERIA", insertable = false, updatable = false),
-        @JoinColumn(name = "RFC_PROFESOR", referencedColumnName = "RFC_PROFESOR", insertable = false, updatable = false),
-        @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", insertable = false, updatable = false),
-        @JoinColumn(name = "NOMBRE_GPO", referencedColumnName = "NOMBRE", insertable = false, updatable = false)})
-    @ManyToOne(optional = false)
-    private Grupo grupo;
     @JoinColumn(name = "ID_AULA", referencedColumnName = "ID_AULA")
     @ManyToOne
     private Aula idAula;
-    @JoinColumn(name = "ID_DIA", referencedColumnName = "id_dia", insertable = false, updatable = false)
+    @JoinColumn(name = "ID_DIA", referencedColumnName = "id_dia", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Dia dia;
+    @JoinColumns({
+        @JoinColumn(name = "CLAVE_MATERIA", referencedColumnName = "CLAVE_MATERIA", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false, insertable = false, updatable = false),
+        @JoinColumn(name = "NOMBRE_GPO", referencedColumnName = "NOMBRE", nullable = false, insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
+    private Grupo grupo;
+    @JoinColumn(name = "CLAVE_MATERIA", referencedColumnName = "CLAVE_MATERIA", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Materia materia;
+    @JoinColumn(name = "PERIODO", referencedColumnName = "PERIODO", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Periodos periodos;
     @JoinColumn(name = "ID_SALON", referencedColumnName = "ID_SALON")
     @ManyToOne
     private Salon idSalon;
@@ -58,8 +62,8 @@ public class AulaSalonDia implements Serializable {
         this.aulaSalonDiaPK = aulaSalonDiaPK;
     }
 
-    public AulaSalonDia(int idDia, String claveMateria, String rfcProfesor, String periodo, String nombreGpo) {
-        this.aulaSalonDiaPK = new AulaSalonDiaPK(idDia, claveMateria, rfcProfesor, periodo, nombreGpo);
+    public AulaSalonDia(int idDia, String claveMateria, String periodo, String nombreGpo) {
+        this.aulaSalonDiaPK = new AulaSalonDiaPK(idDia, claveMateria, periodo, nombreGpo);
     }
 
     public AulaSalonDiaPK getAulaSalonDiaPK() {
@@ -68,14 +72,6 @@ public class AulaSalonDia implements Serializable {
 
     public void setAulaSalonDiaPK(AulaSalonDiaPK aulaSalonDiaPK) {
         this.aulaSalonDiaPK = aulaSalonDiaPK;
-    }
-
-    public Grupo getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Grupo grupo) {
-        this.grupo = grupo;
     }
 
     public Aula getIdAula() {
@@ -92,6 +88,30 @@ public class AulaSalonDia implements Serializable {
 
     public void setDia(Dia dia) {
         this.dia = dia;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+
+    public Periodos getPeriodos() {
+        return periodos;
+    }
+
+    public void setPeriodos(Periodos periodos) {
+        this.periodos = periodos;
     }
 
     public Salon getIdSalon() {

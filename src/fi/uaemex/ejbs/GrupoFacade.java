@@ -3,8 +3,6 @@ package  fi.uaemex.ejbs;
 
 import  fi.uaemex.entities.Grupo;
 import fi.uaemex.entities.GrupoPK;
-import fi.uaemex.entities.Materia;
-
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -31,7 +29,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeLunes",Grupo.class)
-                    .setParameter("lunIni",lunIni).setParameter("lunFin", lunFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("lunIni",lunIni).setParameter("lunFin", lunFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria())
                     .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
@@ -50,7 +48,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeMartes",Grupo.class)
-                    .setParameter("marIni",marIni).setParameter("marFin", marFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("marIni",marIni).setParameter("marFin", marFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria())
                     .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
@@ -69,7 +67,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeMiercoles",Grupo.class)
-                    .setParameter("mieIni",mieIni).setParameter("mieFin", mieFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("mieIni",mieIni).setParameter("mieFin", mieFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria())
                     .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
@@ -88,7 +86,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeJueves",Grupo.class)
-                    .setParameter("jueIni",jueIni).setParameter("jueFin", jueFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("jueIni",jueIni).setParameter("jueFin", jueFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria())
                     .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
@@ -107,7 +105,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeViernes",Grupo.class)
-                    .setParameter("vieIni",vieIni).setParameter("vieFin", vieFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("vieIni",vieIni).setParameter("vieFin", vieFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria())
                     .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
@@ -126,7 +124,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
         {
             List<Grupo> lista = getEntityManager().createNamedQuery("BuscaTraslapeSabado",Grupo.class)
-                    .setParameter("sabIni",sabIni).setParameter("sabFin", sabFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                    .setParameter("sabIni",sabIni).setParameter("sabFin", sabFin).setParameter("semestre", semestre).setParameter("cveMat", gpoPk.getClaveMateria())
                     .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
             if(lista != null)
@@ -146,7 +144,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
         try
           {
             return (List<Grupo>) getEntityManager().createNamedQuery("Grupo.findGruposSemestre",Grupo.class)
-                .setParameter("semestre", semester).setParameter("cveMat", gpoPk.getClaveMateria()).setParameter("rfcPro",gpoPk.getRfcProfesor())
+                .setParameter("semestre", semester).setParameter("cveMat", gpoPk.getClaveMateria())
                 .setParameter("period",gpoPk.getPeriodo()).setParameter("name",gpoPk.getNombre())
                     .getResultList();
           }
@@ -166,7 +164,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
     
     public boolean hayGruposParaValidar(String rfc_prof)
     {
-        String query = "SELECT COUNT(g) FROM Grupo g WHERE g.profesor.rfcProfesor = :rfc_prof AND g.validado = 0 AND g.periodos.actual = 1";
+        String query = "SELECT COUNT(g) FROM Grupo g WHERE g.rfcProfesor.rfcProfesor = :rfc_prof AND g.validado = 0 AND g.periodos.actual = 1";
         
         Query q = getEntityManager().createQuery(query).setParameter("rfc_prof", rfc_prof);
         
@@ -178,7 +176,7 @@ public class GrupoFacade extends AbstractFacade<Grupo> {
     
         public boolean todosAceptadosOConfirmados(String rfc_prof,int size)
     {
-        String query = "SELECT COUNT(g) FROM Grupo g WHERE (g.validado = 1 OR g.validado = 3) AND g.profesor.rfcProfesor = :rfc_prof AND g.periodos.actual = 1";
+        String query = "SELECT COUNT(g) FROM Grupo g WHERE (g.validado = 1 OR g.validado = 3) AND g.rfcProfesor.rfcProfesor = :rfc_prof AND g.periodos.actual = 1";
         
         Query q = getEntityManager().createQuery(query).setParameter("rfc_prof", rfc_prof);
         

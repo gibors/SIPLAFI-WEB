@@ -111,7 +111,7 @@ public class GrupoUDBean implements Serializable{
     {
         Grupo group = new Grupo();
         nombreGrupo = grupoEJB.getNombreDelNuevoGrupo(materia.getClaveMateria());       
-        group.setGrupoPK(new GrupoPK(materia.getClaveMateria(),profesor.getRfcProfesor(),periodo,nombreGrupo));
+        group.setGrupoPK(new GrupoPK(materia.getClaveMateria(),periodo,nombreGrupo));
         
         try
         {
@@ -128,7 +128,7 @@ public class GrupoUDBean implements Serializable{
     {
         try
         {
-        	grupoSelected.getGrupoPK().setRfcProfesor(grupoSelected.getProfesor().getRfcProfesor());
+        	grupoSelected.setRfcProfesor(profesor);;
             grupoEJB.edit(grupoSelected);
         }
         catch(PersistenceException exJPA)

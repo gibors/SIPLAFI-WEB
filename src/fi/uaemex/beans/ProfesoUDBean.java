@@ -5,11 +5,8 @@
  */
 package fi.uaemex.beans;
 
-import fi.uaemex.ejbs.ApreciacionFacade;
 import fi.uaemex.ejbs.PeriodosFacade;
 import fi.uaemex.ejbs.ProfesorFacade;
-import fi.uaemex.entities.Apreciacion;
-import fi.uaemex.entities.ApreciacionPK;
 import fi.uaemex.entities.Periodos;
 import fi.uaemex.entities.Profesor;
 import java.io.Serializable;
