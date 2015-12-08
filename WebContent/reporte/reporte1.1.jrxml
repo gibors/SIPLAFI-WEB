@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.0.final using JasperReports Library version 6.0.0  -->
-<!-- 2015-11-23T11:56:50 -->
+<!-- 2015-12-08T12:05:54 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte1" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="68a01100-741a-4fee-a750-cf5ce6080f73">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gibrannAdapter"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
@@ -14,8 +14,7 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="rfc_profe" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[
-select 
+		<![CDATA[select 
 	p.GRADO_PROFE,
 	p.RFC_PROFESOR,	
 	per.periodo,
@@ -40,12 +39,12 @@ select
 	case when g.VIE_HORA_FIN is not null then g.VIE_HORA_FIN else '-' end vie_fi,
 	case when g.SAB_HORA_INI is not null then g.SAB_HORA_INI else '-' end sab_in,
 	case when g.SAB_HORA_FIN is not null then g.SAB_HORA_FIN else '-' end sab_fi,	
-	case when g.LUN_HORA_INI is not null and g.LUN_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 1 ) end aula_lun,
-	case when g.MAR_HORA_INI is not null and g.MAR_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 2 ) end aula_mar,
-	case when g.MIE_HORA_INI is not null and g.MIE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 3 ) end aula_mie,
-	case when g.JUE_HORA_INI is not null and g.JUE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 4 ) end aula_jue,
-	case when g.VIE_HORA_INI is not null and g.VIE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 5 ) end aula_vie,
-	case when g.SAB_HORA_INI is not null and g.SAB_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA and asd.RFC_PROFESOR = g.RFC_PROFESOR and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 6 ) end aula_sab,
+	case when g.LUN_HORA_INI is not null and g.LUN_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA  and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 1 ) end aula_lun,
+	case when g.MAR_HORA_INI is not null and g.MAR_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA  and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 2 ) end aula_mar,
+	case when g.MIE_HORA_INI is not null and g.MIE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA  and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 3 ) end aula_mie,
+	case when g.JUE_HORA_INI is not null and g.JUE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA  and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 4 ) end aula_jue,
+	case when g.VIE_HORA_INI is not null and g.VIE_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA  and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 5 ) end aula_vie,
+	case when g.SAB_HORA_INI is not null and g.SAB_HORA_FIN IS NOT NULL then (SELECT a.tipo_aula from aula a , aula_salon_dia asd where a.ID_AULA = asd.ID_AULA and asd.CLAVE_MATERIA = g.CLAVE_MATERIA  and asd.PERIODO = g.PERIODO and asd.NOMBRE_GPO = g.NOMBRE and asd.ID_DIA = 6 ) end aula_sab,
 	g.VALIDADO
 from
 	grupo g,

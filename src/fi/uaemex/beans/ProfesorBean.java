@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import org.apache.poi.util.ArrayUtil;
 import org.primefaces.context.RequestContext;
 
 import com.sun.xml.rpc.processor.modeler.j2ee.xml.genericBooleanType;
@@ -98,7 +99,7 @@ public class ProfesorBean implements Serializable
     private List<Grupo> listGposInSemester;								// Almacena los grupos de las materias en el mismo horario del grupo seleccionado para modificar
     private List<Aula> listAula; 										// Lista de las aulas requeridas para la clase
     private List<GrupoRespaldo> listaModificados;						// almacena todos los horaios modificados para guardarlos al enviar a validacion..
-    private List<AulaSalonDia> listAulasModificadas;					// Almacena las aulas que fueron modificadas para cambio		
+//    private List<AulaSalonDia> listAulasModificadas;					// Almacena las aulas que fueron modificadas para cambio		
     private Grupo selectedGpo;											// Almacena el grupo que es seleccionado para editar el horario
     private boolean todosConfirmadosOAceptados;							// Obtiene verdadero si todos los grupos del profesor estan confirmados o aceptados
     private boolean conGrupoAValidar;									// Obtiene verdadero si algun grupo necesita ser validado
@@ -114,9 +115,10 @@ public class ProfesorBean implements Serializable
     private String para;												// Almacena el destino del correo
     private String subject;												// Guarda el asunto del correo 
     private String mensaje;												// Almacena el mensaje que se enviara por correo
-    
+    private List<String> listaMensajeCambioAulas;
    public ProfesorBean()
    {
+	   listaMensajeCambioAulas = new ArrayList<>();
    }
    
    @PostConstruct
@@ -593,6 +595,38 @@ public class ProfesorBean implements Serializable
 	   return true;
    	} // Verifica si se modifican las aulas del grupo seleccionad (BOTTOM)
    
+//   public void updateMensajeCambioAaula()
+//   { // Verifica si se modifican las aulas del grupo seleccionad (TOP)
+//	   String mensajeCambioAulas = "";
+//	   for(AulaSalonDia a : selectedGpo.getAulaSalonDiaList())
+//	   {		   
+//		   if(a.getDia().getIdDia() == 1 && !a.getIdAula().equals(aulaLunes))
+//		   {
+//			   mensajeCambioAulas = mensajeCambioAulas + ", solicito cambio de aula el lunes de " + a.getIdAula().getNombre() + " a " + aulaLunes.getNombre() + " del grupo "+ a.getGrupo().getGrupoPK().getNombre() + " de la materia " + a.getMateria().getNombreMateria() +  ", ";
+//		   }
+//		   if(a.getDia().getIdDia() == 2 && !a.getIdAula().equals(aulaMartes))
+//		   {
+//			   mensajeCambioAulas = mensajeCambioAulas + ", solicito cambio de aula  el martes de " + a.getIdAula().getNombre() + " a " + aulaLunes.getNombre() + " del grupo "+ a.getGrupo().getGrupoPK().getNombre() + " de la materia " + a.getMateria().getNombreMateria() +  ", ";	   
+//		   }
+//		   if(a.getDia().getIdDia() == 3 && !a.getIdAula().equals(aulaMiercoles))
+//		   {
+//			   mensajeCambioAulas = mensajeCambioAulas + ", solicito cambio de aula  el miercoles de " + a.getIdAula().getNombre() + " a " + aulaLunes.getNombre() + " del grupo "+ a.getGrupo().getGrupoPK().getNombre() + " de la materia " + a.getMateria().getNombreMateria() +  ", ";		   
+//		   }
+//		   if(a.getDia().getIdDia() == 4 && !a.getIdAula().equals(aulaJueves))
+//		   {
+//			   mensajeCambioAulas = mensajeCambioAulas + ", solicito cambio de aula  el jueves de " + a.getIdAula().getNombre() + " a " + aulaLunes.getNombre() + " del grupo "+ a.getGrupo().getGrupoPK().getNombre() + " de la materia " + a.getMateria().getNombreMateria() +  ", ";			   
+//		   }
+//		   if(a.getDia().getIdDia() == 5 && !a.getIdAula().equals(aulaViernes))
+//		   {
+//			   mensajeCambioAulas = mensajeCambioAulas + ", solicito cambio de aula  el viernes de " + a.getIdAula().getNombre() + " a " + aulaLunes.getNombre() + " del grupo "+ a.getGrupo().getGrupoPK().getNombre() + " de la materia " + a.getMateria().getNombreMateria() +  ", ";
+//		   }
+//		   if(a.getDia().getIdDia() == 6 && !a.getIdAula().equals(aulaSabado))
+//		   {
+//			   mensajeCambioAulas = mensajeCambioAulas + ", solicito cambio de aula el sabado de " + a.getIdAula().getNombre() + " a " + aulaLunes.getNombre() + " del grupo "+ a.getGrupo().getGrupoPK().getNombre() + " de la materia " + a.getMateria().getNombreMateria() +  ", ";
+//		   }
+//	   }
+//   	} // Verifica si se modifican las aulas del grupo seleccionad (BOTTOM)
+   
     public void aceptarHorarioConTraslapes()
     { // Acepta los cambios para posterior enviar el horario a validacion (TOP)
     	boolean hayModificado = false;
@@ -627,7 +661,17 @@ public class ProfesorBean implements Serializable
         	selectedGpo.setVieHoraIni(vieIn);
         	selectedGpo.setVieHoraFin(vieFn);
         	selectedGpo.setSabHoraIni(sabIn);
-        	selectedGpo.setSabHoraFin(sabFn);    		
+        	selectedGpo.setSabHoraFin(sabFn);
+        	
+        	if(!mismasAulas())
+        	{ // Si tambien se cambian las aulas se respalda (TOP)
+        		if(aulaLunes != null ) hora2.setAulaLun(aulaLunes);
+        		if(aulaMartes != null ) hora2.setAulaLun(aulaMartes);
+        		if(aulaMiercoles != null ) hora2.setAulaLun(aulaMiercoles);
+        		if(aulaJueves != null ) hora2.setAulaLun(aulaJueves);        		
+        		if(aulaViernes != null ) hora2.setAulaLun(aulaViernes);        		
+        		if(aulaSabado != null ) hora2.setAulaLun(aulaSabado);        	
+        	}// Si tambien se cambian las aulas se respalda (BOTTOM)
     	} // Si se modifico el horario (BOTTOM)   	
     	
     	if(!mismasAulas())
@@ -880,7 +924,7 @@ public class ProfesorBean implements Serializable
         if(g.getEstado() == 2)
         {
         	mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
-        		"</b> ha enviado el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> para validacion \n " +
+        		"</b> ha enviado el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> para validacion \n "  +
         				 "Ingrese a la liga para validar el (los) grupo(s)  http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
         	subject = "Nuevo grupo para validacion";
         }
@@ -897,7 +941,7 @@ public class ProfesorBean implements Serializable
 //        		}        	
 //        	}
             mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
-            		"</b> solicito cambio de aula para el grupo <b>" + g.getGrupoPK().getNombre() +  "</b> de la materia <b>" + g.getMateria().getNombreMateria() + "</b> \n " +
+            		"</b>"  + 
             		" Ingrese a la liga para ver la planilla http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
         	subject = "Se realizó la modificacion del tipo de aulas";
         }
