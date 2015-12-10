@@ -941,7 +941,7 @@ public class ProfesorBean implements Serializable
 //        		}        	
 //        	}
             mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
-            		"</b>"  + 
+            		"</b> solicito el cambio de aula del grupo "  + g.getGrupoPK().getNombre() +  
             		" Ingrese a la liga para ver la planilla http://localhost:8282/SIPLAFI-WEB/index.jsf  o http://localhost:8080/SIPLAFI-WEB/index.jsf ";
         	subject = "Se realizó la modificacion del tipo de aulas";
         }

@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -124,7 +125,7 @@ public class Grupo implements Serializable {
     private Integer estado=0;
     @Transient
     private String descripcion;
-    
+
     public Grupo() 
     {
     }
@@ -380,17 +381,18 @@ public class Grupo implements Serializable {
 	{
 		this.descripcion = descripcion;
 	}
-	   public Aula getAulaPordia(int day)
-	   {
-		  for(AulaSalonDia al: aulaSalonDiaList )
-		  {
-			  if(al.getDia().getIdDia() == day)
-			  {
-				  return al.getIdAula();
-			  }
-		  }
-		  return null;
-	   }	
+	 
+	public Aula getAulaPordia(int day)
+	{ // busca aulas por dia (TOP)
+		for(AulaSalonDia al: aulaSalonDiaList )
+		{
+			if(al.getDia().getIdDia() == day)
+			{
+				return al.getIdAula();
+			}
+		}
+		return null;
+	} // busca aulas por dia (BOTTOM)
 
 	@Override
     public int hashCode() 
