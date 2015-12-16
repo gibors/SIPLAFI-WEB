@@ -42,7 +42,7 @@ public class NotificacionesCoord implements Serializable {
     @EmbeddedId
     protected NotificacionesCoordPK notificacionesCoordPK;
     private Integer estado;
-    @Size(max = 256)
+ //   @Size(max = 256)
     @Column(length = 256)
     private String descripcion;
     @Column(name = "FECHA_HORA_VALIDA")

@@ -41,10 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import org.apache.poi.util.ArrayUtil;
 import org.primefaces.context.RequestContext;
-
-import com.sun.xml.rpc.processor.modeler.j2ee.xml.genericBooleanType;
 
 import fi.uaemex.ejbs.AulaFacade;
 import fi.uaemex.ejbs.GrupoFacade;
@@ -58,14 +55,13 @@ import fi.uaemex.entities.Grupo;
 import fi.uaemex.entities.GrupoRespaldo;
 import fi.uaemex.entities.GrupoRespaldoPK;
 import fi.uaemex.entities.NotificacionesCoord;
-import fi.uaemex.entities.NotificacionesCoordPK;
 import fi.uaemex.entities.Profesor;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
-@ManagedBean(name = "profesorBean",eager=true)
+@ManagedBean(name = "profesorBean")
 @ViewScoped
 public class ProfesorBean implements Serializable
 {
@@ -182,7 +178,7 @@ public class ProfesorBean implements Serializable
         { // Si el horario del grupo ya fue modificado y rechazado por la coordinación (TOP)
         	//Horario2 hora = hora2EJB.find(selectedGpo.getHorario().getIdHorario());
         	logg.info(">> SI ENTRO AQIU ENTONCES FALLO LA CONSULTA ... ");
-        	GrupoRespaldo hora = gpoRespEJB.find(selectedGpo.getGrupoRespaldo().getGrupoRespaldoPK());
+        	GrupoRespaldo hora = selectedGpo.getGrupoRespaldo();
         	logg.info(">>>> horario respaldo.... >> " + hora);
         	if(hora != null)
         	{
@@ -246,7 +242,8 @@ public class ProfesorBean implements Serializable
         logg.info(">>>>>MISMAS AULAS >>>> " + mismasAulas());
         if(selectedGpo.getValidado() != null && selectedGpo.getValidado() == 2)
         { // Si el grupo ya fue validado y fue rechazado (TOP)
-        	GrupoRespaldo horarioRespaldo = gpoRespEJB.find(selectedGpo.getGrupoRespaldo().getGrupoRespaldoPK()); // Se busca si se guardo un horario anterior
+        	
+        	GrupoRespaldo horarioRespaldo = selectedGpo.getGrupoRespaldo();// Se busca si se guardo un horario anterior
         	
         	if(horarioRespaldo != null)
         	{ // Si el horario de respaldo es encontrado (TOP)
@@ -642,12 +639,13 @@ public class ProfesorBean implements Serializable
     		if(aulaLunes != null ) hora2.setAulaLun(aulaLunes);
     		if(aulaMartes != null ) hora2.setAulaMar(aulaMartes);
     		if(aulaMiercoles != null ) hora2.setAulaMie(aulaMiercoles);
-    		if(aulaJueves != null ) hora2.setAulaJue(aulaJueves);        		
+    		if(aulaJueves != null ) hora2.setAulaJue(aulaJueves);		
     		if(aulaViernes != null ) hora2.setAulaVie(aulaViernes);        		
-    		if(aulaSabado != null ) hora2.setAulaSab(aulaSabado);        		
+    		if(aulaSabado != null ) hora2.setAulaSab(aulaSabado);
     	}
 		
-    	listaModificados.add(hora2);
+		if(selectedGpo.getValidado() == null || selectedGpo.getValidado() != 2)
+			listaModificados.add(hora2);
     	
     	if(!mismasAulas())
     	{ // Si se cambiaron las aulas (TOP)
@@ -796,13 +794,17 @@ public class ProfesorBean implements Serializable
     			    			gpoRespEJB.create(h);
     			    		}
     			    	}
-                        NotificacionesCoord coord = new NotificacionesCoord();
-                        coord.setNotificacionesCoordPK(new NotificacionesCoordPK(g.getGrupoPK().getClaveMateria(),g.getGrupoPK().getPeriodo(),g.getGrupoPK().getNombre(),new Date()));
+    			    	
+                        NotificacionesCoord coord = new NotificacionesCoord(g.getGrupoPK().getClaveMateria(),g.getGrupoPK().getPeriodo(),g.getGrupoPK().getNombre(),new Date());
                         coord.setDescripcion(g.getDescripcion());
                         coord.setEstado(0); // Estado no leido
                         
-                        notifEJB.create(coord);
-    		    		conGrupoAValidar = true;	    	
+                        logg.info(">>>>> datos.. notificaciones error :  " + coord.getNotificacionesCoordPK().getClaveMateria() + " : " + 
+                        coord.getNotificacionesCoordPK().getPeriodo()+ " : " + coord.getNotificacionesCoordPK().getNombre());
+                        
+                        notifEJB.newNotificacion(coord);
+                                                
+    		    		conGrupoAValidar = true;
     			    }
     			    catch(PersistenceException exP)
     			    {
@@ -820,7 +822,8 @@ public class ProfesorBean implements Serializable
         { // For que valida si hay algun grupo modificado o no (TOP)
     		if(g.getValidado() != null && g.getValidado() == 2)
     		{
-    			gpoRespEJB.remove(gpoRespEJB.find(g.getGrupoRespaldo().getGrupoRespaldoPK()));
+    			if(g.getGrupoRespaldo() != null)
+    				gpoRespEJB.remove(g.getGrupoRespaldo());
     		}
         	if(g.getEstado() == 1)
         	{
@@ -913,7 +916,7 @@ public class ProfesorBean implements Serializable
         {
         	GrupoRespaldo gpoResp = null;
         	if(g.getGrupoRespaldo() != null)
-        		gpoResp = gpoRespEJB.find(g.getGrupoRespaldo().getGrupoRespaldoPK());
+        		gpoResp = g.getGrupoRespaldo();
         	
             mensaje = "El profesor <b>" + g.getRfcProfesor().getNombreProfe() + " " + g.getRfcProfesor().getApePatProfe() + " " + g.getRfcProfesor().getApeMatProfe() + 
             		"</b> solicito el cambio de aula del grupo "  + g.getGrupoPK().getNombre() +  

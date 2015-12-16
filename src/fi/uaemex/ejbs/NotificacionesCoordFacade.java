@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
@@ -47,4 +48,18 @@ public class NotificacionesCoordFacade extends AbstractFacade<NotificacionesCoor
     	return  q.getResultList();
     }
     
+    public void newNotificacion(NotificacionesCoord coord)    
+    {
+    	try
+    	{
+    		System.out.println(">>>>>> ENTRO AL METODO NEW NOTIFICACION");
+    		if(coord != null)
+    			getEntityManager().persist(coord);
+    	}
+    	catch(PersistenceException jpEx)
+    	{
+    		jpEx.printStackTrace();
+    		System.out.println(">>>>>>> Ocurrio un error al crear la notificacion : " + jpEx.toString());
+    	}
+    }
 }

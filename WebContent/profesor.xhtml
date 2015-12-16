@@ -149,7 +149,7 @@
 		                    	<p:commandButton icon="ui-icon-arrowreturnthick-1-w" title="Deshacer modificación" actionListener="#{profesorBean.confirmarHorario(gpo)}" update="@form" rendered="#{gpo.validado == 2}"/>		                    	
 		                    </p:column>
 							<p:column style="text-align: center">
-           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="Modificar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" disabled="#{gpo.validado == 1 or gpo.validado == 3 }">
+           						<p:commandButton update=":formu:gpoDetail" icon="ui-icon-pencil" title="Modificar" actionListener="#{profesorBean.onGrupoSelected(gpo)}" disabled="#{gpo.validado == 1 or gpo.validado == 3 or (gpo.validado ==2 and gpo.estado == 1 )}">
           						</p:commandButton>
       						</p:column>		 		                                
 						</p:dataTable>

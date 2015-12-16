@@ -23,17 +23,17 @@ import javax.validation.constraints.Size;
 public class NotificacionesCoordPK implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 8)
+    //@Size(min = 1, max = 8)
     @Column(name = "CLAVE_MATERIA", nullable = false, length = 8)
     private String claveMateria;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 6)
+    //@Size(min = 1, max = 6)
     @Column(nullable = false, length = 6)
     private String periodo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    //@Size(min = 1, max = 10)
     @Column(nullable = false, length = 10)
     private String nombre;
     @Basic(optional = false)
@@ -42,7 +42,8 @@ public class NotificacionesCoordPK implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaHoraNotif;
 
-    public NotificacionesCoordPK() {
+    public NotificacionesCoordPK() 
+    {
     }
 
     public NotificacionesCoordPK(String claveMateria, String periodo, String nombre, Date fechaHoraNotif) {
