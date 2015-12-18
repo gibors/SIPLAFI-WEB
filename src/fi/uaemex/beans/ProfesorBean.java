@@ -110,13 +110,14 @@ public class ProfesorBean implements Serializable
     private String para;												// Almacena el destino del correo
     private String subject;												// Guarda el asunto del correo 
     private String mensaje;												// Almacena el mensaje que se enviara por correo
-   public ProfesorBean()
-   {
-   }
+    
+    public ProfesorBean()
+    {
+    }
    
-   @PostConstruct
-   public void init()
-   { // Se ejecuta antes de construir el objeto (TOP)
+    @PostConstruct
+    public void init()
+    { // Se ejecuta antes de construir el objeto (TOP)
 	   listaModificados = new ArrayList<>();
 	   profe = login.getProfe();	
 	   //profe = profFacade.findUser("QH5Q0S7NYHJTM33", "QH5Q0S7NYHJTM33");
@@ -133,7 +134,7 @@ public class ProfesorBean implements Serializable
        conGrupoAValidar = gpoEJB.hayGruposParaValidar(profe.getRfcProfesor());
        logg.info(">>>> " + todosConfirmadosOAceptados  + " -- Con grupo a validar:  " + conGrupoAValidar);       
        nombreProfe = profe.getNombreProfe() + " " + profe.getApePatProfe() + " " + profe.getApeMatProfe();
-   } // Se ejecuta antes de construir el objeto (BOTTOM)
+    } // Se ejecuta antes de construir el objeto (BOTTOM)
         
      
    public void onGrupoSelected(Grupo gs)
